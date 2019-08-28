@@ -6,6 +6,23 @@ const mongoose = require('mongoose');
 const sanitize = require('mongo-sanitize');
 const helmet = require('helmet');
 
+//// test 
+const Product = require("./models/product.model");
+
+const prod = {
+  name: '3M Perfect-It III Fast Cut ZERO',
+  description: 'A one-component aerosol primer-surfacer design for spot priming of sand through and small areas.',
+  category: 'painting',
+  instore: 6,
+  img: 'https://apollo-ireland.akamaized.net/v1/files/eyJmbiI6Ind1dzh3eXEwc3c2eTItT1RPTU9UT1BMIiwidyI6W3siZm4iOiJ3ZzRnbnFwNnkxZi1PVE9NT1RPUEwiLCJzIjoiMTYiLCJwIjoiMTAsLTEwIiwiYSI6IjAifV19.hWPcdS9ZN8f3RgDA5UKvyaT9LBQxFgWSuWh_8iFpcv0/image;s=1080x720;cars_;/927376413_;slot=1;filename=eyJmbiI6Ind1dzh3eXEwc3c2eTItT1RPTU9UT1BMIiwidyI6W3siZm4iOiJ3ZzRnbnFwNnkxZi1PVE9NT1RPUEwiLCJzIjoiMTYiLCJwIjoiMTAsLTEwIiwiYSI6IjAifV19.hWPcdS9ZN8f3RgDA5UKvyaT9LBQxFgWSuWh+8iFpcv0_rev001.jpg',
+  price: 134.50,
+  labels: [ 'new', 'promotion' ],
+  oldprice: 150
+};
+const product = new Product(prod);
+product.save()
+//// 
+
 const app = express();
 
 const productRoutes = require('./routes/product.routes');
