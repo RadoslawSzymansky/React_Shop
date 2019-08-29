@@ -1,0 +1,12 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+@media (max-width: 568px) {
+  .footer {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+}

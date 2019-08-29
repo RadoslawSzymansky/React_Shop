@@ -1,15 +1,21 @@
-import React from 'react'
-// import PageContainer from '../PageContainer/PageContainer';
-// import NavBar from '../../features/NavBar/NavBar';
+import React from 'react';
+import PropTypes from 'prop-types';
+import PageContainer from '../PageContainer/PageContainer';
+import Header from '../../features/Header/Header';
+import Footer from '../../features/Footer/Footer';
 
 const MainLayout = ({ children }) => (
-  <div>
-    {/* <PageContainer>
-      <NavBar />
+  <>
+    <PageContainer>
+      <Header />
       {children}
-    </PageContainer> */}
-    {children}
-  </div>
+      <Footer />
+    </PageContainer>
+  </>
 );
+
+MainLayout.propTypes = {
+  children: PropTypes.node
+};
 
 export default MainLayout;

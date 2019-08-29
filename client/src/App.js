@@ -1,7 +1,6 @@
 import React from 'react';
 import { hot } from 'react-hot-loader';
-import { Switch, Route, BrowserRouter } from 'react-router-dom';
-import  './styles/App.scss';
+import { Switch, Route } from 'react-router-dom';
 
 import MainLayout from './components/layout/MainLayout/MainLayout';
 import HomePage from './components/pages/Home/HomePage';
@@ -23,8 +22,8 @@ class App extends React.Component {
         </Switch>
       </MainLayout>
     );
-  };
-};
+  }
+}
 
 export default hot(module)(App);
 

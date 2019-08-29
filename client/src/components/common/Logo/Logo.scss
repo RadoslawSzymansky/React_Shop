@@ -1,0 +1,13 @@
+
+.logo {
+  font-family: 'Indie Flower', cursive;
+  color: #9b59b6
+}
+
+@media (max-width: 568px) {
+  .logo {
+    margin: 0px auto 5px;
+    padding-bottom: 0px;
+    border-bottom: 1px solid rgb(192, 192, 192);
+  }
+}

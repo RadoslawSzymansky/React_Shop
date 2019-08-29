@@ -1,0 +1,11 @@
+@import '../../../styles/settings.scss';
+
+.container-fluid {
+  display: flex; 
+  flex-direction: column;
+  width: 100%;
+  max-width: 1000px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: $base-size $base-size * 1.4;
+}

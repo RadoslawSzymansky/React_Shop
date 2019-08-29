@@ -6,6 +6,8 @@ import store from './redux/store';
 
 import App from './App';
 
+import './styles/global.scss';
+
 ReactDOM.render(
   <Provider store={store}>
     <Router >

@@ -1,0 +1,24 @@
+@import '../../../styles//settings.scss';
+
+.nav-links {
+  padding: 0;
+  a {
+    color: $color-link;
+    font-weight: bold;
+    padding: 5px;
+    transition: $transition;
+    margin-left: 3px;
+    &:hover {
+      color: #4c7bad;
+    }
+    &.active {
+      color: $color-info;
+    }
+    &.basket-icon {
+      color: #1abc9c;
+      &:hover {
+        color: #2a9e87;
+      }
+    }
+  }
+}

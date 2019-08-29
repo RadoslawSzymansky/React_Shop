@@ -11,7 +11,7 @@ exports.getPosts = async (req, res) => {
 
 };
 
-
+// Get products by range // pagination
 exports.getProductsByRange = async function (req, res) {
 
   try {
@@ -28,6 +28,17 @@ exports.getProductsByRange = async function (req, res) {
       amount,
     });
 
+  } catch (err) {
+    res.status(500).json(err);
+  }
+
+};
+
+// Get single product by Id
+exports.getPost = async (req, res) => {
+
+  try {
+    res.status(200).json(await Product.findById(req.params.id));
   } catch (err) {
     res.status(500).json(err);
   }

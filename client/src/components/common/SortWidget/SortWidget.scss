@@ -1,0 +1,19 @@
+@import '../../../styles/settings.scss';
+
+.sort-widget {
+  .title {
+    color: $color-text
+  }
+  .sort-widget__list {
+    list-style: none;
+    padding: 0;
+    li {
+      margin-bottom: 6px;
+      color: $color-text-light;
+      cursor: pointer;
+      &:hover {
+        color: $color-text
+      }
+    }
+  }
+}

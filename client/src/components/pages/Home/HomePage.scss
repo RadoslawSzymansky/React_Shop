@@ -1,0 +1,22 @@
+.home-page {
+  display: flex;
+
+  .home-page__sidebar {
+    width: 30%;
+  }
+
+  .home-page__content {
+    width: 100%;
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-page {
+    display: flex;
+    flex-wrap: wrap;
+    .home-page__sidebar {
+      width: 100%;
+    }
+  }
+}

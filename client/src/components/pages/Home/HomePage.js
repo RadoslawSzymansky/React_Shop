@@ -1,12 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';  
+import './HomePage.scss';
+import Products from '../../features/Products/ProductsContainer';
 
 const Home = () => {
   return (
-    <div>
-      home
-      <Link to='/about'>About </Link>
-
+    <div className='home-page'>
+      <Products />
     </div>
   );
 };
