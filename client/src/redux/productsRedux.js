@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { BASE_URL } from '../config/config';
 
 const reducerName = 'products';
 
@@ -106,7 +107,7 @@ export const fetchProductsRequest = () => async dispatch => {
   dispatch(startProductsRequest());
 
   try {
-    const res = await axios.get('/api/products');
+    const res = await axios.get(`${BASE_URL}/api/products`);
     dispatch(loadProducts(res.data));
     dispatch(endProductsRequest());
   } catch (error) {
@@ -120,10 +121,10 @@ export const fetchProductsByPage = (page, productsPerPage) => async dispatch => 
   dispatch(startProductsRequest());
 
   try {
-    const res = await axios.get(`/api/products/range/${startAt}/${limit}`);
-
     const limit = productsPerPage || 10;
     const startAt = (page - 1) * limit;
+
+    const res = await axios.get(`${BASE_URL}/api/products/range/${startAt}/${limit}`);
 
     const payload = {
       products: res.data.products,
@@ -143,7 +144,7 @@ export const fetchSingleProductRequest = id => async dispatch => {
   dispatch(startSingleProductRequest());
 
   try {
-    const res = await axios.get(`/api/products/${id}`);
+    const res = await axios.get(`${BASE_URL}/api/products/${id}`);
     dispatch(loadSingleProduct(res.data));
     dispatch(endProductRequest());
   } catch (error) {
