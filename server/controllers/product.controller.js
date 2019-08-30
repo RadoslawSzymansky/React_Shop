@@ -20,11 +20,11 @@ exports.getProductsByRange = async function (req, res) {
     startAt = parseInt(startAt);
     limit = parseInt(limit);
 
-    const posts = await Product.find().skip(startAt).limit(limit);
+    const products = await Product.find().skip(startAt).limit(limit);
     const amount = await Product.countDocuments();
 
     res.status(200).json({
-      posts,
+      products,
       amount,
     });
 

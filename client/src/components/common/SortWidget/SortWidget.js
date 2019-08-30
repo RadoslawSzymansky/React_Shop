@@ -18,7 +18,7 @@ const SortWidget = ({ onClick }) => {
 };
 
 SortWidget.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func
 };
 
 export default SortWidget;

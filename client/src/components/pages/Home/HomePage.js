@@ -1,13 +1,13 @@
 import React from 'react';
 import './HomePage.scss';
-import Products from '../../features/Products/ProductsContainer';
+import Home from '../../features/Home/Home';
 
-const Home = () => {
+const HomePage = () => {
   return (
     <div className='home-page'>
-      <Products />
+      <Home />
     </div>
   );
 };
 
-export default Home;
+export default HomePage;
