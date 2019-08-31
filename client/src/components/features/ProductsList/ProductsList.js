@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Product from '../Product/Product';
+
+import './ProductsList.scss';
 
 const ProductsList = ({products}) => {
   return (
-    <div>
-      {products.map(() => 'a')}
+    <div className='products-list'>
+      {products.map((product) => <Product key={product._id} product={product}/>)}
     </div>
   );
 };

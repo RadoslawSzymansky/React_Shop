@@ -1,0 +1,67 @@
+@import '../../../styles/settings.scss';
+
+.product-card {
+  width: 220px;
+  margin: 5px 2px;
+  background-color: $color-product-bg;
+  border-radius: 5px;
+  padding: 5px 15px;
+
+  .product-labels {
+    display: flex;
+    // justify-content: space-around;
+    align-items: center;
+    min-height: 25px;
+    margin-bottom: 5px;
+
+    [class^="label__"] {
+      border-radius: 2px;
+      text-align: center;
+      font-size: 11px;
+      color: $color-text-bright;
+      background-color: $color-success;
+      padding: 0 3px;
+
+      &:nth-child(2), &:nth-child(3) {
+        margin-left: 31px;
+      }
+    }
+    .label__new {
+      background-color: $color-info
+    }
+    .label__outlet {
+      background-color: $color-warning
+    }
+    .label__last {
+      background-color: $color-error-back
+    }
+  }
+ 
+  .product-image-wrapper {
+    height: 230px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+
+    .product-image {
+      max-width: 100%;
+      max-height: 90%;
+    }
+  }
+  
+  .product-name {
+    height: 22px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: $color-text;
+    font-family: $font-text;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .product-price {
+    color: $color-text-light;
+    font-family: $font-text;
+  }
+}

@@ -14,7 +14,7 @@ class NavLinks extends React.Component {
         <NavLink exact to='/faq'>FAQ</NavLink>
         <NavLink exact to='/basket' className='basket-icon'>
           <FaShoppingBasket 
-            style={{fontSize: 32, transform: 'translateY(8px)'}}
+            style={{fontSize: 32}}
           />
         </NavLink>
       </div>

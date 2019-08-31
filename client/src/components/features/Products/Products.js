@@ -18,12 +18,16 @@ const Products = ({
 
     switch (true) {
     case pending && !success:
-      return <Spinner color='primary' style={{ width: '10rem', height: '10rem' }}/>;
+      return <div style={{textAlign: 'center', paddingTop: 20}}>
+        <Spinner color='primary' style={{ width: '10rem', height: '10rem' }} />
+      </div> ;
 
     case !pending && success:
       return <>
         <ProductsList products={products} />
-        { pagination ? <Pagination pages={pages} setPage={setCurrentPage} page={currentPage} /> : null }
+        <div style={{justifyContent: 'center', display: 'flex', marginTop: 10}}>
+          {pagination ? <Pagination pages={pages} setPage={setCurrentPage} page={currentPage} /> : null}
+        </div>
       </>;
   
     case !pending && error:
