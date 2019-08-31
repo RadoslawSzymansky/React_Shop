@@ -1,10 +1,11 @@
 import React from 'react';
+import SingleProduct from '../../features/SingleProduct/SingleProductContainer';
 
 const ProductPage = () => {
   return (
-    <div>
-      Product Pagedsad
-    </div>
+    <>
+      <SingleProduct />
+    </>
   );
 };
 
