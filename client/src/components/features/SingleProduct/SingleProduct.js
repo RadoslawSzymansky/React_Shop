@@ -3,8 +3,10 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button, Spinner, Alert } from 'reactstrap';
 
+import './SingleProduct.scss';
+
 const SingleProduct = ({
-  product, fetchProduct, request, match
+  product, fetchProduct, request, match, img, instore
 }) => {
   useEffect(() => {
     fetchProduct(match.params.id);
@@ -22,14 +24,17 @@ const SingleProduct = ({
   case !pending && success:
     return (
       <div className='single-product row'>
-        <div className="col-6">
-
+        <div className=" col-sm-6">
+          <div className="image-wrapper">
+            <img className='product-image' src={product.img} alt="Product photo" />
+          </div>
         </div>
-        <div className="col-6">
-          <h4 className="name">{product.name}</h4>
-          <h5 className="price">{product.price}</h5>
+        <div className=" col-sm-6">
+          <h5 className="name">{product.name}</h5>
+          <h6 className="price">${product.price}</h6>
           <p className="description">{product.description}</p>
-          <Button disabled={!product.instore}>Add To Basket</Button>
+          <p className='text-secondary'>In store: <span className='text-dark'>{product.instore}</span></p>
+          <Button color='primary' disabled={!product.instore}>Add To Basket</Button>
         </div>
       </div>
     );
@@ -49,7 +54,9 @@ SingleProduct.propTypes = {
   product: PropTypes.oneOfType([
     PropTypes.object,
   ]),
-  request: PropTypes.object.isRequired
+  request: PropTypes.object.isRequired,
+  img: PropTypes.string,
+  instore: PropTypes.number
 };
 
 export default withRouter(SingleProduct);

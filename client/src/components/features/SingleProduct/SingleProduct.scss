@@ -1,0 +1,26 @@
+@import '../../../styles/settings.scss';
+
+.single-product.row {
+  max-width: 650px;
+  margin: 25px auto;
+  .name {
+    color: #111;
+  }
+  .price {
+    color: $color-text-light
+  }
+  .description {
+    font-size: 14px;
+  }
+  background-color: #fff;
+  .image-wrapper {
+    height: 100%;
+    display: flex;
+    .product-image {
+      max-width: 100%;
+      height: auto;
+      max-height: 400px;
+      margin: auto;
+    }
+  }
+}

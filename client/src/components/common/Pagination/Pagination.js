@@ -14,7 +14,7 @@ const MyPagination = ({ setPage, pages, page }) => {
       
 
       {[...Array(pages)].map((e, i) => (
-        <PaginationItem key={i}>
+        <PaginationItem key={i} active={i+1 === page}>
           <PaginationLink onClick={() => setPage(i+1)} >{i+1}</PaginationLink>
         </PaginationItem>
       ))}

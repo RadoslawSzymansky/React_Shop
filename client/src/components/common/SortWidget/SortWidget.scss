@@ -1,8 +1,55 @@
 @import '../../../styles/settings.scss';
 
 .sort-widget {
+  margin-bottom: 10px;
   .title {
-    color: $color-text
+    padding-left: 5px;
+    color: $color-text;
+    border-radius: 5px;
+  }
+  .sort-widget__list {
+    list-style: none;
+    padding: 0;
+    li {
+      padding-left: 10px;
+      margin-bottom: 6px;
+      color: $color-text-light;
+      cursor: pointer;
+      border-radius: 3px;
+      &:hover {
+        color: $color-text;
+        background-color: rgb(241, 238, 238);
+      }
+    }
+  }
+}
+
+@media (max-width: 868px) {
+  .sort-widget {
+    max-width: 230px;
+    margin: 15px auto;
+  .title { 
+    color: #fff;
+    background-color: $color-secondary-alt;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    transition: 0.2s;
+    &:hover {
+      background-color: rgb(108, 172, 147)
+    }
+    &::after, &::before {
+      content: '>';
+      position: absolute;
+      font-weight: bold;
+      transform: rotate(90deg)
+    }
+    &::after {
+      right: 15px;
+    }
+    &::before {
+      left: 15px;
+    }
   }
   .sort-widget__list {
     list-style: none;
@@ -16,4 +63,5 @@
       }
     }
   }
+}
 }

@@ -1,19 +1,16 @@
 .products-list {
   display: grid;
-  grid-gap: 5px;
+  grid-gap: 8px 5px;
   justify-items: center
 };
-@media (max-width: 575.98px) {
-    .products-list {
-        grid-template-columns: repeat(1, 1fr);
-    }
-}
-@media (max-width: 768.98px) and (min-width: 576px) {
+
+@media (max-width: 758.98px) and (min-width: 516px) {
     .products-list {
         grid-template-columns: repeat(2, 1fr);
     }
 }
-@media (min-width: 768px) {
+
+@media (min-width: 758px) {
     .products-list {
         grid-template-columns: repeat(3, 1fr); 
     }

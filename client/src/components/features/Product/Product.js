@@ -15,7 +15,6 @@ const Product = ({ product: {
         </div>
         <div className="product-image-wrapper">
           <img src={img} alt={name} className='product-image' />
-          {console.log(img)}
         </div>
         <p className="product-name">{name}</p>
         <div className="product-price">${price}</div>
