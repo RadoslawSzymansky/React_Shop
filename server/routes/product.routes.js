@@ -10,6 +10,6 @@ router.route('/products').get(ProductController.getPosts);
 router.route('/products/range/sort').get(ProductController.getProductsByRange);
 
 // get single product by id
-router.route('/products/sort').get(ProductController.getSortedProducts);
+router.route('/products/:id').get(ProductController.getPost);
 
 module.exports = router;

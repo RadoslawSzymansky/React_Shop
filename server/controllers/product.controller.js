@@ -37,7 +37,7 @@ exports.getProductsByRange = async function (req, res) {
     const products = await Product.aggregate(productFilters);
 
     const amount = await Product.countDocuments();
-    console.log(products)
+
     res.status(200).json({
       products,
       amount,
@@ -60,10 +60,3 @@ exports.getPost = async (req, res) => {
 
 };
 
-// Get Products by Range and Filters
-
-exports.getSortedProducts = async (req, res) => {
-
-  
-
-};

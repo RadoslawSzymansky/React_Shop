@@ -9,6 +9,8 @@ const helmet = require('helmet');
 const app = express();
 
 const productRoutes = require('./routes/product.routes');
+const authRoutes = require('./routes/auth.routes');
+const userRoutes = require('./routes/user.routes');
 
 app.use(cors());
 app.use(helmet());
@@ -21,6 +23,8 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/api', productRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 // Serve static files from the React app if production env
 if(process.env === 'PRODUCTION') {
@@ -33,7 +37,7 @@ app.get('*', (req, res) => {
 
 
 // mongo
-mongoose.connect(config.DB, { useNewUrlParser: true });
+mongoose.connect(config.DB, { useNewUrlParser: true, useCreateIndex: true });
 let db = mongoose.connection;
 
 db.once('open', () => {
