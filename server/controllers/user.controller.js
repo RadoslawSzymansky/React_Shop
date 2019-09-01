@@ -6,7 +6,6 @@ const config = require('config');
 
 const User = require('../models/user.model');
 
-
 // Route    /api/users
 // Method   POST
 // Access   PUBLIC
@@ -78,3 +77,13 @@ module.exports.registerUser = [
     }
   }
 ];
+
+module.exports.deleteUser = async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.user.id).select('-password');
+    res.json({ msg: 'User deleted successfully'});
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Server error');
+  }
+};

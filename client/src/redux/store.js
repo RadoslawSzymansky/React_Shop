@@ -3,10 +3,14 @@ import thunk from 'redux-thunk';
 
 // import reducers
 import products from './productsRedux';
+import auth from './authRedux';
+import alerts from './alertsRedux';
 
 // combine reducers
 const rootReducer = combineReducers({
-  products
+  products,
+  auth,
+  alerts
 });
 
 const store = createStore(
