@@ -1,5 +1,5 @@
 import React from 'react';
-import SortWidget from '../../common/SortWidget/SortWidget';
+import SortWidget from '../../features/SortWidget/SortWidgetContainer';
 import Products from '../Products/ProductsContainer';
 
 const Home = () => {

@@ -152,3 +152,31 @@ export const fetchSingleProductRequest = id => async dispatch => {
     dispatch(loadSingleProductError(error));
   }
 };
+
+export const fetchSortedProductsRequest = (
+  { name, price }
+) => async (dispatch, getState) => {
+
+  dispatch(startProductsRequest());
+
+  try {
+    const limit = getState().products.productsPerPage;
+
+    const res = await axios.
+      get(`
+      ${BASE_URL}/api/products/sort/?limit=${limit}${name ? `&name=${name}`: ''}${price? `&price=${price}`: ''}   
+    `);
+
+    const payload = {
+      products: res.data.products,
+      amount: res.data.amount,
+      productsPerPage: limit,
+      presentPage: 1,
+    };
+    dispatch(loadProductsPerPage(payload));
+    dispatch(endProductsRequest());
+  } catch (error) {
+    console.log(error);
+    dispatch(loadProductsError(error));
+  }
+};
