@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { BASE_URL } from '../config/config';
+import isEmpty from '../utils/isEmpty';
 
 const reducerName = 'products';
 
@@ -54,7 +55,8 @@ const initialState = {
   },
   amount: 0,
   productsPerPage: 10,
-  presentPage: 0
+  presentPage: 0,
+  sort: {}
 };
 
 /* REDUCER */
@@ -72,7 +74,8 @@ export default function reducer(state = initialState, action = {}) {
       products: [ ...payload.products ],
       amount: payload.amount,
       productsPerPage: payload.productsPerPage,
-      presentPage: payload.presentPage
+      presentPage: payload.presentPage,
+      sort: payload.sort
     };
 
   case LOAD_SINGLE_PRODUCT:
@@ -116,22 +119,40 @@ export const fetchProductsRequest = () => async dispatch => {
   }
 };
 
-export const fetchProductsByPage = (page, productsPerPage) => async dispatch => {
-  console.log('pobieram ')
+export const fetchProductsByPage = (page, productsPerPage, sort) => async (dispatch, getState) => {
   dispatch(startProductsRequest());
-
+ 
   try {
     const limit = productsPerPage || 10;
     const startAt = (page - 1) * limit;
 
-    const res = await axios.get(`${BASE_URL}/api/products/range/${startAt}/${limit}`);
+    let name, price;
+    if (!isEmpty(sort)) {
+      name = sort.name;
+      price = sort.price;
+    } else {
+      name = getState().products.sort.name;
+      price = getState().products.sort.price;      
+    }
+
+    dispatch(startProductsRequest());
+
+    const res = await axios.
+      get(`
+      ${BASE_URL}/api/products/range/sort/?limit=${limit}&startAt=${startAt}
+      ${name ? `&name=${name}` : ''}${price ? `&price=${price}` : ''}   
+      `);
+    // eslint-disable-next-line require-atomic-updates
+    if (isEmpty(sort)) sort = getState().products.sort;
 
     const payload = {
       products: res.data.products,
       amount: res.data.amount,
       productsPerPage: limit,
       presentPage: page,
+      sort: sort
     };
+
     dispatch(loadProductsPerPage(payload));
     dispatch(endProductsRequest());
   } catch (error) {
@@ -150,33 +171,5 @@ export const fetchSingleProductRequest = id => async dispatch => {
   } catch (error) {
     console.log(error);
     dispatch(loadSingleProductError(error));
-  }
-};
-
-export const fetchSortedProductsRequest = (
-  { name, price }
-) => async (dispatch, getState) => {
-
-  dispatch(startProductsRequest());
-
-  try {
-    const limit = getState().products.productsPerPage;
-
-    const res = await axios.
-      get(`
-      ${BASE_URL}/api/products/sort/?limit=${limit}${name ? `&name=${name}`: ''}${price? `&price=${price}`: ''}   
-    `);
-
-    const payload = {
-      products: res.data.products,
-      amount: res.data.amount,
-      productsPerPage: limit,
-      presentPage: 1,
-    };
-    dispatch(loadProductsPerPage(payload));
-    dispatch(endProductsRequest());
-  } catch (error) {
-    console.log(error);
-    dispatch(loadProductsError(error));
   }
 };

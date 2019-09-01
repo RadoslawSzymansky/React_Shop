@@ -7,9 +7,7 @@ const ProductController = require('../controllers/product.controller');
 router.route('/products').get(ProductController.getPosts);
 
 // get products by range
-router.route('/products/range/:startAt/:limit').get(ProductController.getProductsByRange);
-
-// get sorted product with limit
+router.route('/products/range/sort').get(ProductController.getProductsByRange);
 
 // get single product by id
 router.route('/products/sort').get(ProductController.getSortedProducts);

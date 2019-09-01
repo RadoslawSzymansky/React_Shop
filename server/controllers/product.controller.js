@@ -15,14 +15,29 @@ exports.getPosts = async (req, res) => {
 exports.getProductsByRange = async function (req, res) {
 
   try {
-    let { startAt, limit } = req.params;
-
-    startAt = parseInt(startAt);
+    let { limit, name, price, startAt } = req.query;
     limit = parseInt(limit);
+    startAt = parseInt(startAt);
 
-    const products = await Product.find().skip(startAt).limit(limit);
+    const productFilters = [
+      { $skip: startAt },
+      { $limit: limit }
+    ];
+
+    if (name && !price) {
+      if (name === 'a-z') productFilters.unshift({ $sort: { name: 1 } });
+      if (name === 'z-a') productFilters.unshift({ $sort: { name: -1 } });
+    }
+
+    if (!name && price) {
+      if (price === 'lowest') productFilters.unshift({ $sort: { price: 1 } });
+      if (price === 'highest') productFilters.unshift({ $sort: { price: -1 } });
+    }
+
+    const products = await Product.aggregate(productFilters);
+
     const amount = await Product.countDocuments();
-
+    console.log(products)
     res.status(200).json({
       products,
       amount,
@@ -49,39 +64,6 @@ exports.getPost = async (req, res) => {
 
 exports.getSortedProducts = async (req, res) => {
 
-  try {
-    let { limit, name, price } = req.query;
-    limit = parseInt(limit);
-
-    const productFilters = [
-      { $limit: limit }
-    ];
-
-    if (name && !price ) {
-      if (name === 'a-z')  productFilters.unshift({ $sort: { name: 1 } });
-      if (name === 'z-a') productFilters.unshift({ $sort: { name: -1 } });
-    }
-
-    if (!name && price) {
-      if (price === 'lowest') productFilters.unshift({ $sort: { price: 1 } });
-      if (price === 'highest') productFilters.unshift({ $sort: { price: -1 } });
-    }
-
-    if (!name && !price || !limit) {
-      return res.status(400).json({ message: 'Bad values, limit && price or name required' });
-    }
-   
-    const products = await Product.aggregate(productFilters);
-
-    const amount = await Product.countDocuments();
-    console.log(products)
-    res.status(200).json({
-      products,
-      amount,
-    });
-
-  } catch (err) {
-    res.status(500).json(err);
-  }
+  
 
 };
