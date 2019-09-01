@@ -6,7 +6,8 @@ import Products from './Products';
 const mapStateToProps = state =>({
   products: getProducts(state),
   pages: getPages(state),
-  productsRequest: getProductsRequest(state)
+  productsRequest: getProductsRequest(state),
+  curPage: state.products.presentPage
 });
 
 const mapDispatchToProps = dispatch => ({

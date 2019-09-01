@@ -5,7 +5,7 @@ import Pagination from '../../common/Pagination/Pagination';
 import ProductsList from '../ProductsList/ProductsList';
 
 const Products = ({
-  initialPage, productsPerPage, products, productsRequest, fetchProductsByPage, pagination, pages
+  initialPage, productsPerPage, products, productsRequest, fetchProductsByPage, pagination, pages, curPage
 }) => {
   const [currentPage, setCurrentPage] = useState(initialPage || 1);
 
@@ -26,7 +26,7 @@ const Products = ({
       return <>
         <ProductsList products={products} />
         <div style={{justifyContent: 'center', display: 'flex', marginTop: 10}}>
-          {pagination ? <Pagination pages={pages} setPage={setCurrentPage} page={currentPage} /> : null}
+          {pagination ? <Pagination pages={pages} setPage={setCurrentPage} page={curPage} /> : null}
         </div>
       </>;
   
