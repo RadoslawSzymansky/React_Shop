@@ -3,6 +3,7 @@ import { BASE_URL } from '../config/config';
 import setAuthToken from '../utils/setAuthToken';
 import config from '../utils/axiosConfig';
 import { setAlert } from './alertsRedux';
+import history from '../utils/history';
 
 const reducerName = 'auth';
 
@@ -17,6 +18,8 @@ export const REGISTER_FAIL = createActionName('REGISTER_FAIL');
 export const LOGIN_FAIL = createActionName('LOGIN_FAIL');
 export const LOGOUT = createActionName('LOGOUT');
 export const DELETE_ACCOUNT = createActionName('DELETE_ACCOUNT');
+export const TOGGLE_LOGIN_MODAL = createActionName('TOGGLE_LOGIN_MODAL');
+export const TOGGLE_REGISTER_MODAL = createActionName('TOGGLE_REGISTER_MODAL');
 
 /* SELECTORS */
 
@@ -29,9 +32,9 @@ export const registerSuccess = (payload) => ({ type: REGISTER_SUCCESS, payload }
 export const loginSuccess = (payload) => ({ type: LOGIN_SUCCESS, payload  });
 export const registerFail = () => ({ type: REGISTER_FAIL });
 export const loginFail = () => ({ type: LOGIN_FAIL });
-export const logout = () => ({ type: LOGOUT });
 export const deleteAccount = () => ({ type: DELETE_ACCOUNT });
 export const authError = () => ({ type: AUTH_ERROR });
+
 
 /* INITIAL STATE */
 
@@ -39,7 +42,9 @@ const initialState = {
   isAuthenticated: false,
   isLoading: true,
   token: localStorage.getItem('token'),
-  user: null
+  user: null,
+  loginModal: false,
+  registerModal: false
 };
 
 /* REDUCER */
@@ -68,6 +73,18 @@ export default function reducer(state = initialState, action = {}) {
       isLoading: false,
       isAuthenticated: false
     };
+
+  case TOGGLE_LOGIN_MODAL:
+    return {
+      ...state,
+      loginModal: !state.loginModal
+    }
+
+  case TOGGLE_REGISTER_MODAL:
+    return {
+      ...state,
+      registerModal: !state.registerModal
+    }
   default:
     return state;
   }
@@ -97,13 +114,15 @@ export const loginUserRequest = formData => async dispatch => {
 
     const res = await axios.post(`${BASE_URL}/api/auth`, body, config);
     dispatch(loginSuccess(res.data.token));
+    dispatch(toggleLoginModal());
+    history.goBack();
     dispatch(loadUserRequest());
     dispatch(setAlert('Login Success', 'success'));
 
   } catch (err) {
+    console.dir(err)
     dispatch(loginFail());
-    dispatch(setAlert('Login Success', 'danger'));
-    // tu na tablicy z bleadami wykonać
+    dispatch(setAlert(err.response.data.msg, 'danger'));
   }
 };
 
@@ -113,12 +132,14 @@ export const registerUserRequest = formData => async dispatch => {
   try {
     const res = await axios.post(`${BASE_URL}/api/users`, body, config);
     dispatch(registerSuccess(res.data.token));
-
+    dispatch(toggleRegisterModal());
+    history.goBack();
     dispatch(loadUserRequest());
     dispatch(setAlert('Account created!', 'success'));
 
-  } catch (error) {
+  } catch (err) {
     dispatch(registerFail());
+    dispatch(setAlert(err.response.data.msg, 'danger'));
   }
 
 };
@@ -133,3 +154,11 @@ export const deleteAccountRequest = () => async dispatch => {
     dispatch(authError());
   }
 };
+
+export const logout = () => dispatch => {
+  dispatch({ type: LOGOUT });
+  dispatch(setAlert('You are logged out!', 'warning'));
+};
+
+export const toggleLoginModal = () => dispatch => dispatch({ type: TOGGLE_LOGIN_MODAL });
+export const toggleRegisterModal = () => dispatch => dispatch({ type: TOGGLE_REGISTER_MODAL });

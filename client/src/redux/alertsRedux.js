@@ -8,9 +8,6 @@ const createActionName = name => `app/${reducerName}/${name}`;
 export const SET_ALERT = createActionName('SET_ALERT');
 export const REMOVE_ALERT = createActionName('REMOVE_ALERT');
 
-/* SELECTORS */
-
-export const getProducts = ({ alerts }) => alerts;
 
 /* ACTIONS */
 
@@ -32,7 +29,7 @@ const initialState = [];
 
 /* REDUCER */
 
-export default function reducer (state = initialState, action) {
+export default function  (state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {

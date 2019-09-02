@@ -1,5 +1,5 @@
 import React from 'react';
-import NavLinks from '../../common/NavLinks/NavLinks';
+import NavLinks from '../../common/NavLinks/NavLinksContainer';
 import Logo from '../../common/Logo/Logo';
 
 import './Header.scss';

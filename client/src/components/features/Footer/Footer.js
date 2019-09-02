@@ -1,5 +1,5 @@
 import React from 'react';
-import NavLinks from '../../common/NavLinks/NavLinks';
+import NavLinks from '../../common/NavLinks/NavLinksContainer';
 
 import './Footer.scss';
 
@@ -9,7 +9,7 @@ const Footer = () => {
       <div className="rights">
         All rights reserved
       </div>
-      <NavLinks />
+      <NavLinks authLinks={false}/>
     </div>
   );
 };

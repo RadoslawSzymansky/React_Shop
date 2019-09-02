@@ -89,8 +89,6 @@ module.exports = (env) => {
         plugins,
         devServer: {
             historyApiFallback: true,
-        },
-        devServer: {
             stats: {
                 colors: true,
                 hash: false,

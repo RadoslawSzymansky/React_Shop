@@ -27,22 +27,22 @@ module.exports.authenticateUser = [
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ msg: 'Invalid credentials!'});
     }
 
     const { password, email } = req.body;
 
     try {
     
-      const user = await User.findOne({ email: email });
+      const user = await User.findOne({ email: email.toLowerCase() });
       //check if user exists  
       if(!user) {
-        return res.status(400).json({msg: 'Invalid credentials'});
+        return res.status(400).json({msg: 'User does not exists!'});
       }
       // check password
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-        return res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] });
+        return res.status(400).json({ msg: 'Invalid Credentials' });
       }
       // send token
       const payload = {

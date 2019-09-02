@@ -26,7 +26,7 @@ module.exports.registerUser = [
 
     try {
       
-      let user = await User.findOne({ email: email });
+      let user = await User.findOne({ email: email.toLowerCase() });
 
       // check if user already exists
       if(user) {
@@ -42,7 +42,7 @@ module.exports.registerUser = [
 
       user = new User({
         name,
-        email,
+        email: email.toLowerCase(),
         avatar,
         password
       });
