@@ -115,7 +115,11 @@ export const loginUserRequest = formData => async dispatch => {
     const res = await axios.post(`${BASE_URL}/api/auth`, body, config);
     dispatch(loginSuccess(res.data.token));
     dispatch(toggleLoginModal());
-    history.goBack();
+    console.dir(history)
+    if (history.location.pathname !== '/') {
+      history.goBack();
+      history.push('/')
+    };
     dispatch(loadUserRequest());
     dispatch(setAlert('Login Success', 'success'));
 
@@ -133,7 +137,7 @@ export const registerUserRequest = formData => async dispatch => {
     const res = await axios.post(`${BASE_URL}/api/users`, body, config);
     dispatch(registerSuccess(res.data.token));
     dispatch(toggleRegisterModal());
-    history.goBack();
+    if (history.location.pathname !== '/') history.goBack();
     dispatch(loadUserRequest());
     dispatch(setAlert('Account created!', 'success'));
 
