@@ -165,4 +165,5 @@ export const logout = () => dispatch => {
 };
 
 export const toggleLoginModal = () => dispatch => dispatch({ type: TOGGLE_LOGIN_MODAL });
+
 export const toggleRegisterModal = () => dispatch => dispatch({ type: TOGGLE_REGISTER_MODAL });

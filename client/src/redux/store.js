@@ -5,12 +5,14 @@ import thunk from 'redux-thunk';
 import products from './productsRedux';
 import auth from './authRedux';
 import alerts from './alertsRedux';
+import user from './userRedux';
 
 // combine reducers
 const rootReducer = combineReducers({
   products,
   auth,
-  alerts
+  alerts,
+  user
 });
 
 const store = createStore(

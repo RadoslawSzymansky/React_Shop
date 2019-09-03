@@ -23,4 +23,19 @@
       margin: auto;
     }
   }
+  .count {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    label {
+      margin-right: 5px;
+      position: relative;
+      top: 3px;
+    }
+    input{
+      max-width: 53px;
+      text-align: center;
+      border: 1px solid rgb(79, 176, 255);
+    }
+  }
 }

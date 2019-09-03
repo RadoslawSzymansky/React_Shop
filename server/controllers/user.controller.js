@@ -78,12 +78,134 @@ module.exports.registerUser = [
   }
 ];
 
+// Route    /api/users
+// Method   DELETE
+// Access   PRIVATE
 module.exports.deleteUser = async (req, res) => {
   try {
     await User.findByIdAndDelete(req.user.id).select('-password');
     res.json({ msg: 'User deleted successfully'});
   } catch (error) {
     console.log(error);
+    res.status(500).send('Server error');
+  }
+};
+
+// Route    /api/users/basket
+// Method   PUT
+// Access   PRIVATE
+module.exports.addToBasket = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    const { productToBasket } = req.body;
+   
+    if (user.basket.some( e => e.productId == productToBasket.productId )) {
+      user.basket = user.basket.map( e => {
+
+        if (e.productId == productToBasket.productId) {
+          e.count = productToBasket.count;
+        }
+        return e;
+
+      });
+
+    } else {
+      user.basket = [...user.basket, productToBasket];
+    }
+
+    await user.save();
+
+    res.json(user);
+  } catch (error) {
+    console.log(error)
+    res.status(500).send('Server error');
+  }
+};
+
+// Route    /api/users/basket
+// Method   DELETE
+// Access   PRIVATE
+module.exports.deleteFromBasket = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    user.basket = user.basket.filter(e => e.id !== req.params.id );
+    await user.save();
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).send('Server error');
+  }
+};
+
+// Route    /api/users/favorites
+// Method   PUT
+// Access   PRIVATE
+module.exports.addToFavorites = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    user.favorites = [ ...user.favorites, req.body.productId ];
+    await user.save();
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).send('Server error');
+  }
+};
+
+// Route    /api/users/favorites
+// Method   DELETE
+// Access   PRIVATE
+module.exports.deleteFromFavorites = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    user.favorites = user.favorites.filter(e => e !== req.params.id);
+    await user.save();
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).send('Server error');
+  }
+};
+
+// Route    /api/users/basket/concat
+// Method   PUT
+// Access   PRIVATE
+module.exports.concatLocalBasket = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    const newBasket = [...user.basket];
+
+    req.body.localBasket.forEach( l => {
+      if(newBasket.some(e => e.productId == l.productId)) return;
+      newBasket.push(l);
+    });
+
+    user.basket = newBasket;
+    await user.save();
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).send('Server error');
+  }
+};
+
+// Route    /api/users/favorites/concat
+// Method   PUT
+// Access   PRIVATE
+module.exports.concatLocalFavorites = async (req, res) => {
+  try {
+    const user = await  User.findById(req.user.id);
+
+    user.basket = [...user.favorites, ...req.body.localFavorites];
+    await user.save();
+
+    res.json(user);
+  } catch (error) {
     res.status(500).send('Server error');
   }
 };

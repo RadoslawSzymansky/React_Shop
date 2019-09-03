@@ -6,6 +6,7 @@ import LoginModal from '../../features/auth/AuthModal/LoginModalContainer';
 import RegisterModal from '../../features/auth/AuthModal/RegisterModalContainer';
 import Logout from '../../features/auth/Logout/LogoutContainer';
 import UserPanelLink from '../../common/UserPanelLink/UserPanelLinkContainer';
+import BasketIcon from '../BasketIcon/BasketIconContainer';
 
 import './NavLinks.scss';
 
@@ -14,11 +15,7 @@ const NavLinks = ({ auth: { isAuthenticated }, authLinks }) => (
     <NavLink exact to='/'>Home</NavLink>
     <NavLink exact to='/contact'>Contact</NavLink>
     <NavLink exact to='/faq'>FAQ</NavLink>
-    <NavLink exact to='/basket' className='basket-icon'>
-      <FaShoppingBasket
-        style={{ fontSize: 32 }}
-      />
-    </NavLink>
+    <BasketIcon />
     { !authLinks ? null : <>
       {
         !isAuthenticated ? (
