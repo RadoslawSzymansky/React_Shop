@@ -24,9 +24,9 @@ const NavLinks = ({ auth: { isAuthenticated }, authLinks }) => (
             <RegisterModal type='register' />
           </div>
         ) : <div className="auth-links">
-              <UserPanelLink />
-              <Logout />
-            </div>
+        <UserPanelLink />
+          <Logout />
+        </div>
       }
     </>}
   </div>

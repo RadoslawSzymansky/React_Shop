@@ -146,6 +146,7 @@ export const addToBasketRequest = productToBasket => async (dispatch, getState) 
 
     const res = await axios.put(`${BASE_URL}/api/users/basket`, { productToBasket });
     dispatch(addToBasket(res.data));
+    dispatch(endUserRequest());
 
   } catch (err) {
     dispatch(failUserRequest());
@@ -164,6 +165,7 @@ export const removeFromBasketRequest = productId => async dispatch => {
 
     const res = await axios.delete(`${BASE_URL}/api/users/basket/${productId}`);
     dispatch(removeFromBasket(res.data));
+    dispatch(endUserRequest());
 
   } catch (err) {
     dispatch(failUserRequest());
@@ -214,6 +216,7 @@ export const addToFavoritesRequest = productId => async (dispatch, getState) => 
 
     const res = await axios.put(`${BASE_URL}/api/users/basket`, { productId });
     dispatch(addToFavorites(res.data));
+    dispatch(endUserRequest());
 
   } catch (err) {
     dispatch(failUserRequest());
@@ -239,11 +242,10 @@ export const removeFromFavoritesRequest = productId => async dispatch => {
 };
 
 export const concatBasketsRequest = () => async dispatch => {
-  console.log('concatlocalBASKET')
 
   dispatch(startUserRequest());
   
-  if (!localStorage.getItem('localBasket')) return;
+  if (!localStorage.getItem('localBasket')) return dispatch(endUserRequest());
   const localBasket = [...JSON.parse(localStorage.getItem('localBasket'))];
 
   if (localStorage.token) {
@@ -261,9 +263,8 @@ export const concatBasketsRequest = () => async dispatch => {
 };
 
 export const concatFavoritesRequest = () => async dispatch => {
-  console.log('concatlocalFAVOR')
 
-  if (!localStorage.getItem('localFavorites')) return;
+  if (!localStorage.getItem('localFavorites')) return dispatch(endUserRequest());;
 
   const localFavorites = [...JSON.parse(localStorage.getItem('localFavorites'))];
 
@@ -277,6 +278,7 @@ export const concatFavoritesRequest = () => async dispatch => {
 
     const res = await axios.put(`${BASE_URL}/api/users/basket/concat`, { localFavorites });
     dispatch(concatBasket(res.data));
+    dispatch(endUserRequest());
 
   } catch (err) {
     dispatch(failUserRequest());

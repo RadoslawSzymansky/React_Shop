@@ -115,11 +115,12 @@ export const loginUserRequest = formData => async dispatch => {
     const res = await axios.post(`${BASE_URL}/api/auth`, body, config);
     dispatch(loginSuccess(res.data.token));
     dispatch(toggleLoginModal());
-    console.dir(history)
-    if (history.location.pathname !== '/') {
-      history.goBack();
-      history.push('/')
-    };
+    // if (history.location.pathname !== '/') {
+    //   history.goForward();
+    // }
+    // history.push('/');
+    /// MA PRZECHODZIC TYLKO GDY PRIVATE ROUTY CZYLU USER ROUTER n[p]
+
     dispatch(loadUserRequest());
     dispatch(setAlert('Login Success', 'success'));
 
@@ -137,7 +138,7 @@ export const registerUserRequest = formData => async dispatch => {
     const res = await axios.post(`${BASE_URL}/api/users`, body, config);
     dispatch(registerSuccess(res.data.token));
     dispatch(toggleRegisterModal());
-    if (history.location.pathname !== '/') history.goBack();
+    // if (history.location.pathname !== '/') history.goBack();
     dispatch(loadUserRequest());
     dispatch(setAlert('Account created!', 'success'));
 

@@ -8,7 +8,13 @@ const Product = ({ product: {
   name, labels,  price, img, _id
 }}) => {
   return (
-    <Link to={`/products/${_id}`}>
+    <Link to={
+      {
+        pathname:`/products/${_id}`,
+        push: true
+      }
+    }
+    >
       <div className='product-card'>
         <div className="product-labels">
           {labels.map((l, i) => <div key={l + i} className={`label__${l}`}>{l}</div>)}
