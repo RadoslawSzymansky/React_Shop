@@ -6,7 +6,6 @@ import BasketElement from './BasketElement';
 
 const mapStateToProps = state =>({
   basketProducts: state.products.basketProducts,
-  isAuthenticated: state.auth.isAuthenticated
 });
 
 const mapDispatchToProps = dispatch => ({

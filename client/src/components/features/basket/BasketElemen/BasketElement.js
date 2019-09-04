@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './BasketElement.scss';
 
 const BasketElement = (
-  {fetchProduct, basketProducts, basketAction, isAuthenticated, removeProduct, product: { productId, count }}
+  {fetchProduct, basketProducts, basketAction,  removeProduct, product: { productId, count }}
 ) => {
 
   useEffect(() => {
@@ -25,7 +25,8 @@ const BasketElement = (
                   </div>
                 </div>
                 <div className="col-9 prodcut-data">
-                  <div className='title'><span className='name'>{name}</span> <span className="price">${price}</span></div>
+                  <div className='title'><span className='name'>{name}</span> </div>
+                  <p>Avaible in store:  {instore}</p>
                   <p className="product-description d-none d-md-block">{description}</p>
                 </div>
               </div>
@@ -34,26 +35,34 @@ const BasketElement = (
               <div className="row product-actions">
                 <div className="col-6 col-sm-12">
                   <div className="price-count">
-                    <div className="count">
-                      <button className="product-action" 
-                        disabled={count <= 1 }
-                        onClick={() =>{
-                          basketAction({
-                            count: count - 1,
-                            productId
-                          });
-                        }} >-</button>
-                      <span className="count-info">{count}</span>
-                      <button className="product-action" 
-                        disabled={count >= instore}
-                        onClick={() =>{
-                          basketAction({
-                            count: count + 1,
-                            productId
-                          });
-                        }} >+</button>
-                      pcs
+                    <div className="row">
+                      <div className="col-4">
+                        <span className="price">${price*count}</span>
+                      </div>
+                      <div className="col-8">
+                        <div className="count">
+                          <button className="product-action"
+                            disabled={count <= 1}
+                            onClick={() => {
+                              basketAction({
+                                count: count - 1,
+                                productId
+                              });
+                            }} >-</button>
+                          <span className="count-info">{count}</span>
+                          <button className="product-action"
+                            disabled={count >= instore}
+                            onClick={() => {
+                              basketAction({
+                                count: count + 1,
+                                productId
+                              });
+                            }} >+</button>
+                          pcs
+                        </div>
+                      </div>
                     </div>
+                    
                   </div>
                 </div>
                 <div className="col-6 col-sm-12">
