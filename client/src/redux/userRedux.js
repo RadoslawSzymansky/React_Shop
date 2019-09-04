@@ -22,6 +22,7 @@ export const CONCAT_FAVORITES = createActionName('CONCAT_FAVORITES');
 export const REMOVE_FROM_BASKET = createActionName('REMOVE_FROM_BASKET');
 export const ADD_TO_FAVORITES = createActionName('ADD_TO_FAVORITES');
 export const REMOVE_FROM_FAVORITES = createActionName('REMOVE_FROM_FAVORITES');
+export const ADD_DISCOUNT_CODE = createActionName('ADD_DISCOUNT_CODE');
 
 
 /* SELECTORS */
@@ -48,7 +49,8 @@ const initialState = {
   basket: [],
   favorites: [],
   isLoading: true,
-  avatar: ''
+  avatar: '',
+  codes: []
 };
 
 /* REDUCER */
@@ -69,20 +71,24 @@ export default function reducer(state = initialState, action = {}) {
   case ADD_TO_FAVORITES:
   case REMOVE_FROM_BASKET:
   case REMOVE_FROM_FAVORITES:
-    return {  ...payload , isLoading: false };
+    return {  ...state, ...payload , isLoading: false };
 
   case CONCAT_FAVORITES:
     localStorage.removeItem('localFavorites');
-    return { ...payload, isLoading: false };
+    return { ...state, ...payload, isLoading: false };
 
   case CONCAT_BASKET:
     localStorage.removeItem('localBasket');
-    return { ...payload, isLoading: false };
+    return { ...state, ...payload, isLoading: false };
+
+  case ADD_DISCOUNT_CODE:
+    return { ...state, codes: [...state.codes, payload ]};
 
   case AUTH_ERROR:
   case LOGOUT:
   case DELETE_ACCOUNT:
     return {
+      ...state,
       _id: null,
       name: '',
       basket: [],
@@ -303,4 +309,8 @@ export const concatFavoritesRequest = () => async dispatch => {
   } catch (err) {
     dispatch(failUserRequest());
   }
+};
+
+export const addDiscountCode = code => dispatch => {
+  dispatch({ type: ADD_DISCOUNT_CODE, payload: code });
 };

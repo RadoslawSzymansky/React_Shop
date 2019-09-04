@@ -6,10 +6,14 @@ const ProductController = require('../controllers/product.controller');
 // get all products
 router.route('/products').get(ProductController.getPosts);
 
+// get single product by id
+router.route('/products/codes').get(ProductController.getCodes);
+
 // get products by range
 router.route('/products/range/sort').get(ProductController.getProductsByRange);
 
 // get single product by id
 router.route('/products/:id').get(ProductController.getPost);
+
 
 module.exports = router;

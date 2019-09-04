@@ -15,7 +15,8 @@ const Product = new Schema({
       userId: { type: Schema.Types.ObjectId, required: true },
       rate: { type: Number, required: true }
     }
-  ]
+  ],
+  avaibleDiscounts: [ '2019' ]
 });
 
 module.exports = mongoose.model('Product', Product);

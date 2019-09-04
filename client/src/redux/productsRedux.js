@@ -17,6 +17,7 @@ export const LOAD_PRODUCTS_ERROR = createActionName('LOAD_PRODUCTS_ERROR');
 export const LOAD_PRODUCT_ERROR = createActionName('LOAD_PRODUCT_ERROR');
 export const END_PRODUCT_REQUEST = createActionName('END_PRODUCT_REQUEST');
 export const END_PRODUCTS_REQUEST = createActionName('END_PRODUCTS_REQUEST');
+export const ADD_DISCOUNT_CODES = createActionName('ADD_DISCOUNT_CODES');
 
 /* SELECTORS */
 
@@ -39,7 +40,8 @@ export const loadSingleToBasket = (payload) => ({ type: LOAD_SINGLE_TO_BASKET, p
 export const loadSingleProductError = (payload) => ({ type: LOAD_PRODUCT_ERROR, payload });
 export const loadProductsError = (payload) => ({ type: LOAD_PRODUCTS_ERROR, payload });
 export const endProductsRequest = () => ({ type: END_PRODUCTS_REQUEST });
-export const endProductRequest = () => ({ type: END_PRODUCT_REQUEST});
+export const endProductRequest = () => ({ type: END_PRODUCT_REQUEST });
+export const addDiscountsCodes = (payload) => ({ type: END_PRODUCT_REQUEST, payload});
 
 /* INITIAL STATE */
 
@@ -60,7 +62,8 @@ const initialState = {
   productsPerPage: 10,
   presentPage: 0,
   sort: {},
-  basketProducts: {}
+  basketProducts: {},
+  discountCodes: []
 };
 
 /* REDUCER */
@@ -87,6 +90,9 @@ export default function reducer(state = initialState, action = {}) {
 
   case LOAD_SINGLE_TO_BASKET:
     return { ...state, basketProducts: { ...state.basketProducts, [payload._id]: payload } };
+
+  case ADD_DISCOUNT_CODES: 
+    return { ...state, discountCodes: payload };
 
   case START_PRODUCTS_REQUEST:
     return { ...state, productsRequest: { pending: true, error: null, success: null }};    
@@ -188,6 +194,18 @@ export const fetchSingleToBasketRequest = id => async dispatch => {
     const res = await axios.get(`${BASE_URL}/api/products/${id}`);
     dispatch(loadSingleToBasket(res.data));
     dispatch(endProductRequest());
+  } catch (error) {
+    console.log(error);
+    dispatch(loadSingleProductError(error));
+  }
+};
+
+
+export const fetchDiscountCodesRequest = () => async dispatch => {
+
+  try {
+    const res = await axios.get(`${BASE_URL}/api/products/codes`);
+    dispatch(addDiscountsCodes(res.data));
   } catch (error) {
     console.log(error);
     dispatch(loadSingleProductError(error));

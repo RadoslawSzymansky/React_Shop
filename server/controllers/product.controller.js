@@ -60,3 +60,20 @@ exports.getPost = async (req, res) => {
 
 };
 
+// Get Discount Codes
+exports.getCodes = (req, res) => {
+  res.json([
+    {
+      name: 'freetransport',
+      discountPercent: 1
+    },
+    {
+      name: '2019',
+      discountPercent: 10
+    },
+    {
+      name: 'summer',
+      discountPercent: 20
+    }
+  ]);
+};
