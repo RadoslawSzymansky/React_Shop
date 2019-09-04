@@ -41,7 +41,7 @@ export const loadSingleProductError = (payload) => ({ type: LOAD_PRODUCT_ERROR, 
 export const loadProductsError = (payload) => ({ type: LOAD_PRODUCTS_ERROR, payload });
 export const endProductsRequest = () => ({ type: END_PRODUCTS_REQUEST });
 export const endProductRequest = () => ({ type: END_PRODUCT_REQUEST });
-export const addDiscountsCodes = (payload) => ({ type: END_PRODUCT_REQUEST, payload});
+export const addDiscountsCodes = (payload) => ({ type: ADD_DISCOUNT_CODES, payload});
 
 /* INITIAL STATE */
 
@@ -205,6 +205,7 @@ export const fetchDiscountCodesRequest = () => async dispatch => {
 
   try {
     const res = await axios.get(`${BASE_URL}/api/products/codes`);
+    console.log(res)
     dispatch(addDiscountsCodes(res.data));
   } catch (error) {
     console.log(error);

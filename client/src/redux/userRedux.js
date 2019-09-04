@@ -50,7 +50,7 @@ const initialState = {
   favorites: [],
   isLoading: true,
   avatar: '',
-  codes: []
+  code: null
 };
 
 /* REDUCER */
@@ -82,7 +82,7 @@ export default function reducer(state = initialState, action = {}) {
     return { ...state, ...payload, isLoading: false };
 
   case ADD_DISCOUNT_CODE:
-    return { ...state, codes: [...state.codes, payload ]};
+    return { ...state, code: payload };
 
   case AUTH_ERROR:
   case LOGOUT:
@@ -311,6 +311,18 @@ export const concatFavoritesRequest = () => async dispatch => {
   }
 };
 
-export const addDiscountCode = code => dispatch => {
-  dispatch({ type: ADD_DISCOUNT_CODE, payload: code });
+export const addDiscountCode = code => (dispatch, getState) => {
+  const { discountCodes } = getState().products;
+  if (discountCodes.some(e => e.name === code)) {
+    discountCodes.forEach(e => {
+      if (e.name === code) dispatch({ type: ADD_DISCOUNT_CODE, payload: e });
+    });
+    if (getState().user.code === null) {
+      dispatch(setAlert(`Discount code: ${code} added!`, 'success'));
+    } else {
+      dispatch(setAlert(`Discount code updated to ${code}!`, 'success'));
+    }
+  } else {
+    dispatch(setAlert('This code is not working!', 'warning'));
+  }
 };
