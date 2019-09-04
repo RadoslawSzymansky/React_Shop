@@ -153,9 +153,28 @@ export const addToBasketRequest = productToBasket => async (dispatch, getState) 
   }
 };
 
-export const removeFromBasketRequest = productId => async dispatch => {
-
+export const removeFromBasketRequest = productId => async (dispatch, getState) => {
   dispatch(startUserRequest());
+
+  // if not logined save in localStorage;
+  if (!getState().auth.isAuthenticated) {
+
+    // if not authorized 
+    const localBasket = localStorage.getItem('localBasket');
+    let newLocalBasket;
+    const localBas = JSON.parse(localBasket);
+      
+    newLocalBasket = localBas.filter(e => e.productId !== productId);
+    localStorage.setItem(
+      'localBasket',
+      JSON.stringify(newLocalBasket)
+    );
+
+    dispatch(endUserRequest());
+    return;
+  }
+
+  // if authorized
 
   if (localStorage.token) {
     setAuthToken(localStorage.token);
@@ -164,6 +183,7 @@ export const removeFromBasketRequest = productId => async dispatch => {
   try {
 
     const res = await axios.delete(`${BASE_URL}/api/users/basket/${productId}`);
+    console.log(res.data)
     dispatch(removeFromBasket(res.data));
     dispatch(endUserRequest());
 

@@ -129,8 +129,8 @@ module.exports.addToBasket = async (req, res) => {
 module.exports.deleteFromBasket = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
-
-    user.basket = user.basket.filter(e => e.id !== req.params.id );
+    console.log(req.params.id, user.basket[0])
+    user.basket = user.basket.filter(e => e.productId != req.params.id );
     await user.save();
 
     res.json(user);

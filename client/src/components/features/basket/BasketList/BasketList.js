@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import BasketElement from '../BasketElemen/BasketElement';
+import BasketElement from '../BasketElemen/BasketElementContainer';
 
 const BasketList = ({ list, isLoading }) => (
   <>{
     !list.length && !isLoading ? 'Your basket is empty' : (
-      list.map(product => <BasketElement key={product._id} product={product}/>)
+      list.map(product => <BasketElement key={product.productId} product={product}/>)
     )
   }</>
 );

@@ -12,6 +12,7 @@ export const START_PRODUCTS_REQUEST = createActionName('START_PRODUCTS_REQUEST')
 export const LOAD_PRODUCTS = createActionName('LOAD_PRODUCTS');
 export const LOAD_PRODUCTS_PER_PAGE = createActionName('LOAD_PRODUCTS_PER_PAGE');
 export const LOAD_SINGLE_PRODUCT = createActionName('LOAD_SINGLE_PRODUCT');
+export const LOAD_SINGLE_TO_BASKET = createActionName('LOAD_SINGLE_TO_BASKET');
 export const LOAD_PRODUCTS_ERROR = createActionName('LOAD_PRODUCTS_ERROR');
 export const LOAD_PRODUCT_ERROR = createActionName('LOAD_PRODUCT_ERROR');
 export const END_PRODUCT_REQUEST = createActionName('END_PRODUCT_REQUEST');
@@ -25,6 +26,7 @@ export const getProductsRequest = ({ products }) => products.productsRequest;
 export const getSingleProductRequest = ({ products }) => products.singleProductRequest;
 export const getPages = ({ products }) => Math.ceil(products.amount / products.productsPerPage);
 export const getProductsCount = ({ products }) => products.products.length;
+export const getBasketProducts = ({ basketProducts }) => basketProducts;
 
 /* ACTIONS */
 
@@ -33,6 +35,7 @@ export const startSingleProductRequest = () => ({ type: START_PRODUCT_REQUEST })
 export const loadProducts = (payload) => ({ type: LOAD_PRODUCTS, payload });
 export const loadProductsPerPage = (payload) => ({ type: LOAD_PRODUCTS_PER_PAGE, payload });
 export const loadSingleProduct = (payload) => ({ type: LOAD_SINGLE_PRODUCT, payload });
+export const loadSingleToBasket = (payload) => ({ type: LOAD_SINGLE_TO_BASKET, payload });
 export const loadSingleProductError = (payload) => ({ type: LOAD_PRODUCT_ERROR, payload });
 export const loadProductsError = (payload) => ({ type: LOAD_PRODUCTS_ERROR, payload });
 export const endProductsRequest = () => ({ type: END_PRODUCTS_REQUEST });
@@ -56,7 +59,8 @@ const initialState = {
   amount: 0,
   productsPerPage: 10,
   presentPage: 0,
-  sort: {}
+  sort: {},
+  basketProducts: {}
 };
 
 /* REDUCER */
@@ -80,6 +84,9 @@ export default function reducer(state = initialState, action = {}) {
 
   case LOAD_SINGLE_PRODUCT:
     return { ...state, singleProduct: payload };
+
+  case LOAD_SINGLE_TO_BASKET:
+    return { ...state, basketProducts: { ...state.basketProducts, [payload._id]: payload } };
 
   case START_PRODUCTS_REQUEST:
     return { ...state, productsRequest: { pending: true, error: null, success: null }};    
@@ -167,6 +174,19 @@ export const fetchSingleProductRequest = id => async dispatch => {
   try {
     const res = await axios.get(`${BASE_URL}/api/products/${id}`);
     dispatch(loadSingleProduct(res.data));
+    dispatch(endProductRequest());
+  } catch (error) {
+    console.log(error);
+    dispatch(loadSingleProductError(error));
+  }
+};
+
+export const fetchSingleToBasketRequest = id => async dispatch => {
+  dispatch(startSingleProductRequest());
+
+  try {
+    const res = await axios.get(`${BASE_URL}/api/products/${id}`);
+    dispatch(loadSingleToBasket(res.data));
     dispatch(endProductRequest());
   } catch (error) {
     console.log(error);
