@@ -18,7 +18,7 @@ const SingleProduct = ({
 
   const sendProduct = () => {
     if(count <= 0) return setAlert('Count must be positive!', 'danger');
-    addToBasket({ productId: product._id, count });
+    addToBasket({ productId: product._id, count, avaibleDiscounts: product.avaibleDiscounts, price: product.price });
   };
 
   switch (true) {

@@ -26,7 +26,7 @@ const Basket = ({ isAuthenticated, user: { isLoading, basket} }) => {
           localStorage.localBasket ? JSON.parse(localStorage.getItem('localBasket')) : []}
         isLoading={isLoading} 
         />
-        { JSON.parse(localStorage.getItem('localBasket')).length > 0 ? <BasketSummary /> : null }
+        { localStorage.localBasket  ? <BasketSummary /> : null }
       </>
     );
   default:

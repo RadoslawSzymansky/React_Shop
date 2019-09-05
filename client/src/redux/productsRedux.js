@@ -205,7 +205,6 @@ export const fetchDiscountCodesRequest = () => async dispatch => {
 
   try {
     const res = await axios.get(`${BASE_URL}/api/products/codes`);
-    console.log(res)
     dispatch(addDiscountsCodes(res.data));
   } catch (error) {
     console.log(error);

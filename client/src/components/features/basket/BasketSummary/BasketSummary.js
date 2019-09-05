@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 import './BasketSummary.scss';
 
-const BasketSummary = ({  addCode, isAuthenticated, code }) => {
+const BasketSummary = ({  addCode, isAuthenticated, code, getPrice, totalPrice }) => {
   const [ value, setValue ] = useState('');
-
+  getPrice()
   const onAddCode = (e) => {
     e.preventDefault();
     if(!value.length) return;
@@ -30,7 +30,7 @@ const BasketSummary = ({  addCode, isAuthenticated, code }) => {
       <p className="info">Promotions are not connecting, you can use only one code</p>
 
       <div className="total-price">
-        <h4>TOTAL: ${}</h4>
+        <h4>TOTAL: ${totalPrice}</h4>
       </div>
       <div className="buy-action">
         <Button className='btn-buy'>Buy</Button>

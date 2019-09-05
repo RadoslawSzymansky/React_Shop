@@ -23,6 +23,7 @@ export const REMOVE_FROM_BASKET = createActionName('REMOVE_FROM_BASKET');
 export const ADD_TO_FAVORITES = createActionName('ADD_TO_FAVORITES');
 export const REMOVE_FROM_FAVORITES = createActionName('REMOVE_FROM_FAVORITES');
 export const ADD_DISCOUNT_CODE = createActionName('ADD_DISCOUNT_CODE');
+export const LOAD_BASKET_VALUE = createActionName('LOAD_BASKET_VALUE');
 
 
 /* SELECTORS */
@@ -40,6 +41,7 @@ export const addToFavorites = (payload) => ({ type: ADD_TO_FAVORITES, payload })
 export const removeFromFavorites = (payload) => ({ type: REMOVE_FROM_FAVORITES, payload });
 export const concatBasket = (payload) => ({ type: CONCAT_BASKET, payload });
 export const concatFavorites = (payload) => ({ type: CONCAT_FAVORITES, payload });
+export const setBasketValue = (payload) => ({ type: LOAD_BASKET_VALUE, payload });
 
 /* INITIAL STATE */
 
@@ -50,7 +52,8 @@ const initialState = {
   favorites: [],
   isLoading: true,
   avatar: '',
-  code: null
+  code: null,
+  basketValue: 0
 };
 
 /* REDUCER */
@@ -84,6 +87,9 @@ export default function reducer(state = initialState, action = {}) {
   case ADD_DISCOUNT_CODE:
     return { ...state, code: payload };
 
+  case LOAD_BASKET_VALUE:
+    return { ...state, basketValue: payload };
+
   case AUTH_ERROR:
   case LOGOUT:
   case DELETE_ACCOUNT:
@@ -103,6 +109,44 @@ export default function reducer(state = initialState, action = {}) {
 }
 
 /* THUNKS */
+
+export const getBasketValue = () => (dispatch, getState) => {
+  const { discountCodes } = getState().products;
+  const { code: userCode } = getState().user;
+  let totalPrice = 0;
+
+  let basket;
+
+  if (!getState().auth.isAuthenticated) {
+    basket = JSON.parse(localStorage.getItem('localBasket')) || [];
+  } else {
+    basket = getState().user.basket || [];
+  }
+
+  basket.forEach(prod => {
+
+    if (!prod.avaibleDiscounts) {
+      totalPrice += prod.count * prod.price;
+      return;
+    }
+
+    if (prod.avaibleDiscounts.length && userCode) {
+      let discountsPercentage = 0;
+      prod.avaibleDiscounts.forEach(discount => {
+        discountCodes.forEach(code => {
+          if (code.name === discount && userCode.name === discount) {
+            discountsPercentage = code.discountPercent;
+          }
+        });
+      });
+      totalPrice += prod.count * (prod.price - (prod.price * (discountsPercentage / 100)));
+
+    } else {
+      totalPrice += prod.count * prod.price;
+    }
+  });
+  dispatch(setBasketValue(totalPrice));
+};
 
 export const addToBasketRequest = productToBasket => async (dispatch, getState) => {
   dispatch(startUserRequest());
@@ -136,6 +180,7 @@ export const addToBasketRequest = productToBasket => async (dispatch, getState) 
         JSON.stringify([ productToBasket ])
       );
     }
+    dispatch(getBasketValue());
     dispatch(endUserRequest());
 
     return;
@@ -153,6 +198,7 @@ export const addToBasketRequest = productToBasket => async (dispatch, getState) 
     const res = await axios.put(`${BASE_URL}/api/users/basket`, { productToBasket });
     dispatch(addToBasket(res.data));
     dispatch(endUserRequest());
+    dispatch(getBasketValue());
 
   } catch (err) {
     dispatch(failUserRequest());
@@ -177,6 +223,8 @@ export const removeFromBasketRequest = productId => async (dispatch, getState) =
     );
 
     dispatch(endUserRequest());
+    dispatch(getBasketValue());
+
     return;
   }
 
@@ -189,9 +237,9 @@ export const removeFromBasketRequest = productId => async (dispatch, getState) =
   try {
 
     const res = await axios.delete(`${BASE_URL}/api/users/basket/${productId}`);
-    console.log(res.data)
     dispatch(removeFromBasket(res.data));
     dispatch(endUserRequest());
+    dispatch(getBasketValue());
 
   } catch (err) {
     dispatch(failUserRequest());
@@ -282,6 +330,7 @@ export const concatBasketsRequest = () => async dispatch => {
 
     const res = await axios.put(`${BASE_URL}/api/users/basket/concat`, { localBasket });
     dispatch(concatBasket(res.data));
+    dispatch(getBasketValue());
 
   } catch (err) {
     dispatch(failUserRequest());
@@ -319,10 +368,15 @@ export const addDiscountCode = code => (dispatch, getState) => {
     });
     if (getState().user.code === null) {
       dispatch(setAlert(`Discount code: ${code} added!`, 'success'));
+      dispatch(getBasketValue());
+
     } else {
       dispatch(setAlert(`Discount code updated to ${code}!`, 'success'));
+      dispatch(getBasketValue());
+
     }
   } else {
     dispatch(setAlert('This code is not working!', 'warning'));
   }
 };
+
