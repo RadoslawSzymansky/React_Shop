@@ -3,14 +3,29 @@ import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 import './BasketSummary.scss';
 
-const BasketSummary = ({  addCode, isAuthenticated, code, getPrice, totalPrice }) => {
+const BasketSummary = ({  addCode, isAuthenticated, code, getPrice, totalPrice, openModal, setAlert }) => {
   const [ value, setValue ] = useState('');
-  getPrice()
+
+  getPrice();
+
   const onAddCode = (e) => {
     e.preventDefault();
     if(!value.length) return;
     addCode(value);
     setValue('');
+  };
+
+  const buyProducts = () => {
+    if(!isAuthenticated) {
+      setAlert('Login to buy products!', 'danger');
+      return openModal();
+    }
+
+    // kupowanie pdroduktu
+    // czyli wwyslanie na backend 
+    // dodanie do historii
+    // usuniecie ilosci z produktow
+    // update koszyka , uzytkownika
   };
 
   return (
@@ -33,7 +48,7 @@ const BasketSummary = ({  addCode, isAuthenticated, code, getPrice, totalPrice }
         <h4>TOTAL: ${totalPrice}</h4>
       </div>
       <div className="buy-action">
-        <Button className='btn-buy'>Buy</Button>
+        <Button onClick={buyProducts} className='btn-buy'>Buy</Button>
       </div>
     </div>
   );

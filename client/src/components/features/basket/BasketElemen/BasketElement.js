@@ -14,7 +14,6 @@ const BasketElement = (
 
     if(basketProducts[productId]) {
       const { name, description, img, price, instore, avaibleDiscounts } = basketProducts[productId];
-      console.log(basketProducts[productId])
       return (
         <div className="basket-element">
           <div className="row">
