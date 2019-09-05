@@ -69,8 +69,19 @@
     }
    
   }
-   .price {
-      padding:0 10px;
+    
+  .price {
+      margin-right: 10px;
+      color: rgb(73, 73, 73);
+      position: relative;
+      font-weight: bold;
+    }
+  .old-price {
+      font-weight: normal;
+      text-decoration: line-through;
+      text-decoration-color: #000;
       color: rgb(131, 131, 131);
+      position: absolute;
+      top: -20px;
     }
 }

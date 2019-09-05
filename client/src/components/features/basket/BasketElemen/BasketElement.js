@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './BasketElement.scss';
 
 const BasketElement = (
-  {fetchProduct, basketProducts, basketAction,  removeProduct, product: { productId, count }}
+  {fetchProduct, basketProducts, basketAction,  removeProduct, product: { productId, count }, userCode }
 ) => {
 
   useEffect(() => {
@@ -13,7 +13,8 @@ const BasketElement = (
   const renderContent = () => {
 
     if(basketProducts[productId]) {
-      const { name, description, img, price, instore } = basketProducts[productId];
+      const { name, description, img, price, instore, avaibleDiscounts } = basketProducts[productId];
+      console.log(basketProducts[productId])
       return (
         <div className="basket-element">
           <div className="row">
@@ -36,8 +37,27 @@ const BasketElement = (
                 <div className="col-6 col-sm-12">
                   <div className="price-count">
                     <div className="row">
-                      <div className="col-4">
-                        <span className="price">${price*count}</span>
+                      <div className="col-4 prices">
+                        {
+
+                          avaibleDiscounts.map(e => {
+                            if (!userCode) return <span className="price">${price * count}</span>;
+                            if (e === userCode.name) {
+                              return (
+                                <>
+                                  <span className="price">
+                                    <span className="old-price">${price * count}</span>
+
+                                    ${count * (price - (price * userCode.discountPercent/100))}
+                                  </span>
+                                </>
+                              );
+                            } else {
+                              return <span className="price">${price * count}</span>;
+                            }
+                          })
+                          
+                        }
                       </div>
                       <div className="col-8">
                         <div className="count">
