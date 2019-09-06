@@ -9,6 +9,7 @@ import ProductPage from '../components/pages/Product/ProductPage';
 import BasketPage from '../components/pages/Basket/BasketPage';
 import ContactPage from '../components/pages/Contact/ContactPage';
 import PrivatePage from '../components/pages/PrivatePage/PrivatePage';
+import FavoritesPage from '../components/pages/FavoritesPage/FavoritesPage';
 
 const Routes = () => {
   return (
@@ -18,6 +19,7 @@ const Routes = () => {
       <Route path='/basket' exact component={BasketPage} />
       <Route path='/contact' exact component={ContactPage} />
       <Route path='/private' exact component={PrivatePage} />
+      <Route path='/favorites' exact component={FavoritesPage} />
       <Route component={NotFound} />
     </Switch>
   );

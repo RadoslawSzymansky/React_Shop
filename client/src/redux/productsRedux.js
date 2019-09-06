@@ -13,6 +13,7 @@ export const LOAD_PRODUCTS = createActionName('LOAD_PRODUCTS');
 export const LOAD_PRODUCTS_PER_PAGE = createActionName('LOAD_PRODUCTS_PER_PAGE');
 export const LOAD_SINGLE_PRODUCT = createActionName('LOAD_SINGLE_PRODUCT');
 export const LOAD_SINGLE_TO_BASKET = createActionName('LOAD_SINGLE_TO_BASKET');
+export const LOAD_SINGLE_TO_FAV = createActionName('LOAD_SINGLE_TO_FAV');
 export const LOAD_PRODUCTS_ERROR = createActionName('LOAD_PRODUCTS_ERROR');
 export const LOAD_PRODUCT_ERROR = createActionName('LOAD_PRODUCT_ERROR');
 export const END_PRODUCT_REQUEST = createActionName('END_PRODUCT_REQUEST');
@@ -37,6 +38,7 @@ export const loadProducts = (payload) => ({ type: LOAD_PRODUCTS, payload });
 export const loadProductsPerPage = (payload) => ({ type: LOAD_PRODUCTS_PER_PAGE, payload });
 export const loadSingleProduct = (payload) => ({ type: LOAD_SINGLE_PRODUCT, payload });
 export const loadSingleToBasket = (payload) => ({ type: LOAD_SINGLE_TO_BASKET, payload });
+export const loadSingleToFavorites = (payload) => ({ type: LOAD_SINGLE_TO_FAV, payload });
 export const loadSingleProductError = (payload) => ({ type: LOAD_PRODUCT_ERROR, payload });
 export const loadProductsError = (payload) => ({ type: LOAD_PRODUCTS_ERROR, payload });
 export const endProductsRequest = () => ({ type: END_PRODUCTS_REQUEST });
@@ -63,7 +65,8 @@ const initialState = {
   presentPage: 0,
   sort: {},
   basketProducts: {},
-  discountCodes: []
+  discountCodes: [],
+  favoriteProducts: {}
 };
 
 /* REDUCER */
@@ -90,6 +93,9 @@ export default function reducer(state = initialState, action = {}) {
 
   case LOAD_SINGLE_TO_BASKET:
     return { ...state, basketProducts: { ...state.basketProducts, [payload._id]: payload } };
+
+  case LOAD_SINGLE_TO_FAV:
+    return { ...state, favoriteProducts: { ...state.favoriteProducts, [payload._id]: payload } };
 
   case ADD_DISCOUNT_CODES: 
     return { ...state, discountCodes: payload };
@@ -206,6 +212,19 @@ export const fetchDiscountCodesRequest = () => async dispatch => {
   try {
     const res = await axios.get(`${BASE_URL}/api/products/codes`);
     dispatch(addDiscountsCodes(res.data));
+  } catch (error) {
+    console.log(error);
+    dispatch(loadSingleProductError(error));
+  }
+};
+
+export const fetchSingleToFavoritesRequest = id => async dispatch => {
+  dispatch(startSingleProductRequest());
+  console.log("pobieram")
+  try {
+    const res = await axios.get(`${BASE_URL}/api/products/${id}`);
+    dispatch(loadSingleToFavorites(res.data));
+    dispatch(endProductRequest());
   } catch (error) {
     console.log(error);
     dispatch(loadSingleProductError(error));
