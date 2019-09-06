@@ -202,7 +202,10 @@ module.exports.concatLocalFavorites = async (req, res) => {
   try {
     const user = await  User.findById(req.user.id);
 
-    user.favorites = [...user.favorites, ...req.body.localFavorites];
+    req.body.localFavorites.forEach( e => {
+      if(user.favorites.some(u => u === e)) return;
+      user.favorites.push(e);
+    });
     await user.save();
 
     res.json(user);

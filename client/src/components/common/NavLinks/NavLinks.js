@@ -1,12 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { FaShoppingBasket } from 'react-icons/fa';
 
 import LoginModal from '../../features/auth/AuthModal/LoginModalContainer';
 import RegisterModal from '../../features/auth/AuthModal/RegisterModalContainer';
 import Logout from '../../features/auth/Logout/LogoutContainer';
 import UserPanelLink from '../../common/UserPanelLink/UserPanelLinkContainer';
 import BasketIcon from '../BasketIcon/BasketIconContainer';
+import FavoritesIcon from '../FavoritesIcon/FavoritesIconContainer';
 
 import './NavLinks.scss';
 
@@ -16,6 +16,7 @@ const NavLinks = ({ auth: { isAuthenticated }, authLinks }) => (
     <NavLink exact to='/contact'>Contact</NavLink>
     <NavLink exact to='/faq'>FAQ</NavLink>
     <BasketIcon />
+    <FavoritesIcon />
     { !authLinks ? null : <>
       {
         !isAuthenticated ? (
@@ -24,7 +25,7 @@ const NavLinks = ({ auth: { isAuthenticated }, authLinks }) => (
             <RegisterModal type='register' />
           </div>
         ) : <div className="auth-links">
-        <UserPanelLink />
+          <UserPanelLink />
           <Logout />
         </div>
       }

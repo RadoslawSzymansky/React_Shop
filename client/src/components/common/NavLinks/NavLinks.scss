@@ -20,6 +20,12 @@
         color: #2a9e87;
       }
     }
+    &.favorites-icon {
+      color: #b9453d;
+      &:hover {
+        color: #ff0505;
+      }
+    }
   }
   .auth-links {
     margin-top: 10px;
