@@ -37,7 +37,8 @@ App.propTypes = {
   loadUserRequest: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
   concatBasketsRequest: PropTypes.func.isRequired,
-  concatFavoritesRequest: PropTypes.func.isRequired
+  concatFavoritesRequest: PropTypes.func.isRequired,
+  fetchDiscountCodesRequest: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

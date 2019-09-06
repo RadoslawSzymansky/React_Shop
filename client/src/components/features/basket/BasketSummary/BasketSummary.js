@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 import './BasketSummary.scss';
 
-const BasketSummary = ({  addCode, isAuthenticated, code, getPrice, totalPrice, openModal, setAlert }) => {
+const BasketSummary = ({  
+  addCode, isAuthenticated, code, getPrice, totalPrice, openModal, setAlert, buyProductsRequest 
+}) => {
   const [ value, setValue ] = useState('');
 
   getPrice();
@@ -20,12 +22,7 @@ const BasketSummary = ({  addCode, isAuthenticated, code, getPrice, totalPrice, 
       setAlert('Login to buy products!', 'danger');
       return openModal();
     }
-
-    // kupowanie pdroduktu
-    // czyli wwyslanie na backend 
-    // dodanie do historii
-    // usuniecie ilosci z produktow
-    // update koszyka , uzytkownika
+    buyProductsRequest();
   };
 
   return (
@@ -60,7 +57,11 @@ BasketSummary.propTypes = {
   code: PropTypes.oneOfType([
     PropTypes.object,
     null
-  ])
+  ]),
+  totalPrice: PropTypes.number.isRequired,
+  getPrice: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired,
 };
 
 export default BasketSummary;

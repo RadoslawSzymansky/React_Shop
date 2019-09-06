@@ -63,5 +63,11 @@
   .product-price {
     color: $color-text-light;
     font-family: $font-text;
+    position: relative;
+  }
+  .heart {
+    position: absolute;
+    right: 0;
+    top: 5px;
   }
 }

@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 
 const User = require('../models/user.model');
+const Product = require('../models/product.model');
 
 // Route    /api/users
 // Method   POST
@@ -146,7 +147,7 @@ module.exports.addToFavorites = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
 
-    user.favorites = [ ...user.favorites, req.body.productId ];
+    user.favorites = [ ...user.favorites, req.params.id ];
     await user.save();
 
     res.json(user);
@@ -201,7 +202,37 @@ module.exports.concatLocalFavorites = async (req, res) => {
   try {
     const user = await  User.findById(req.user.id);
 
-    user.basket = [...user.favorites, ...req.body.localFavorites];
+    user.favorites = [...user.favorites, ...req.body.localFavorites];
+    await user.save();
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).send('Server error');
+  }
+};
+
+// Route    /api/users/basket/buy
+// Method   PATCH
+// Access   PRIVATE
+module.exports.buyProducts = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    if (!user.basket.length === 0) {
+      return res.status(400).send({ msg: 'Basket is empty!' });
+    }
+
+    user.basket.forEach( async basketProduct =>  {
+      const product = await Product.findById(basketProduct.productId);
+      product.instore = product.instore - basketProduct.count;
+      await product.save();
+    });
+
+    user.purchasedHistory = [
+      ...user.purchasedHistory, ...user.basket
+    ];
+    user.basket = [];
+
     await user.save();
 
     res.json(user);

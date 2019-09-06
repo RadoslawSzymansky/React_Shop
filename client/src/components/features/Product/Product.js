@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Favorite from '../../common/Favorite/FavoriteContainer';
 
 import './Product.scss';
 
@@ -23,7 +24,10 @@ const Product = ({ product: {
           <img src={img} alt={name} className='product-image' />
         </div>
         <p className="product-name">{name}</p>
-        <div className="product-price">${price}</div>
+        <div className="product-price">
+          ${price}
+          <Favorite productId={_id} />
+        </div>
       </div>
     </Link>
   );

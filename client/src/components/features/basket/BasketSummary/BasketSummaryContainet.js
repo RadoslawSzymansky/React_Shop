@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import BasketSummary from './BasketSummary';
-import { addDiscountCode, getBasketValue } from '../../../../redux/userRedux';
+import { addDiscountCode, getBasketValue, buyProductsRequest } from '../../../../redux/userRedux';
 import { toggleLoginModal } from '../../../../redux/authRedux';
 import { setAlert } from '../../../../redux/alertsRedux';
 
@@ -14,7 +14,8 @@ const mapDispatchToProps = dispatch => ({
   addCode: (code) => dispatch(addDiscountCode(code)),
   getPrice: () => dispatch(getBasketValue()),
   setAlert: (msg, text) => dispatch(setAlert(msg, text)),
-  openModal: () => dispatch(toggleLoginModal())
+  openModal: () => dispatch(toggleLoginModal()),
+  buyProductsRequest: () => dispatch(buyProductsRequest())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BasketSummary);

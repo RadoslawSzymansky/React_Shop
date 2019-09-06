@@ -1,0 +1,17 @@
+.heart {
+  cursor: pointer;
+  z-index: 900;
+  transition: 0.2s;
+  &.active {
+    color: rgb(247, 58, 58);
+    &:hover {
+          color: rgb(201, 167, 167);
+    }
+  }
+  &.disactive {
+    color: rgb(253, 168, 168);
+    &:hover {
+    color: rgb(247, 58, 58);
+    }
+  }
+}

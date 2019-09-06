@@ -70,7 +70,8 @@ SingleProduct.propTypes = {
   request: PropTypes.object.isRequired,
   img: PropTypes.string,
   instore: PropTypes.number,
-  addToBasket: PropTypes.func.isRequired
+  addToBasket: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired
 };
 
 export default withRouter(SingleProduct);

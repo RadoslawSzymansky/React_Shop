@@ -54,9 +54,9 @@ const BasketElement = (
                             } else {
                               return <span className="price">${price * count}</span>;
                             }
-                          })
-                          
+                          }) 
                         }
+                        {avaibleDiscounts.length <= 0 ? <span className="price">${price * count}</span> : null}
                       </div>
                       <div className="col-8">
                         <div className="count">

@@ -14,6 +14,9 @@ router.delete('/', auth, userController.deleteUser);
 // Concat user basket with local basket
 router.put('/basket/concat', auth, userController.concatLocalBasket);
 
+// Concat user basket with local basket
+router.put('/favorites/concat', auth, userController.concatLocalFavorites);
+
 // Concat user favorites with local favorites
 router.put('/basket/concat', auth, userController.concatLocalFavorites);
 
@@ -24,10 +27,12 @@ router.put('/basket', auth, userController.addToBasket);
 router.delete('/basket/:id', auth, userController.deleteFromBasket);
 
 // Add product to favorites
-router.put('/favorites', auth, userController.addToFavorites);
+router.put('/favorites/:id', auth, userController.addToFavorites);
 
 // Delete product from favorites
 router.delete('/favorites/:id', auth, userController.deleteFromFavorites);
 
+// Buy products
+router.patch('/basket/buy', auth, userController.buyProducts);
 
 module.exports = router;
