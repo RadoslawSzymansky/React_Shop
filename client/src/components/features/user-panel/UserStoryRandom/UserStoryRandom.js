@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import ProductHistoryElement from '../../../common/ProductHistoryElement/ProductHistory';
 
 const UserStoryRandom = ({ getProducts, isLoading, purchasedHistory, purchasedProducts }) => {
-
+  const referenceForSetTimeout = useRef(null)
 
   useEffect(() => {
     getProducts();
@@ -14,7 +14,7 @@ const UserStoryRandom = ({ getProducts, isLoading, purchasedHistory, purchasedPr
   let startAt;
 
   if (purchasedHistory.length >= 5) {
-    startAt = Math.floor(Math.random() * purchasedHistory.length - 5) + 1;
+    startAt = Math.floor(Math.random() * (purchasedHistory.length - 5)) + 1;
   } else {
     startAt = 0;
   }
@@ -33,48 +33,38 @@ const UserStoryRandom = ({ getProducts, isLoading, purchasedHistory, purchasedPr
       return product;
     });
 
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [ animating, setAnimating ] = useState(false);
- 
-  const onExiting = () => {
-    setAnimating(true);
+  const changeIndex = () => {
+    setCurrentIndex(prev => currentIndex === 4 ? 0 : prev + 1);
   };
 
-  const onExited = () => {
-    setAnimating(false);    
-  };
+  useEffect(() => {
 
-  const next = () => {
-    if(animating) return;
-    const nextIndex = activeIndex === randomList.length - 1 ? 0 : activeIndex + 1;
-    console.log('zmieniam index', nextIndex)
-    setActiveIndex(nextIndex)
-  };
+    referenceForSetTimeout.current = setInterval(() => {
+      changeIndex();
+    }, 3000);
 
-  const previous = () => {
-    const nextIndex = activeIndex === 0 ? randomList.length - 1 : activeIndex - 1;
-    setActiveIndex(nextIndex)
-  };
+    return () => {
+      clearInterval(referenceForSetTimeout.current);
+    };
 
-  const goToIndex = (newIndex) => {
-    setActiveIndex(newIndex)
-  };
+  }, [currentIndex]);
 
-
-  switch(true) {
+  switch (true) {
   case isLoading:
     return '...Loading';
-  
-  case !isLoading && randomList[4] !== undefined:
-    {' znowu case'}
+
+  case randomList[currentIndex] !== undefined:
     return (
-      <div>
-        {randomList.map(e=> <ProductHistoryElement product={e} />)}
-      </div>
+      <>
+        <h4 className='text-center'>You have recently bought:</h4>
+        <br />
+        <ProductHistoryElement product={randomList[currentIndex]} />
+      </>
     );
 
-  default: 
+  default:
     return null;
   }
 };

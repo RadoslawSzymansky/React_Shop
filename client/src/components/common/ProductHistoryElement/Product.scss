@@ -7,7 +7,13 @@
   border-radius: 5px;
   padding: 5px 15px;
   margin: 0 auto;
+  display: block;
+  transform: scale(1);
 
+  transition: all .5s;
+  &.disactive {
+    transform: scale(0);
+  }
   .product-labels {
     display: flex;
     // justify-content: space-around;
@@ -72,3 +78,4 @@
     top: 5px;
   }
 }
+

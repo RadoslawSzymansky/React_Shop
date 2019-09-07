@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import PageTitle from '../../common/PageTitle/PageTitle';
 import UserPanelNavi from '../../features/user-panel/UserPanelNavi/UserPanelNavi';
-import UserSettings from '../../features/user-panel/UserSettings/UserSettings';
+import UserSettings from '../../features/user-panel/UserSettings/UserSettingsContainer';
 import UserStoryRandom from '../../features/user-panel/UserStoryRandom/UserStoryRandomContainer';
 import UserShoppingHistory from '../../features/user-panel/UserShoppingHistory/UserShoppingHistory';
 import Basket from '../../features/basket/Basket/BasketContainer';

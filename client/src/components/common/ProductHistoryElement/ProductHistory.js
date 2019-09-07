@@ -8,7 +8,7 @@ const Product = ({ product: {
   name, img, _id, purchasedCount
 }}) => {
   return (
-    <Link to={
+    <Link className='random' to={
       {
         pathname:`/products/${_id}`,
         push: true
