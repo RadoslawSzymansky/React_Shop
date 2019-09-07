@@ -26,6 +26,7 @@ export const REMOVE_FROM_FAVORITES = createActionName('REMOVE_FROM_FAVORITES');
 export const ADD_DISCOUNT_CODE = createActionName('ADD_DISCOUNT_CODE');
 export const LOAD_BASKET_VALUE = createActionName('LOAD_BASKET_VALUE');
 export const BUY_PRODUCTS = createActionName('BUY_PRODUCTS');
+export const GET_PURCHASED_PRODUCTS = createActionName('GET_PURCHASED_PRODUCTS');
 
 
 /* SELECTORS */
@@ -45,6 +46,7 @@ export const concatBasket = (payload) => ({ type: CONCAT_BASKET, payload });
 export const concatFavorites = (payload) => ({ type: CONCAT_FAVORITES, payload });
 export const setBasketValue = (payload) => ({ type: LOAD_BASKET_VALUE, payload });
 export const buyProducts = (payload) => ({ type: BUY_PRODUCTS, payload });
+export const getPurchasedProducts = (payload) => ({ type: GET_PURCHASED_PRODUCTS, payload });
 
 /* INITIAL STATE */
 
@@ -56,7 +58,9 @@ const initialState = {
   isLoading: true,
   avatar: '',
   code: null,
-  basketValue: 0
+  basketValue: 0,
+  purchasedProducts: [],
+  purchasedHistory: []
 };
 
 /* REDUCER */
@@ -87,6 +91,9 @@ export default function reducer(state = initialState, action = {}) {
   case CONCAT_BASKET:
     localStorage.removeItem('localBasket');
     return { ...state, ...payload, isLoading: false };
+
+  case GET_PURCHASED_PRODUCTS:
+    return { ...state, purchasedProducts: payload};
 
   case ADD_DISCOUNT_CODE:
     return { ...state, code: payload };
@@ -360,6 +367,7 @@ export const concatBasketsRequest = () => async dispatch => {
     const res = await axios.put(`${BASE_URL}/api/users/basket/concat`, { localBasket });
     dispatch(concatBasket(res.data));
     dispatch(getBasketValue());
+    dispatch(endUserRequest());
 
   } catch (err) {
     dispatch(failUserRequest());
@@ -433,4 +441,50 @@ export const buyProductsRequest = () => async (dispatch) => {
     dispatch(failUserRequest());
   }
 };
+
+export const deleteUserRequest = () => async (dispatch) => {
+  dispatch(startUserRequest());
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+  }
+
+  try {
+
+    const res = await axios.patch(`${BASE_URL}/api/users/basket/buy`);
+    history.push('/user-panel');
+    dispatch(endUserRequest());
+    dispatch(buyProducts(res.data));
+    dispatch(setAlert('Congratulation, you successfully bought products! Check your shop history in User Panel'));
+    setTimeout(() => {
+
+      history.push('/');
+      history.goBack();
+    }, 300);
+
+  } catch (error) {
+    dispatch(failUserRequest());
+  }
+};
+
+export const getPurchasedProductsRequest = () => async (dispatch) => {
+  console.log("zaczalm")
+  dispatch(startUserRequest());
+
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+  }
+
+  try {
+
+    const res = await axios.get(`${BASE_URL}/api/users/history/random`);
+    dispatch(getPurchasedProducts(res.data));
+    dispatch(endUserRequest());
+
+  } catch (error) {
+
+    dispatch(failUserRequest());
+
+  }
+};
+
 

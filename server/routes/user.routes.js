@@ -35,4 +35,7 @@ router.delete('/favorites/:id', auth, userController.deleteFromFavorites);
 // Buy products
 router.patch('/basket/buy', auth, userController.buyProducts);
 
+// Get random products from history
+router.get('/history/random', auth, userController.getRandomProducts);
+
 module.exports = router;

@@ -1,0 +1,29 @@
+.user-panel {
+  .user_panel-content {
+    margin: 25px 0;
+  }
+  .profile-img {
+    width: auto;
+    max-height: 30px;
+    border-radius: 50%;
+    position: relative;
+    top: -2px;
+  }
+  .profile-name {
+    margin-bottom: 15px;
+  }
+  .page-title {
+    font-size: 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (max-width: 768px ) {
+  .user-panel {
+    .nav-item {
+      font-size: 12px;
+    }
+  }
+}

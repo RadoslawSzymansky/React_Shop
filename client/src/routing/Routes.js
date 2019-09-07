@@ -10,6 +10,7 @@ import BasketPage from '../components/pages/Basket/BasketPage';
 import ContactPage from '../components/pages/Contact/ContactPage';
 import PrivatePage from '../components/pages/PrivatePage/PrivatePage';
 import FavoritesPage from '../components/pages/FavoritesPage/FavoritesPage';
+import UserPanelPage from '../components/pages/UserPanel/UserPanelContainer';
 
 const Routes = () => {
   return (
@@ -20,6 +21,7 @@ const Routes = () => {
       <Route path='/contact' exact component={ContactPage} />
       <Route path='/private' exact component={PrivatePage} />
       <Route path='/favorites' exact component={FavoritesPage} />
+      <PrivateRoute path='/user-panel' component={UserPanelPage} />
       <Route component={NotFound} />
     </Switch>
   );

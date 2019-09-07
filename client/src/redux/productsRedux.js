@@ -43,7 +43,7 @@ export const loadSingleProductError = (payload) => ({ type: LOAD_PRODUCT_ERROR, 
 export const loadProductsError = (payload) => ({ type: LOAD_PRODUCTS_ERROR, payload });
 export const endProductsRequest = () => ({ type: END_PRODUCTS_REQUEST });
 export const endProductRequest = () => ({ type: END_PRODUCT_REQUEST });
-export const addDiscountsCodes = (payload) => ({ type: ADD_DISCOUNT_CODES, payload});
+export const addDiscountsCodes = (payload) => ({ type: ADD_DISCOUNT_CODES, payload });
 
 /* INITIAL STATE */
 
@@ -66,7 +66,8 @@ const initialState = {
   sort: {},
   basketProducts: {},
   discountCodes: [],
-  favoriteProducts: {}
+  favoriteProducts: {},
+  randomProducts: []
 };
 
 /* REDUCER */
@@ -96,6 +97,7 @@ export default function reducer(state = initialState, action = {}) {
 
   case LOAD_SINGLE_TO_FAV:
     return { ...state, favoriteProducts: { ...state.favoriteProducts, [payload._id]: payload } };
+
 
   case ADD_DISCOUNT_CODES: 
     return { ...state, discountCodes: payload };
@@ -220,7 +222,6 @@ export const fetchDiscountCodesRequest = () => async dispatch => {
 
 export const fetchSingleToFavoritesRequest = id => async dispatch => {
   dispatch(startSingleProductRequest());
-  console.log("pobieram")
   try {
     const res = await axios.get(`${BASE_URL}/api/products/${id}`);
     dispatch(loadSingleToFavorites(res.data));

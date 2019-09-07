@@ -243,3 +243,20 @@ module.exports.buyProducts = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
+
+// Route    /api/users/history/random
+// Method   GET
+// Access   PRIVATE
+module.exports.getRandomProducts = async (req, res) => {
+  try {
+
+    const user = await User.findById(req.user.id);
+
+    const  randomProducts = await Product
+      .find( { '_id': { $in : user.purchasedHistory.map(e => e.productId)}});      
+    
+    res.json(randomProducts);
+  } catch (error) {
+    res.status(500).send('Server error');
+  }
+};
