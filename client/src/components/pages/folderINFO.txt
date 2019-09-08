@@ -1,6 +1,0 @@
-omponenty całych podstron (np. Home, Posts, Contact).
- Potraktujemy je przede wszystkim jako zwykłe widoki.
-Będziemy w nich wykorzystywać komponenty z folderu common 
-oraz te przygotowane w features. Ograniczymy tutaj logikę do minimum.
-
-CZYLI DLA KAZDEJ STRONY FOLDER

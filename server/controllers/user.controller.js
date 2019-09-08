@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 const { check, validationResult } = require('express-validator');
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
@@ -11,11 +12,11 @@ const Product = require('../models/product.model');
 // Method   POST
 // Access   PUBLIC
 module.exports.registerUser = [
-  [ 
-    check('email', 'Please include a valid email adress').isEmail(), 
-    check('name', 'Name is required').not().isEmpty(), 
-    check('password', 'Password minimun lenght is 5').isLength({ min: 5})
-  ], 
+  [
+    check('email', 'Please include a valid email adress').isEmail(),
+    check('name', 'Name is required').not().isEmpty(),
+    check('password', 'Password minimun lenght is 5').isLength({ min: 5 }),
+  ],
   async (req, res) => {
     const errors = validationResult(req);
 
@@ -26,31 +27,29 @@ module.exports.registerUser = [
     const { email, name, password } = req.body;
 
     try {
-      
       let user = await User.findOne({ email: email.toLowerCase() });
 
       // check if user already exists
-      if(user) {
-        res.status(400).json({ msg: 'User already exists'});
+      if (user) {
+        res.status(400).json({ msg: 'User already exists' });
       }
 
       // get gravatar of user
       const avatar = gravatar.url(email, {
         s: '200',
         r: 'pg',
-        d: 'mm'
+        d: 'mm',
       });
 
       user = new User({
         name,
         email: email.toLowerCase(),
         avatar,
-        password
+        password,
       });
-      
       // bscrypt password
       const salt = bcrypt.genSaltSync(10);
-      user.password = await  bcrypt.hashSync(password, salt);
+      user.password = await bcrypt.hashSync(password, salt);
 
       await user.save();
 
@@ -58,44 +57,41 @@ module.exports.registerUser = [
 
       const payload = {
         user: {
-          id: user.id
-        }
+          id: user.id,
+        },
       };
 
-      jwt.sign(
+      return jwt.sign(
         payload,
         config.get('jwtSecret'),
         { expiresIn: 360000 },
         (err, token) => {
           if (err) throw err;
           res.json({ token });
-        }
+        },
       );
-      
     } catch (error) {
-      console.log(error.message);
-      res.status(500).send('Server error');
+      return res.status(500).send('Server error');
     }
-  }
+  },
 ];
 
-
+// Route    /api/users/basket
+// Method   POST
+// Access   PRIVATE
 module.exports.addToBasket = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
 
     const { productToBasket } = req.body;
-   
-    if (user.basket.some( e => e.productId == productToBasket.productId )) {
-      user.basket = user.basket.map( e => {
 
+    if (user.basket.some((e) => e.productId == productToBasket.productId)) {
+      user.basket = user.basket.map((e) => {
         if (e.productId == productToBasket.productId) {
           e.count = productToBasket.count;
         }
         return e;
-
       });
-
     } else {
       user.basket = [...user.basket, productToBasket];
     }
@@ -104,7 +100,6 @@ module.exports.addToBasket = async (req, res) => {
 
     res.json(user);
   } catch (error) {
-    console.log(error)
     res.status(500).send('Server error');
   }
 };
@@ -115,8 +110,8 @@ module.exports.addToBasket = async (req, res) => {
 module.exports.deleteFromBasket = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
-    console.log(req.params.id, user.basket[0])
-    user.basket = user.basket.filter(e => e.productId != req.params.id );
+
+    user.basket = user.basket.filter((e) => e.productId != req.params.id);
     await user.save();
 
     res.json(user);
@@ -132,7 +127,7 @@ module.exports.addToFavorites = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
 
-    user.favorites = [ ...user.favorites, req.params.id ];
+    user.favorites = [...user.favorites, req.params.id];
     await user.save();
 
     res.json(user);
@@ -148,7 +143,7 @@ module.exports.deleteFromFavorites = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
 
-    user.favorites = user.favorites.filter(e => e !== req.params.id);
+    user.favorites = user.favorites.filter((e) => e !== req.params.id);
     await user.save();
 
     res.json(user);
@@ -166,8 +161,8 @@ module.exports.concatLocalBasket = async (req, res) => {
 
     const newBasket = [...user.basket];
 
-    req.body.localBasket.forEach( l => {
-      if(newBasket.some(e => e.productId == l.productId)) return;
+    req.body.localBasket.forEach((l) => {
+      if (newBasket.some((e) => e.productId == l.productId)) return;
       newBasket.push(l);
     });
 
@@ -185,10 +180,10 @@ module.exports.concatLocalBasket = async (req, res) => {
 // Access   PRIVATE
 module.exports.concatLocalFavorites = async (req, res) => {
   try {
-    const user = await  User.findById(req.user.id);
+    const user = await User.findById(req.user.id);
 
-    req.body.localFavorites.forEach( e => {
-      if(user.favorites.some(u => u === e)) return;
+    req.body.localFavorites.forEach((e) => {
+      if (user.favorites.some((u) => u === e)) return;
       user.favorites.push(e);
     });
     await user.save();
@@ -210,22 +205,22 @@ module.exports.buyProducts = async (req, res) => {
       return res.status(400).send({ msg: 'Basket is empty!' });
     }
 
-    user.basket.forEach( async basketProduct =>  {
+    user.basket.forEach(async (basketProduct) => {
       const product = await Product.findById(basketProduct.productId);
-      product.instore = product.instore - basketProduct.count;
+      product.instore -= basketProduct.count;
       await product.save();
     });
 
     user.purchasedHistory = [
-      ...user.purchasedHistory, ...user.basket
+      ...user.purchasedHistory, ...user.basket,
     ];
     user.basket = [];
 
     await user.save();
 
-    res.json(user);
+    return res.json(user);
   } catch (error) {
-    res.status(500).send('Server error');
+    return res.status(500).send('Server error');
   }
 };
 
@@ -234,18 +229,15 @@ module.exports.buyProducts = async (req, res) => {
 // Access   PRIVATE
 module.exports.getHistoryProducts = async (req, res) => {
   try {
-
     const user = await User.findById(req.user.id);
 
-    const  randomProducts = await Product
-      .find( { '_id': { $in : user.purchasedHistory.map(e => e.productId)}});      
-    
+    const randomProducts = await Product
+      .find({ _id: { $in: user.purchasedHistory.map((e) => e.productId) } });
     res.json(randomProducts);
   } catch (error) {
     res.status(500).send('Server error');
   }
 };
-
 
 // Route    /api/users/settings/password/change
 // Method   POST
@@ -264,9 +256,7 @@ module.exports.changePassword = [
       return res.status(400).json({ errors: errors.array() });
     }
 
-
     try {
-
       const user = await User.findById(req.user.id);
 
       const { newPassword, oldPassword } = req.body;
@@ -280,13 +270,11 @@ module.exports.changePassword = [
       user.password = await bcrypt.hashSync(newPassword, salt);
 
       await user.save();
-      res.json(user);
-
+      return res.json(user);
     } catch (error) {
-      console.log(error.message);
-      res.status(500).send('Server error');
+      return res.status(500).send('Server error');
     }
-  }
+  },
 ];
 
 // Route    /api/users/settings/email/change
@@ -295,7 +283,7 @@ module.exports.changePassword = [
 module.exports.changeEmail = [
   [
     check('email', 'Email is required!').not().isEmpty(),
-    check('email', 'Email is not valid!').isEmail()
+    check('email', 'Email is not valid!').isEmail(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -308,18 +296,15 @@ module.exports.changeEmail = [
     const { email } = req.body;
 
     try {
-
       const user = await User.findById(req.user.id);
       user.email = email;
 
       await user.save();
-      res.json(user);
-
+      return res.json(user);
     } catch (error) {
-      console.log(error.message);
-      res.status(500).send('Server error');
+      return res.status(500).send('Server error');
     }
-  }
+  },
 ];
 
 // Route    /api/users/settings/name/change
@@ -342,18 +327,15 @@ module.exports.changeName = [
     const { name } = req.body;
 
     try {
-
       const user = await User.findById(req.user.id);
       user.name = name;
-
       await user.save();
-      res.json(user);
 
+      return res.json(user);
     } catch (error) {
-      console.log(error.message);
-      res.status(500).send('Server error');
+      return res.status(500).send('Server error');
     }
-  }
+  },
 ];
 
 // Route    /api/users
@@ -364,7 +346,6 @@ module.exports.deleteUser = async (req, res) => {
     await User.findByIdAndDelete(req.user.id).select('-password');
     res.json({ msg: 'User deleted successfully' });
   } catch (error) {
-    console.log(error);
     res.status(500).send('Server error');
   }
 };

@@ -4,29 +4,29 @@ import Spinner from '../../../common/Spinner/Spinner';
 import BasketList from '../BasketList/BasketList';
 import BasketSummary from '../BasketSummary/BasketSummaryContainet';
 
-const Basket = ({ isAuthenticated, user: { isLoading, basket} }) => {
-  
-
-  switch(true) {
-  case  isAuthenticated && !isLoading:
+const Basket = ({ isAuthenticated, user: { isLoading, basket } }) => {
+  switch (true) {
+  case isAuthenticated && !isLoading:
     return (
       <>
         <BasketList list={basket} isLoading={isLoading} />
         { basket.length > 0 ? <BasketSummary /> : null }
       </>
     );
-  
+
   case isLoading:
     return <Spinner />;
-  
-  case  !isAuthenticated && !isLoading:
-    return ( 
+
+  case !isAuthenticated && !isLoading:
+    return (
       <>
-        <BasketList list={
-          localStorage.localBasket ? JSON.parse(localStorage.getItem('localBasket')) : []}
-        isLoading={isLoading} 
+        <BasketList
+          list={
+            localStorage.localBasket ? JSON.parse(localStorage.getItem('localBasket')) : []
+          }
+          isLoading={isLoading}
         />
-        { localStorage.localBasket  ? <BasketSummary /> : null }
+        { localStorage.localBasket ? <BasketSummary /> : null }
       </>
     );
   default:

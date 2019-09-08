@@ -1,14 +1,13 @@
 import axios from 'axios';
 import { BASE_URL } from '../config/config';
 import setAuthToken from '../utils/setAuthToken';
-import config from '../utils/axiosConfig';
 import { setAlert } from './alertsRedux';
 import history from '../utils/history';
 
 const reducerName = 'user';
 
 // action name creator
-const createActionName = name => `app/${reducerName}/${name}`;
+const createActionName = (name) => `app/${reducerName}/${name}`;
 
 export const USER_LOADED = 'app/auth/USER_LOADED';
 export const DELETE_ACCOUNT = 'app/auth/DELETE_ACCOUNT';
@@ -60,7 +59,7 @@ const initialState = {
   code: null,
   basketValue: 0,
   purchasedProducts: [],
-  purchasedHistory: []
+  purchasedHistory: [],
 };
 
 /* REDUCER */
@@ -68,7 +67,6 @@ const initialState = {
 export default function reducer(state = initialState, action = {}) {
   const { type, payload } = action;
   switch (type) {
-
   case USER_REQUEST_START:
     return { ...state, isLoading: true };
 
@@ -82,7 +80,7 @@ export default function reducer(state = initialState, action = {}) {
   case REMOVE_FROM_BASKET:
   case REMOVE_FROM_FAVORITES:
   case BUY_PRODUCTS:
-    return {  ...state, ...payload , isLoading: false };
+    return { ...state, ...payload, isLoading: false };
 
   case CONCAT_FAVORITES:
     localStorage.removeItem('localFavorites');
@@ -93,7 +91,7 @@ export default function reducer(state = initialState, action = {}) {
     return { ...state, ...payload, isLoading: false };
 
   case GET_PURCHASED_PRODUCTS:
-    return { ...state, purchasedProducts: payload};
+    return { ...state, purchasedProducts: payload };
 
   case ADD_DISCOUNT_CODE:
     return { ...state, code: payload };
@@ -112,7 +110,7 @@ export default function reducer(state = initialState, action = {}) {
       favorites: [],
       isLoading: false,
       avatar: '',
-      purchasedHistory: []
+      purchasedHistory: [],
     };
   default:
     return state;
@@ -134,8 +132,7 @@ export const getBasketValue = () => (dispatch, getState) => {
     basket = getState().user.basket || [];
   }
 
-  basket.forEach(prod => {
-
+  basket.forEach((prod) => {
     if (!prod.avaibleDiscounts) {
       totalPrice += prod.count * prod.price;
       return;
@@ -143,15 +140,14 @@ export const getBasketValue = () => (dispatch, getState) => {
 
     if (prod.avaibleDiscounts.length && userCode) {
       let discountsPercentage = 0;
-      prod.avaibleDiscounts.forEach(discount => {
-        discountCodes.forEach(code => {
+      prod.avaibleDiscounts.forEach((discount) => {
+        discountCodes.forEach((code) => {
           if (code.name === discount && userCode.name === discount) {
             discountsPercentage = code.discountPercent;
           }
         });
       });
       totalPrice += prod.count * (prod.price - (prod.price * (discountsPercentage / 100)));
-
     } else {
       totalPrice += prod.count * prod.price;
     }
@@ -159,36 +155,35 @@ export const getBasketValue = () => (dispatch, getState) => {
   dispatch(setBasketValue(totalPrice));
 };
 
-export const addToBasketRequest = productToBasket => async (dispatch, getState) => {
+export const addToBasketRequest = (productToBasket) => async (dispatch, getState) => {
   dispatch(startUserRequest());
 
   // if not logined save in localStorage;
 
-  if(!getState().auth.isAuthenticated) {
+  if (!getState().auth.isAuthenticated) {
     const localBasket = localStorage.getItem('localBasket');
-    if(localBasket) {
+    if (localBasket) {
       let newLocalBasket;
       const localBas = JSON.parse(localBasket);
 
-      if(localBas.some(e => e.productId === productToBasket.productId )) {  
+      if (localBas.some((e) => e.productId === productToBasket.productId)) {
         // if product is already in basket change it count
-        newLocalBasket = localBas.map(e => {
-          if(e.productId === productToBasket.productId) e.count = productToBasket.count;
+        newLocalBasket = localBas.map((e) => {
+          if (e.productId === productToBasket.productId) e.count = productToBasket.count;
           return e;
         });
       } else {
-        newLocalBasket = [ ...localBas, productToBasket];
+        newLocalBasket = [...localBas, productToBasket];
       }
-    
-      localStorage.setItem(
-        'localBasket', 
-        JSON.stringify(newLocalBasket)
-      );
 
+      localStorage.setItem(
+        'localBasket',
+        JSON.stringify(newLocalBasket),
+      );
     } else {
       localStorage.setItem(
         'localBasket',
-        JSON.stringify([ productToBasket ])
+        JSON.stringify([productToBasket]),
       );
     }
     dispatch(getBasketValue());
@@ -201,15 +196,13 @@ export const addToBasketRequest = productToBasket => async (dispatch, getState) 
     return;
   }
 
-  // if authorized! 
-
+  // if authorized!
 
   if (localStorage.token) {
     setAuthToken(localStorage.token);
   }
 
   try {
-
     const res = await axios.put(`${BASE_URL}/api/users/basket`, { productToBasket });
     dispatch(addToBasket(res.data));
     dispatch(endUserRequest());
@@ -220,31 +213,28 @@ export const addToBasketRequest = productToBasket => async (dispatch, getState) 
     history.goBack();
 
     dispatch(setAlert('Product added to basket', 'success', 1500));
-
   } catch (err) {
     dispatch(failUserRequest());
   }
 };
 
-export const removeFromBasketRequest = productId => async (dispatch, getState) => {
+export const removeFromBasketRequest = (productId) => async (dispatch, getState) => {
   dispatch(startUserRequest());
 
   // if not logined save in localStorage;
   if (!getState().auth.isAuthenticated) {
-
-    // if not authorized 
+    // if not authorized
     const localBasket = localStorage.getItem('localBasket');
-    let newLocalBasket;
     const localBas = JSON.parse(localBasket);
-      
-    newLocalBasket = localBas.filter(e => e.productId !== productId);
+
+    const newLocalBasket = localBas.filter((e) => e.productId !== productId);
     localStorage.setItem(
       'localBasket',
-      JSON.stringify(newLocalBasket)
+      JSON.stringify(newLocalBasket),
     );
 
     dispatch(endUserRequest());
-    dispatch(getBasketValue()); 
+    dispatch(getBasketValue());
     dispatch(setAlert('Product removed from', 'success', 1500));
 
     return;
@@ -257,39 +247,34 @@ export const removeFromBasketRequest = productId => async (dispatch, getState) =
   }
 
   try {
-
     const res = await axios.delete(`${BASE_URL}/api/users/basket/${productId}`);
     dispatch(removeFromBasket(res.data));
     dispatch(endUserRequest());
     dispatch(getBasketValue());
     dispatch(setAlert('Product removed from', 'success', 1500));
-
   } catch (err) {
     dispatch(failUserRequest());
   }
 };
 
-export const addToFavoritesRequest = productId => async (dispatch, getState) => {
+export const addToFavoritesRequest = (productId) => async (dispatch, getState) => {
   dispatch(startUserRequest());
 
   // if not logined save in localStorage;
   if (!getState().auth.isAuthenticated) {
     const localFavorites = localStorage.getItem('localFavorites');
     if (localFavorites) {
-      let newLocalFavorites;
       const localFav = JSON.parse(localFavorites);
-      
-      newLocalFavorites = [ ...localFav, productId ];
-    
+      const newLocalFavorites = [...localFav, productId];
+
       localStorage.setItem(
         'localFavorites',
-        JSON.stringify(newLocalFavorites)
+        JSON.stringify(newLocalFavorites),
       );
-      
     } else {
       localStorage.setItem(
         'localFavorites',
-        JSON.stringify([productId])
+        JSON.stringify([productId]),
       );
     }
     dispatch(endUserRequest());
@@ -303,36 +288,31 @@ export const addToFavoritesRequest = productId => async (dispatch, getState) => 
   }
 
   try {
-
     const res = await axios.put(`${BASE_URL}/api/users/favorites/${productId}`);
     dispatch(addToFavorites(res.data));
     dispatch(endUserRequest());
-
   } catch (err) {
     dispatch(failUserRequest());
   }
 };
 
-export const removeFromFavoritesRequest = productId => async (dispatch, getState) => {
+export const removeFromFavoritesRequest = (productId) => async (dispatch, getState) => {
   dispatch(startUserRequest());
-  
+
   // if not logined save in localStorage;
   if (!getState().auth.isAuthenticated) {
     const localFavorites = localStorage.getItem('localFavorites');
     if (localFavorites) {
-      let newLocalFavorites;
       const localFav = JSON.parse(localFavorites);
-      
-      newLocalFavorites = localFav.filter(e => e !== productId);
-      
+
+      const newLocalFavorites = localFav.filter((e) => e !== productId);
+
       localStorage.setItem(
         'localFavorites',
-        JSON.stringify(newLocalFavorites)
+        JSON.stringify(newLocalFavorites),
       );
-
-    } 
+    }
     dispatch(endUserRequest());
-
   }
 
   // if authorized!
@@ -342,19 +322,16 @@ export const removeFromFavoritesRequest = productId => async (dispatch, getState
   }
 
   try {
-
     const res = await axios.delete(`${BASE_URL}/api/users/favorites/${productId}`);
     dispatch(removeFromFavorites(res.data));
-
   } catch (err) {
     dispatch(failUserRequest());
   }
 };
 
-export const concatBasketsRequest = () => async dispatch => {
-
+export const concatBasketsRequest = () => async (dispatch) => {
   dispatch(startUserRequest());
-  
+
   if (!localStorage.getItem('localBasket')) return dispatch(endUserRequest());
   const localBasket = [...JSON.parse(localStorage.getItem('localBasket'))];
 
@@ -363,19 +340,16 @@ export const concatBasketsRequest = () => async dispatch => {
   }
 
   try {
-
     const res = await axios.put(`${BASE_URL}/api/users/basket/concat`, { localBasket });
     dispatch(concatBasket(res.data));
     dispatch(getBasketValue());
-    dispatch(endUserRequest());
-
+    return dispatch(endUserRequest());
   } catch (err) {
-    dispatch(failUserRequest());
+    return dispatch(failUserRequest());
   }
 };
 
-export const concatFavoritesRequest = () => async dispatch => {
-
+export const concatFavoritesRequest = () => async (dispatch) => {
   if (!localStorage.getItem('localFavorites')) return dispatch(endUserRequest());
 
   const localFavorites = [...JSON.parse(localStorage.getItem('localFavorites'))];
@@ -387,30 +361,26 @@ export const concatFavoritesRequest = () => async dispatch => {
   }
 
   try {
-
     const res = await axios.put(`${BASE_URL}/api/users/favorites/concat`, { localFavorites });
     dispatch(concatFavorites(res.data));
-    dispatch(endUserRequest());
-
+    return dispatch(endUserRequest());
   } catch (err) {
-    dispatch(failUserRequest());
+    return dispatch(failUserRequest());
   }
 };
 
-export const addDiscountCode = code => (dispatch, getState) => {
+export const addDiscountCode = (code) => (dispatch, getState) => {
   const { discountCodes } = getState().products;
-  if (discountCodes.some(e => e.name === code)) {
-    discountCodes.forEach(e => {
+  if (discountCodes.some((e) => e.name === code)) {
+    discountCodes.forEach((e) => {
       if (e.name === code) dispatch({ type: ADD_DISCOUNT_CODE, payload: e });
     });
     if (getState().user.code === null) {
       dispatch(setAlert(`Discount code: ${code} added!`, 'success'));
       dispatch(getBasketValue());
-
     } else {
       dispatch(setAlert(`Discount code updated to ${code}!`, 'success'));
       dispatch(getBasketValue());
-
     }
   } else {
     dispatch(setAlert('This code is not working!', 'warning'));
@@ -425,18 +395,15 @@ export const buyProductsRequest = () => async (dispatch) => {
   }
 
   try {
-
     const res = await axios.patch(`${BASE_URL}/api/users/basket/buy`);
     history.push('/user-panel');
     dispatch(endUserRequest());
     dispatch(buyProducts(res.data));
     dispatch(setAlert('Congratulation, you successfully bought products! Check your shop history in User Panel'));
     setTimeout(() => {
-
       history.push('/');
       history.goBack();
     }, 300);
-    
   } catch (error) {
     dispatch(failUserRequest());
   }
@@ -449,25 +416,23 @@ export const deleteUserRequest = () => async (dispatch) => {
   }
 
   try {
-
     const res = await axios.patch(`${BASE_URL}/api/users/basket/buy`);
     history.push('/user-panel');
+
     dispatch(endUserRequest());
     dispatch(buyProducts(res.data));
     dispatch(setAlert('Congratulation, you successfully bought products! Check your shop history in User Panel'));
-    setTimeout(() => {
 
+    setTimeout(() => {
       history.push('/');
       history.goBack();
     }, 300);
-
   } catch (error) {
     dispatch(failUserRequest());
   }
 };
 
 export const getPurchasedProductsRequest = () => async (dispatch) => {
-
   dispatch(startUserRequest());
 
   if (localStorage.token) {
@@ -475,16 +440,10 @@ export const getPurchasedProductsRequest = () => async (dispatch) => {
   }
 
   try {
-
     const res = await axios.get(`${BASE_URL}/api/users/history/all`);
     dispatch(getPurchasedProducts(res.data));
     dispatch(endUserRequest());
-
   } catch (error) {
-
     dispatch(failUserRequest());
-
   }
 };
-
-

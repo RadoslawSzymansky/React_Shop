@@ -1,19 +1,21 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './BasketElement.scss';
 
-const BasketElement = (
-  {fetchProduct, basketProducts, basketAction,  removeProduct, product: { productId, count }, userCode }
-) => {
-
+const BasketElement = ({
+  fetchProduct, basketProducts, basketAction, removeProduct, product: { productId, count }, usCode,
+}) => {
   useEffect(() => {
     fetchProduct(productId);
   }, []);
 
   const renderContent = () => {
-
-    if(basketProducts[productId]) {
-      const { name, description, img, price, instore, avaibleDiscounts } = basketProducts[productId];
+    if (basketProducts[productId]) {
+      const {
+        name, description, img, price, instore, avaibleDiscounts,
+      } = basketProducts[productId];
       return (
         <div className="basket-element">
           <div className="row">
@@ -25,8 +27,13 @@ const BasketElement = (
                   </div>
                 </div>
                 <div className="col-9 prodcut-data">
-                  <div className='title'><span className='name'>{name}</span> </div>
-                  <p>Avaible in store:  {instore}</p>
+                  <div className="title">
+                    <span className="name">{name}</span>
+                  </div>
+                  <p>
+                    Avaible in store:
+                    {instore}
+                  </p>
                   <p className="product-description d-none d-md-block">{description}</p>
                 </div>
               </div>
@@ -39,54 +46,89 @@ const BasketElement = (
                       <div className="col-4 prices">
                         {
 
-                          avaibleDiscounts.map(e => {
-                            if (!userCode) return <span className="price">${price * count}</span>;
-                            if (e === userCode.name) {
+                          avaibleDiscounts.map((e) => {
+                            if (!usCode) {
+                              return (
+                                <span className="price">
+                                  $
+                                  {price * count}
+                                </span>
+                              );
+                            }
+                            if (e === usCode.name) {
                               return (
                                 <>
                                   <span className="price">
-                                    <span className="old-price">${price * count}</span>
-
-                                    ${count * (price - (price * userCode.discountPercent/100))}
+                                    <span className="old-price">
+                                      $
+                                      {price * count}
+                                    </span>
+                                    $
+                                    {count * (price - (price * (usCode.discountPercent / 100)))}
                                   </span>
                                 </>
                               );
+                            // eslint-disable-next-line no-else-return
                             } else {
-                              return <span className="price">${price * count}</span>;
+                              return (
+                                <span className="price">
+                                  $
+                                  {price * count}
+                                </span>
+                              );
                             }
-                          }) 
+                          })
                         }
-                        {avaibleDiscounts.length <= 0 ? <span className="price">${price * count}</span> : null}
+                        {avaibleDiscounts.length <= 0 ? (
+                          <span className="price">
+                            $
+                            {price * count}
+                          </span>
+                        ) : null}
                       </div>
                       <div className="col-8">
                         <div className="count">
-                          <button className="product-action"
+                          <button
+                            type="button"
+                            className="product-action"
                             disabled={count <= 1}
                             onClick={() => {
                               basketAction({
                                 count: count - 1,
-                                productId
+                                productId,
                               });
-                            }} >-</button>
+                            }}
+                          >
+                            -
+                          </button>
                           <span className="count-info">{count}</span>
-                          <button className="product-action"
+                          <button
+                            type="button"
+                            className="product-action"
                             disabled={count >= instore}
                             onClick={() => {
                               basketAction({
                                 count: count + 1,
-                                productId
+                                productId,
                               });
-                            }} >+</button>
+                            }}
+                          >
+                            +
+                          </button>
                           pcs
                         </div>
                       </div>
                     </div>
-                    
                   </div>
                 </div>
                 <div className="col-6 col-sm-12">
                   <div className="product-delete">
-                    <span onClick={() => removeProduct(productId)} className="delete-action">delete product</span>
+                    <span
+                      onClick={() => removeProduct(productId)}
+                      className="delete-action"
+                    >
+                      delete product
+                    </span>
                   </div>
                 </div>
               </div>
@@ -103,7 +145,7 @@ const BasketElement = (
 
 BasketElement.propTypes = {
   product: PropTypes.object.isRequired,
-  fetchProduct: PropTypes.func.isRequired
+  fetchProduct: PropTypes.func.isRequired,
 };
 
 export default BasketElement;

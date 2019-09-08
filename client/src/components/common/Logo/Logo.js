@@ -5,9 +5,10 @@ import { FaSprayCan } from 'react-icons/fa';
 import './Logo.scss';
 
 const Logo = () => (
-  <Link to='/'>
+  <Link to="/">
     <h3 className="logo">
-      Auto Plast Product <FaSprayCan style={{ color: '#3498db' }} />
+      Auto Plast Product
+      <FaSprayCan style={{ color: '#3498db' }} />
     </h3>
   </Link>
 );

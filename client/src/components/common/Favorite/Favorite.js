@@ -1,21 +1,24 @@
+/* eslint-disable comma-dangle */
 import React from 'react';
 import { FaHeart } from 'react-icons/all';
 import PropTypes from 'prop-types';
 
 import './Favorite.scss';
 
-const Favorite = ({ productId, favorites, isAuthenticated, addFavorite, removeFavorite }) => {
+const Favorite = ({
+  productId, favorites, isAuthenticated, addFavorite, removeFavorite,
+}) => {
   let favArr;
   let callBack;
   let heartClass;
 
-  if(isAuthenticated) {
+  if (isAuthenticated) {
     favArr = favorites;
   } else {
     favArr = localStorage.localFavorites ? JSON.parse(localStorage.getItem('localFavorites')) : [];
   }
 
-  if (favArr.some(id =>  id === productId)) {
+  if (favArr.some((id) => id === productId)) {
     heartClass = 'heart active';
     callBack = removeFavorite;
   } else {
@@ -27,9 +30,7 @@ const Favorite = ({ productId, favorites, isAuthenticated, addFavorite, removeFa
     e.preventDefault();
     callBack(productId);
   };
-  
-  return <FaHeart onClick={e => onClick(e)} className={heartClass}/>;
-
+  return <FaHeart onClick={(e) => onClick(e)} className={heartClass} />;
 };
 
 Favorite.propTypes = {

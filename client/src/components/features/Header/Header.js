@@ -4,13 +4,12 @@ import Logo from '../../common/Logo/Logo';
 
 import './Header.scss';
 
-const Header = () => {
-  return (
-    <div className='header'>
-      <Logo />
-      <NavLinks />
-    </div>
-  );
-};
+const Header = () => (
+  <div className="header">
+    <Logo />
+    <NavLinks />
+  </div>
+);
+
 
 export default Header;

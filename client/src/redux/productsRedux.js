@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import axios from 'axios';
 import { BASE_URL } from '../config/config';
 import isEmpty from '../utils/isEmpty';
@@ -5,7 +6,7 @@ import isEmpty from '../utils/isEmpty';
 const reducerName = 'products';
 
 // action name creator
-const createActionName = name => `app/${reducerName}/${name}`;
+const createActionName = (name) => `app/${reducerName}/${name}`;
 
 export const START_PRODUCT_REQUEST = createActionName('START_PRODUCT_REQUEST');
 export const START_PRODUCTS_REQUEST = createActionName('START_PRODUCTS_REQUEST');
@@ -67,7 +68,7 @@ const initialState = {
   basketProducts: {},
   discountCodes: [],
   favoriteProducts: {},
-  randomProducts: []
+  randomProducts: [],
 };
 
 /* REDUCER */
@@ -75,18 +76,17 @@ const initialState = {
 export default function reducer(state = initialState, action = {}) {
   const { type, payload } = action;
   switch (type) {
-
   case LOAD_PRODUCTS:
-    return { ...state,products: payload };
+    return { ...state, products: payload };
 
-  case LOAD_PRODUCTS_PER_PAGE: 
+  case LOAD_PRODUCTS_PER_PAGE:
     return {
       ...state,
-      products: [ ...payload.products ],
+      products: [...payload.products],
       amount: payload.amount,
       productsPerPage: payload.productsPerPage,
       presentPage: payload.presentPage,
-      sort: payload.sort
+      sort: payload.sort,
     };
 
   case LOAD_SINGLE_PRODUCT:
@@ -99,26 +99,26 @@ export default function reducer(state = initialState, action = {}) {
     return { ...state, favoriteProducts: { ...state.favoriteProducts, [payload._id]: payload } };
 
 
-  case ADD_DISCOUNT_CODES: 
+  case ADD_DISCOUNT_CODES:
     return { ...state, discountCodes: payload };
 
   case START_PRODUCTS_REQUEST:
-    return { ...state, productsRequest: { pending: true, error: null, success: null }};    
+    return { ...state, productsRequest: { pending: true, error: null, success: null } };
 
   case START_PRODUCT_REQUEST:
-    return { ...state, singleProductRequest: { pending: true, error: null, success: null }}; 
+    return { ...state, singleProductRequest: { pending: true, error: null, success: null } };
 
-  case END_PRODUCTS_REQUEST: 
-    return { ...state, productsRequest: { pending: false, error: null, success: true }};    
+  case END_PRODUCTS_REQUEST:
+    return { ...state, productsRequest: { pending: false, error: null, success: true } };
 
   case END_PRODUCT_REQUEST:
-    return { ...state, singleProductRequest: { pending: false, error: null, success: true }}; 
+    return { ...state, singleProductRequest: { pending: false, error: null, success: true } };
 
   case LOAD_PRODUCTS_ERROR:
     return { ...state, productsRequest: { pending: false, error: payload, success: false } };
 
   case LOAD_PRODUCT_ERROR:
-    return { ...state, singleProductRequest: { pending: false, error: payload, success: false } };   
+    return { ...state, singleProductRequest: { pending: false, error: payload, success: false } };
 
   default:
     return state;
@@ -127,7 +127,7 @@ export default function reducer(state = initialState, action = {}) {
 
 /* THUNKS */
 
-export const fetchProductsRequest = () => async dispatch => {
+export const fetchProductsRequest = () => async (dispatch) => {
   dispatch(startProductsRequest());
 
   try {
@@ -135,35 +135,35 @@ export const fetchProductsRequest = () => async dispatch => {
     dispatch(loadProducts(res.data));
     dispatch(endProductsRequest());
   } catch (error) {
-    console.log(error);
     dispatch(loadProductsError(error));
   }
 };
 
 export const fetchProductsByPage = (page, productsPerPage, sort) => async (dispatch, getState) => {
   dispatch(startProductsRequest());
- 
   try {
     const limit = productsPerPage || 10;
     const startAt = (page - 1) * limit;
 
-    let name, price;
+    let name;
+    let price;
     if (!isEmpty(sort)) {
       name = sort.name;
       price = sort.price;
     } else {
       name = getState().products.sort.name;
-      price = getState().products.sort.price;      
+      price = getState().products.sort.price;
     }
 
     dispatch(startProductsRequest());
 
-    const res = await axios.
-      get(`
+    const res = await axios
+      .get(`
       ${BASE_URL}/api/products/range/sort/?limit=${limit}&startAt=${startAt}
       ${name ? `&name=${name}` : ''}${price ? `&price=${price}` : ''}   
       `);
     // eslint-disable-next-line require-atomic-updates
+    // eslint-disable-next-line no-param-reassign
     if (isEmpty(sort)) sort = getState().products.sort;
 
     const payload = {
@@ -171,18 +171,17 @@ export const fetchProductsByPage = (page, productsPerPage, sort) => async (dispa
       amount: res.data.amount,
       productsPerPage: limit,
       presentPage: page,
-      sort: sort
+      sort,
     };
 
     dispatch(loadProductsPerPage(payload));
     dispatch(endProductsRequest());
   } catch (error) {
-    console.log(error);
     dispatch(loadProductsError(error));
   }
 };
 
-export const fetchSingleProductRequest = id => async dispatch => {
+export const fetchSingleProductRequest = (id) => async (dispatch) => {
   dispatch(startSingleProductRequest());
 
   try {
@@ -190,12 +189,11 @@ export const fetchSingleProductRequest = id => async dispatch => {
     dispatch(loadSingleProduct(res.data));
     dispatch(endProductRequest());
   } catch (error) {
-    console.log(error);
     dispatch(loadSingleProductError(error));
   }
 };
 
-export const fetchSingleToBasketRequest = id => async dispatch => {
+export const fetchSingleToBasketRequest = (id) => async (dispatch) => {
   dispatch(startSingleProductRequest());
 
   try {
@@ -203,31 +201,27 @@ export const fetchSingleToBasketRequest = id => async dispatch => {
     dispatch(loadSingleToBasket(res.data));
     dispatch(endProductRequest());
   } catch (error) {
-    console.log(error);
     dispatch(loadSingleProductError(error));
   }
 };
 
 
-export const fetchDiscountCodesRequest = () => async dispatch => {
-
+export const fetchDiscountCodesRequest = () => async (dispatch) => {
   try {
     const res = await axios.get(`${BASE_URL}/api/products/codes`);
     dispatch(addDiscountsCodes(res.data));
   } catch (error) {
-    console.log(error);
     dispatch(loadSingleProductError(error));
   }
 };
 
-export const fetchSingleToFavoritesRequest = id => async dispatch => {
+export const fetchSingleToFavoritesRequest = (id) => async (dispatch) => {
   dispatch(startSingleProductRequest());
   try {
     const res = await axios.get(`${BASE_URL}/api/products/${id}`);
     dispatch(loadSingleToFavorites(res.data));
     dispatch(endProductRequest());
   } catch (error) {
-    console.log(error);
     dispatch(loadSingleProductError(error));
   }
 };

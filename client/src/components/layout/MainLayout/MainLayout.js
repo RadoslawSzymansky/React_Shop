@@ -17,7 +17,8 @@ const MainLayout = ({ children }) => (
 );
 
 MainLayout.propTypes = {
-  children: PropTypes.node
+  // eslint-disable-next-line react/require-default-props
+  children: PropTypes.node,
 };
 
 export default MainLayout;

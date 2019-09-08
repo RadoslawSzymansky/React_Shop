@@ -1,4 +1,0 @@
-features – komponenty bardziej specyficzne, 
-które będą istotną częścią całych podstron. Może to być np. lista postów – 
-nie jest to komponent, który miałby sens na każdej podstronie. Co więcej, 
-komponenty w features będą przeważnie bardziej rozbudowane od tych z common.

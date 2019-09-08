@@ -3,12 +3,11 @@ import { BASE_URL } from '../config/config';
 import setAuthToken from '../utils/setAuthToken';
 import config from '../utils/axiosConfig';
 import { setAlert } from './alertsRedux';
-import history from '../utils/history';
 
 const reducerName = 'auth';
 
 // action name creator
-const createActionName = name => `app/${reducerName}/${name}`;
+const createActionName = (name) => `app/${reducerName}/${name}`;
 
 export const USER_LOADED = createActionName('USER_LOADED');
 export const AUTH_ERROR = createActionName('AUTH_ERROR');
@@ -29,7 +28,7 @@ export const getAuth = ({ auth }) => auth;
 
 export const loadUser = (payload) => ({ type: USER_LOADED, payload });
 export const registerSuccess = (payload) => ({ type: REGISTER_SUCCESS, payload });
-export const loginSuccess = (payload) => ({ type: LOGIN_SUCCESS, payload  });
+export const loginSuccess = (payload) => ({ type: LOGIN_SUCCESS, payload });
 export const registerFail = () => ({ type: REGISTER_FAIL });
 export const loginFail = () => ({ type: LOGIN_FAIL });
 export const deleteAccount = () => ({ type: DELETE_ACCOUNT });
@@ -44,7 +43,7 @@ const initialState = {
   token: localStorage.getItem('token'),
   user: null,
   loginModal: false,
-  registerModal: false
+  registerModal: false,
 };
 
 /* REDUCER */
@@ -52,10 +51,11 @@ const initialState = {
 export default function reducer(state = initialState, action = {}) {
   const { type, payload } = action;
   switch (type) {
-
   case USER_LOADED:
-    return { ...state, isLoading: false, user: payload, isAuthenticated: true }; 
-  
+    return {
+      ...state, isLoading: false, user: payload, isAuthenticated: true,
+    };
+
   case REGISTER_SUCCESS:
   case LOGIN_SUCCESS:
     localStorage.setItem('token', payload);
@@ -71,20 +71,20 @@ export default function reducer(state = initialState, action = {}) {
       ...state,
       user: null,
       isLoading: false,
-      isAuthenticated: false
+      isAuthenticated: false,
     };
 
   case TOGGLE_LOGIN_MODAL:
     return {
       ...state,
-      loginModal: !state.loginModal
-    }
+      loginModal: !state.loginModal,
+    };
 
   case TOGGLE_REGISTER_MODAL:
     return {
       ...state,
-      registerModal: !state.registerModal
-    }
+      registerModal: !state.registerModal,
+    };
   default:
     return state;
   }
@@ -92,26 +92,32 @@ export default function reducer(state = initialState, action = {}) {
 
 /* THUNKS */
 
-export const loadUserRequest = () => async dispatch => {
+export const toggleLoginModal = () => (dispatch) => dispatch({ type: TOGGLE_LOGIN_MODAL });
+
+export const toggleRegisterModal = () => (dispatch) => dispatch({ type: TOGGLE_REGISTER_MODAL });
+
+export const logout = () => (dispatch) => {
+  dispatch({ type: LOGOUT });
+  dispatch(setAlert('You are logged out!', 'warning'));
+};
+
+export const loadUserRequest = () => async (dispatch) => {
   if (localStorage.token) {
     setAuthToken(localStorage.token);
   }
 
   try {
-
     const res = await axios.get(`${BASE_URL}/api/auth`);
     dispatch(loadUser(res.data));
-
   } catch (err) {
     dispatch(authError());
   }
 };
 
-export const loginUserRequest = formData => async dispatch => {
+export const loginUserRequest = (formData) => async (dispatch) => {
   const body = JSON.stringify(formData);
 
   try {
-
     const res = await axios.post(`${BASE_URL}/api/auth`, body, config);
     dispatch(loginSuccess(res.data.token));
     dispatch(toggleLoginModal());
@@ -119,19 +125,17 @@ export const loginUserRequest = formData => async dispatch => {
     //   history.goForward();
     // }
     // history.push('/');
-    /// MA PRZECHODZIC TYLKO GDY PRIVATE ROUTY CZYLU USER ROUTER n[p]
+    // MA PRZECHODZIC TYLKO GDY PRIVATE ROUTY CZYLU USER ROUTER n[p]
 
     dispatch(loadUserRequest());
     dispatch(setAlert('Login Success', 'success'));
-
   } catch (err) {
-    console.dir(err)
     dispatch(loginFail());
     dispatch(setAlert(err.response.data.msg, 'danger'));
   }
 };
 
-export const registerUserRequest = formData => async dispatch => {
+export const registerUserRequest = (formData) => async (dispatch) => {
   const body = JSON.stringify(formData);
 
   try {
@@ -141,70 +145,51 @@ export const registerUserRequest = formData => async dispatch => {
     // if (history.location.pathname !== '/') history.goBack();
     dispatch(loadUserRequest());
     dispatch(setAlert('Account created!', 'success'));
-
   } catch (err) {
     dispatch(registerFail());
     dispatch(setAlert(err.response.data.msg, 'danger'));
   }
-
 };
 
-export const deleteAccountRequest = () => async dispatch => {
+export const deleteAccountRequest = () => async (dispatch) => {
   try {
     await axios.delete(`${BASE_URL}/api/users`, {}, config);
     dispatch(logout());
     dispatch(setAlert('Account deleted', 'success'));
-
   } catch (error) {
     dispatch(authError());
   }
 };
 
-export const logout = () => dispatch => {
-  dispatch({ type: LOGOUT });
-  dispatch(setAlert('You are logged out!', 'warning'));
-};
-
-export const changeNameRequest = formData => async dispatch => {
-
+export const changeNameRequest = (formData) => async (dispatch) => {
   try {
     const res = await axios.post(`${BASE_URL}/api/users/settings/name/change`, formData, config);
     dispatch(loadUser(res.data));
     dispatch(setAlert('Name changed successfully!', 'success'));
-
   } catch (error) {
     dispatch(authError());
   }
 };
 
-export const changeEmailRequest = formData => async dispatch => {
-
+export const changeEmailRequest = (formData) => async (dispatch) => {
   try {
     const res = await axios.post(`${BASE_URL}/api/users/settings/email/change`, formData, config);
     dispatch(loadUser(res.data));
     dispatch(setAlert('Email changed successfully!', 'success'));
-
   } catch (error) {
     dispatch(authError());
   }
 };
 
-export const changePasswordRequest = formData => async dispatch => {
+export const changePasswordRequest = (formData) => async (dispatch) => {
   try {
     const res = await axios.post(`${BASE_URL}/api/users/settings/password/change`, formData, config);
 
     dispatch(loadUser(res.data));
     dispatch(setAlert('Password changed successfully!', 'success'));
-
   } catch (error) {
-
     if (error.response.data.errors.length) {
-      error.response.data.errors.forEach(err => dispatch(setAlert(err.msg, 'danger')));
+      error.response.data.errors.forEach((err) => dispatch(setAlert(err.msg, 'danger')));
     }
-
   }
 };
-
-export const toggleLoginModal = () => dispatch => dispatch({ type: TOGGLE_LOGIN_MODAL });
-
-export const toggleRegisterModal = () => dispatch => dispatch({ type: TOGGLE_REGISTER_MODAL });

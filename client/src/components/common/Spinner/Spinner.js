@@ -6,10 +6,10 @@ import './Spinner.scss';
 const Spinner = () => (
   <Animated animationIn="fadeIn" animationOut="fadeOut">
     <div className="lds-ellipsis">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
+      <div />
+      <div />
+      <div />
+      <div />
     </div>
   </Animated>
 );

@@ -1,3 +1,5 @@
+/* eslint-disable prefer-template */
+/* eslint-disable no-underscore-dangle */
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Alert } from 'reactstrap';
@@ -10,37 +12,38 @@ const UserShoppingHistory = ({ user: { isLoading, purchasedHistory }, getProduct
   const list = purchasedHistory
     .map((historyProduct) => {
       let product;
-      products.forEach(purchased => {
+      products.forEach((purchased) => {
         if (historyProduct.productId === purchased._id) {
           product = {
-            ...purchased, purchasedCount: historyProduct.count, date: historyProduct.date
+            ...purchased, purchasedCount: historyProduct.count, date: historyProduct.date,
           };
         }
       });
       return product;
     });
 
-  const recentDate = new Date(Math.max.apply(null, list.map(function (e) {
-    return new Date(e.date);
-  })));
+  const recentDate = new Date(Math.max.apply(null, list.map((e) => new Date(e.date))));
 
-  var today = new Date(recentDate);
-  var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-  var time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
-  var dateTime = date + ' ' + time;
+  const today = new Date(recentDate);
+  const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+  const time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+  const dateTime = date + ' ' + time;
 
-  switch(true) {
+  switch (true) {
   case isLoading:
     return <Spinner />;
   case !isLoading && purchasedHistory.length === 0:
     return <Alert>You haven&apos;t bought anything yet.</Alert>;
   case !isLoading && products.length > 0:
-   
-    return <>
-    {console.log(typeof recentDate)}
-      <h6>Your last shooping was on <span className="text-primary">{dateTime}</span></h6>
-      {list.map(product => <HistoryToast key={product._id} product={product} />)}
-    </>;
+    return (
+      <>
+        <h6>
+          Your last shooping was on
+          <span className="text-primary">{dateTime}</span>
+        </h6>
+        {list.map((product) => <HistoryToast key={product._id} product={product} />)}
+      </>
+    );
   default:
     return null;
   }
@@ -49,7 +52,7 @@ const UserShoppingHistory = ({ user: { isLoading, purchasedHistory }, getProduct
 UserShoppingHistory.propTypes = {
   getProducts: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
-  products: PropTypes.array.isRequired
+  products: PropTypes.array.isRequired,
 };
 
 export default UserShoppingHistory;

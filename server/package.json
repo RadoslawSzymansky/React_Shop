@@ -19,7 +19,6 @@
     "mongo": "^0.1.0",
     "mongo-sanitize": "^1.0.1",
     "mongoose": "5.5.11",
-    "nodemon": "1.19.1",
-    "request": "^2.88.0"
+    "nodemon": "1.19.1"
   }
 }

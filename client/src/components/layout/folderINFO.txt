@@ -1,1 +1,0 @@
-layout – komponenty służące budowy układu strony (np. Container, Menu).

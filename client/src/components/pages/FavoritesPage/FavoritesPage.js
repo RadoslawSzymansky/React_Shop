@@ -4,13 +4,11 @@ import PageTitle from '../../common/PageTitle/PageTitle';
 
 import './FavoritePage.scss';
 
-const FavoritesPage = () => {
-  return (
-    <div className='favorites-page'>
-      <PageTitle>Favorite products</PageTitle>
-      <Favorites />
-    </div>
-  );
-};
+const FavoritesPage = () => (
+  <div className="favorites-page">
+    <PageTitle>Favorite products</PageTitle>
+    <Favorites />
+  </div>
+);
 
 export default FavoritesPage;

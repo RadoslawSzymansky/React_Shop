@@ -3,15 +3,15 @@ import { addToFavoritesRequest, removeFromFavoritesRequest } from '../../../redu
 
 import Favorite from './Favorite';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   favorites: state.user.favorites,
   isAuthenticated: state.auth.isAuthenticated,
-  isLoading: state.user.isLoading
+  isLoading: state.user.isLoading,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   addFavorite: (productId) => dispatch(addToFavoritesRequest(productId)),
-  removeFavorite: (productId) => dispatch(removeFromFavoritesRequest(productId))
+  removeFavorite: (productId) => dispatch(removeFromFavoritesRequest(productId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Favorite);

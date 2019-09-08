@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -7,6 +8,7 @@ import history from './utils/history';
 
 import App from './App';
 
+// eslint-disable-next-line import/no-webpack-loader-syntax
 import '!style-loader!css-loader!bootstrap/dist/css/bootstrap.css';
 import './styles/global.scss';
 

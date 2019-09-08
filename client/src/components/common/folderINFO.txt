@@ -1,4 +1,0 @@
-bardzo uniwersalne komponenty, które w aplikacji będą używane wiele razy. 
-Nie są one przypisane do jakiejś konkretnej podstrony, 
-lecz mogą być używane w wielu miejscach. Nie mają też zbyt rozbudowanej logiki (tzw. dumb components). 
-Przykładem takich komponentów mogą być np. Alert, Modal, Button, List, itd.

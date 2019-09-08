@@ -10,17 +10,17 @@ import { fetchDiscountCodesRequest } from './redux/productsRedux';
 import MainLayout from './components/layout/MainLayout/MainLayout';
 import Routes from './routing/Routes';
 
-const App = ({ 
-  loadUserRequest, isAuthenticated, concatBasketsRequest, concatFavoritesRequest, fetchDiscountCodesRequest
+const App = ({
+  loadUserRequest, isAuthenticated, concatBasketsRequest,
+  concatFavoritesRequest, fetchDiscountCodesRequest,
 }) => {
-  
   useEffect(() => {
     loadUserRequest();
     fetchDiscountCodesRequest();
-  },[]);
+  }, []);
 
   useEffect(() => {
-    if(isAuthenticated) {
+    if (isAuthenticated) {
       concatBasketsRequest();
       concatFavoritesRequest();
     }
@@ -38,14 +38,16 @@ App.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   concatBasketsRequest: PropTypes.func.isRequired,
   concatFavoritesRequest: PropTypes.func.isRequired,
-  fetchDiscountCodesRequest: PropTypes.func.isRequired
+  fetchDiscountCodesRequest: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
-export default connect(mapStateToProps, { 
-  loadUserRequest, concatBasketsRequest, concatFavoritesRequest, fetchDiscountCodesRequest 
+export default connect(mapStateToProps, {
+  loadUserRequest,
+  concatBasketsRequest,
+  concatFavoritesRequest,
+  fetchDiscountCodesRequest,
 })(hot(module)(App));
-

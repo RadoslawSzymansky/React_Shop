@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import Basket from './Basket';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
-  user: state.user
+  user: state.user,
 });
 
 export default connect(mapStateToProps)(Basket);

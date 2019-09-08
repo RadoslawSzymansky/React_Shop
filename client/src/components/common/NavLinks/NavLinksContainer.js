@@ -3,8 +3,8 @@ import { getAuth } from '../../../redux/authRedux';
 
 import NavLinks from './NavLinks';
 
-const mapStateToProps = state => ({
-  auth: getAuth(state)
+const mapStateToProps = (state) => ({
+  auth: getAuth(state),
 });
 
 export default connect(mapStateToProps)(NavLinks);

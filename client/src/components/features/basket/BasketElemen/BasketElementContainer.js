@@ -4,15 +4,15 @@ import { removeFromBasketRequest, addToBasketRequest } from '../../../../redux/u
 
 import BasketElement from './BasketElement';
 
-const mapStateToProps = state =>({
+const mapStateToProps = (state) => ({
   basketProducts: state.products.basketProducts,
-  userCode: state.user.code
+  userCode: state.user.code,
 });
 
-const mapDispatchToProps = dispatch => ({
-  fetchProduct: id => dispatch(fetchSingleToBasketRequest(id)),
-  removeProduct: id => dispatch(removeFromBasketRequest(id)),
-  basketAction: product => dispatch(addToBasketRequest(product))
+const mapDispatchToProps = (dispatch) => ({
+  fetchProduct: (id) => dispatch(fetchSingleToBasketRequest(id)),
+  removeProduct: (id) => dispatch(removeFromBasketRequest(id)),
+  basketAction: (product) => dispatch(addToBasketRequest(product)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BasketElement);

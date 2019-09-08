@@ -2,26 +2,26 @@ const Product = require('../models/product.model');
 
 // Get all products
 exports.getPosts = async (req, res) => {
-
   try {
     res.status(200).json(await Product.find());
   } catch (err) {
     res.status(500).json(err);
   }
-
 };
 
 // Get products by range // pagination
-exports.getProductsByRange = async function (req, res) {
-
+exports.getProductsByRange = async (req, res) => {
   try {
-    let { limit, name, price, startAt } = req.query;
-    limit = parseInt(limit);
-    startAt = parseInt(startAt);
+    let {
+      // eslint-disable-next-line prefer-const
+      limit, name, price, startAt,
+    } = req.query;
+    limit = parseInt(limit, 10);
+    startAt = parseInt(startAt, 10);
 
     const productFilters = [
       { $skip: startAt },
-      { $limit: limit }
+      { $limit: limit },
     ];
 
     if (name && !price) {
@@ -42,38 +42,34 @@ exports.getProductsByRange = async function (req, res) {
       products,
       amount,
     });
-
   } catch (err) {
     res.status(500).json(err);
   }
-
 };
 
 // Get single product by Id
 exports.getPost = async (req, res) => {
-
   try {
     res.status(200).json(await Product.findById(req.params.id));
   } catch (err) {
     res.status(500).json(err);
   }
-
 };
 
 // Get Discount Codes
 exports.getCodes = (req, res) => {
   res.json([
     {
-      name: 'freetransport',
-      discountPercent: 1
+      name: 'newuser',
+      discountPercent: 5,
     },
     {
       name: '2019',
-      discountPercent: 10
+      discountPercent: 10,
     },
     {
       name: 'summer',
-      discountPercent: 20
-    }
+      discountPercent: 20,
+    },
   ]);
 };
