@@ -150,9 +150,9 @@ export const registerUserRequest = formData => async dispatch => {
 };
 
 export const deleteAccountRequest = () => async dispatch => {
-
   try {
-    await axios.post(`${BASE_URL}/api/users`, {}, config);
+    await axios.delete(`${BASE_URL}/api/users`, {}, config);
+    dispatch(logout());
     dispatch(setAlert('Account deleted', 'success'));
 
   } catch (error) {
@@ -163,6 +163,46 @@ export const deleteAccountRequest = () => async dispatch => {
 export const logout = () => dispatch => {
   dispatch({ type: LOGOUT });
   dispatch(setAlert('You are logged out!', 'warning'));
+};
+
+export const changeNameRequest = formData => async dispatch => {
+
+  try {
+    const res = await axios.post(`${BASE_URL}/api/users/settings/name/change`, formData, config);
+    dispatch(loadUser(res.data));
+    dispatch(setAlert('Name changed successfully!', 'success'));
+
+  } catch (error) {
+    dispatch(authError());
+  }
+};
+
+export const changeEmailRequest = formData => async dispatch => {
+
+  try {
+    const res = await axios.post(`${BASE_URL}/api/users/settings/email/change`, formData, config);
+    dispatch(loadUser(res.data));
+    dispatch(setAlert('Email changed successfully!', 'success'));
+
+  } catch (error) {
+    dispatch(authError());
+  }
+};
+
+export const changePasswordRequest = formData => async dispatch => {
+  try {
+    const res = await axios.post(`${BASE_URL}/api/users/settings/password/change`, formData, config);
+
+    dispatch(loadUser(res.data));
+    dispatch(setAlert('Password changed successfully!', 'success'));
+
+  } catch (error) {
+
+    if (error.response.data.errors.length) {
+      error.response.data.errors.forEach(err => dispatch(setAlert(err.msg, 'danger')));
+    }
+
+  }
 };
 
 export const toggleLoginModal = () => dispatch => dispatch({ type: TOGGLE_LOGIN_MODAL });

@@ -35,7 +35,18 @@ router.delete('/favorites/:id', auth, userController.deleteFromFavorites);
 // Buy products
 router.patch('/basket/buy', auth, userController.buyProducts);
 
-// Get random products from history
-router.get('/history/random', auth, userController.getRandomProducts);
+// Get all products from history
+router.get('/history/all', auth, userController.getHistoryProducts);
+
+// Change user password
+router.post('/settings/password/change', auth, userController.changePassword);
+
+// Change user email
+router.post('/settings/email/change', auth, userController.changeEmail);
+
+// Change user name
+router.post('/settings/name/change', auth, userController.changeName);
+
+
 
 module.exports = router;

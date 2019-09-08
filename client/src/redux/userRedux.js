@@ -467,7 +467,7 @@ export const deleteUserRequest = () => async (dispatch) => {
 };
 
 export const getPurchasedProductsRequest = () => async (dispatch) => {
-  console.log("zaczalm")
+
   dispatch(startUserRequest());
 
   if (localStorage.token) {
@@ -476,7 +476,7 @@ export const getPurchasedProductsRequest = () => async (dispatch) => {
 
   try {
 
-    const res = await axios.get(`${BASE_URL}/api/users/history/random`);
+    const res = await axios.get(`${BASE_URL}/api/users/history/all`);
     dispatch(getPurchasedProducts(res.data));
     dispatch(endUserRequest());
 

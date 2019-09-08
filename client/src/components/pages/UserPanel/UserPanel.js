@@ -5,7 +5,7 @@ import PageTitle from '../../common/PageTitle/PageTitle';
 import UserPanelNavi from '../../features/user-panel/UserPanelNavi/UserPanelNavi';
 import UserSettings from '../../features/user-panel/UserSettings/UserSettingsContainer';
 import UserStoryRandom from '../../features/user-panel/UserStoryRandom/UserStoryRandomContainer';
-import UserShoppingHistory from '../../features/user-panel/UserShoppingHistory/UserShoppingHistory';
+import UserShoppingHistory from '../../features/user-panel/UserShoppingHistory/UserShoppingHistoryContainer';
 import Basket from '../../features/basket/Basket/BasketContainer';
 import Favorites from '../../features/Favorites/FavoritesContainer';
 import NotFound from '../NotFound/NotFoundPage';

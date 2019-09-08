@@ -2,26 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PageTitle from '../../../common/PageTitle/PageTitle';
 import { Button } from 'reactstrap';
+import UserSettingsForm from '../UserSettingsForm/UserSettingsFormContainer';
 
-const UserSettings = ({ user }) => {
+const UserSettings = ({ deleteUser }) => {
   return (
     <div style={{padding: 10}}>
       <PageTitle>Settings</PageTitle>
       <br/>
-      <Button outline>Change name</Button>
+      <UserSettingsForm buttonLabel="Change name" type='name' />
+      <br />
+      <UserSettingsForm buttonLabel="Change email" type='email' />
+      <br />
+      <UserSettingsForm buttonLabel="Change password" type='password' />
+      <br />
+      <a href='https://gravatar.com/'>
+        <Button outline>Change avatar</Button>
+      </a>
       <br />
       <br />
-      <Button outline>Change email</Button>
       <br />
-      <br />
-      <Button outline>Change avatar</Button>
-      <br />
-      <br />
-      <Button outline>Change password</Button>
-      <br />
-      <br />
-      <br />
-      <Button outline color='danger'>Delete account</Button>
+      <Button outline color='danger' onClick={() => {
+        if (window.confirm('Are you sure? This cannot be undone!')) {
+          deleteUser();
+        }
+      }}>Delete account</Button>
     </div>
   );
 };

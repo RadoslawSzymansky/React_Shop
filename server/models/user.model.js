@@ -14,7 +14,8 @@ const User = new Schema({
   purchasedHistory: [
     {
       productId: { type: Schema.Types.ObjectId, required: true },
-      count: { type: Number, required: true }
+      count: { type: Number, required: true },
+      date: {type: Date, default: Date.now }
     }
   ],
   basket: [

@@ -1,12 +1,11 @@
 import { connect } from 'react-redux';
+import { deleteAccountRequest } from '../../../../redux/authRedux';
 
 import UserSettings from './UserSettings';
 
-const mapStateToProps = state => ({ 
-  user: state.user
-});
 
 const mapDispatchToProps = dispatch => ({ 
+  deleteUser: () => dispatch(deleteAccountRequest())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserSettings);
+export default connect(null, mapDispatchToProps)(UserSettings);

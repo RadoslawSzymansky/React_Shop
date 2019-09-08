@@ -79,22 +79,7 @@ module.exports.registerUser = [
   }
 ];
 
-// Route    /api/users
-// Method   DELETE
-// Access   PRIVATE
-module.exports.deleteUser = async (req, res) => {
-  try {
-    await User.findByIdAndDelete(req.user.id).select('-password');
-    res.json({ msg: 'User deleted successfully'});
-  } catch (error) {
-    console.log(error);
-    res.status(500).send('Server error');
-  }
-};
 
-// Route    /api/users/basket
-// Method   PUT
-// Access   PRIVATE
 module.exports.addToBasket = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
@@ -244,10 +229,10 @@ module.exports.buyProducts = async (req, res) => {
   }
 };
 
-// Route    /api/users/history/random
+// Route    /api/users/history/all
 // Method   GET
 // Access   PRIVATE
-module.exports.getRandomProducts = async (req, res) => {
+module.exports.getHistoryProducts = async (req, res) => {
   try {
 
     const user = await User.findById(req.user.id);
@@ -257,6 +242,129 @@ module.exports.getRandomProducts = async (req, res) => {
     
     res.json(randomProducts);
   } catch (error) {
+    res.status(500).send('Server error');
+  }
+};
+
+
+// Route    /api/users/settings/password/change
+// Method   POST
+// Access   PRIVATE
+module.exports.changePassword = [
+  [
+    check('newPassword', 'New password is required').not().isEmpty().isLength({ min: 5 }),
+    check('newPassword', 'New password must have at least 5 letters').isLength({ min: 5 }),
+    check('oldPassword', 'Old password is required').not().isEmpty(),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+
+    // validation of body
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+
+    try {
+
+      const user = await User.findById(req.user.id);
+
+      const { newPassword, oldPassword } = req.body;
+
+      if (!bcrypt.compareSync(oldPassword, user.password)) {
+        return res.status(400).json({ errors: [{ msg: 'Old password is not correct!' }] });
+      }
+
+      // bscrypt password
+      const salt = bcrypt.genSaltSync(10);
+      user.password = await bcrypt.hashSync(newPassword, salt);
+
+      await user.save();
+      res.json(user);
+
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).send('Server error');
+    }
+  }
+];
+
+// Route    /api/users/settings/email/change
+// Method   POST
+// Access   PRIVATE
+module.exports.changeEmail = [
+  [
+    check('email', 'Email is required!').not().isEmpty(),
+    check('email', 'Email is not valid!').isEmail()
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+
+    // validation of body
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { email } = req.body;
+
+    try {
+
+      const user = await User.findById(req.user.id);
+      user.email = email;
+
+      await user.save();
+      res.json(user);
+
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).send('Server error');
+    }
+  }
+];
+
+// Route    /api/users/settings/name/change
+// Method   POST
+// Access   PRIVATE
+module.exports.changeName = [
+  [
+    check('name', 'Name is required').not().isEmpty(),
+    check('name', 'Name minimun lenght is 4').isLength({ min: 5 }),
+    check('name', 'Name max lenght is 20').isLength({ max: 20 }),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+
+    // validation of body
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { name } = req.body;
+
+    try {
+
+      const user = await User.findById(req.user.id);
+      user.name = name;
+
+      await user.save();
+      res.json(user);
+
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).send('Server error');
+    }
+  }
+];
+
+// Route    /api/users
+// Method   DELETE
+// Access   PRIVATE
+module.exports.deleteUser = async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.user.id).select('-password');
+    res.json({ msg: 'User deleted successfully' });
+  } catch (error) {
+    console.log(error);
     res.status(500).send('Server error');
   }
 };
