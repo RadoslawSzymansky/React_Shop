@@ -71,18 +71,26 @@ const UserStoryRandom = ({
           <h5>
             You have liked
             <span className="text-info">
+              {' '}
               {user.favorites.length}
+              {' '}
             </span>
             products
           </h5>
           <h5>
             You have
+            {' '}
             <span className="text-info">{user.basket.length}</span>
+            {' '}
             products in basket
           </h5>
           <h5>
             You have bought
-            <span className="text-info">{user.purchasedHistory.length}</span>
+            <span className="text-info">
+              {' '}
+              {user.purchasedHistory.length}
+              {' '}
+            </span>
             products
           </h5>
         </ToastBody>

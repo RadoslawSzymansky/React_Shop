@@ -186,13 +186,14 @@ export const addToBasketRequest = (productToBasket) => async (dispatch, getState
         JSON.stringify([productToBasket]),
       );
     }
+
+
+    if (!getState().user.basket.some((e) => e.productId === productToBasket.productId)) {
+      dispatch(setAlert('Product removed from', 'success', 1000));
+    }
+
     dispatch(getBasketValue());
     dispatch(endUserRequest());
-    history.push('/');
-    history.goBack();
-
-    dispatch(setAlert('Product added to basket', 'success', 1500));
-
     return;
   }
 
@@ -204,15 +205,14 @@ export const addToBasketRequest = (productToBasket) => async (dispatch, getState
 
   try {
     const res = await axios.put(`${BASE_URL}/api/users/basket`, { productToBasket });
+
+    if (!getState().user.basket.some((e) => e.productId === productToBasket.productId)) {
+      dispatch(setAlert('Product added to basket', 'success', 1000));
+    }
+
     dispatch(addToBasket(res.data));
     dispatch(endUserRequest());
     dispatch(getBasketValue());
-
-    history.push('/');
-    history.push('/');
-    history.goBack();
-
-    dispatch(setAlert('Product added to basket', 'success', 1500));
   } catch (err) {
     dispatch(failUserRequest());
   }
@@ -251,7 +251,6 @@ export const removeFromBasketRequest = (productId) => async (dispatch, getState)
     dispatch(removeFromBasket(res.data));
     dispatch(endUserRequest());
     dispatch(getBasketValue());
-    dispatch(setAlert('Product removed from', 'success', 1500));
   } catch (err) {
     dispatch(failUserRequest());
   }
@@ -400,6 +399,7 @@ export const buyProductsRequest = () => async (dispatch) => {
     dispatch(endUserRequest());
     dispatch(buyProducts(res.data));
     dispatch(setAlert('Congratulation, you successfully bought products! Check your shop history in User Panel'));
+
     setTimeout(() => {
       history.push('/');
       history.goBack();

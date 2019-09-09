@@ -8,6 +8,7 @@ import { setAlert } from '../../../redux/alertsRedux';
 const mapStateToProps = (state) => ({
   product: getSingleProduct(state),
   request: getSingleProductRequest(state),
+  basket: state.user.basket,
 });
 
 const mapDispatchToProps = (dispatch) => ({

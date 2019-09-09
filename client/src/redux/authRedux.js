@@ -3,6 +3,7 @@ import { BASE_URL } from '../config/config';
 import setAuthToken from '../utils/setAuthToken';
 import config from '../utils/axiosConfig';
 import { setAlert } from './alertsRedux';
+import history from '../utils/history';
 
 const reducerName = 'auth';
 
@@ -99,6 +100,9 @@ export const toggleRegisterModal = () => (dispatch) => dispatch({ type: TOGGLE_R
 export const logout = () => (dispatch) => {
   dispatch({ type: LOGOUT });
   dispatch(setAlert('You are logged out!', 'warning'));
+  history.push('/');
+  history.push('/');
+  history.goBack();
 };
 
 export const loadUserRequest = () => async (dispatch) => {
@@ -121,11 +125,10 @@ export const loginUserRequest = (formData) => async (dispatch) => {
     const res = await axios.post(`${BASE_URL}/api/auth`, body, config);
     dispatch(loginSuccess(res.data.token));
     dispatch(toggleLoginModal());
-    // if (history.location.pathname !== '/') {
-    //   history.goForward();
-    // }
-    // history.push('/');
-    // MA PRZECHODZIC TYLKO GDY PRIVATE ROUTY CZYLU USER ROUTER n[p]
+
+    if (history.location.pathname === '/user-panel') {
+      history.goBack();
+    }
 
     dispatch(loadUserRequest());
     dispatch(setAlert('Login Success', 'success'));
@@ -145,6 +148,10 @@ export const registerUserRequest = (formData) => async (dispatch) => {
     // if (history.location.pathname !== '/') history.goBack();
     dispatch(loadUserRequest());
     dispatch(setAlert('Account created!', 'success'));
+
+    if (history.location.pathname === '/user-panel') {
+      history.goBack();
+    }
   } catch (err) {
     dispatch(registerFail());
     dispatch(setAlert(err.response.data.msg, 'danger'));
@@ -156,6 +163,10 @@ export const deleteAccountRequest = () => async (dispatch) => {
     await axios.delete(`${BASE_URL}/api/users`, {}, config);
     dispatch(logout());
     dispatch(setAlert('Account deleted', 'success'));
+
+    history.push('/');
+    history.push('/');
+    history.goBack();
   } catch (error) {
     dispatch(authError());
   }

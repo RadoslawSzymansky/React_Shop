@@ -20,7 +20,7 @@ const Routes = () => (
     <Route path="/contact" exact component={ContactPage} />
     <Route path="/private" exact component={PrivatePage} />
     <Route path="/favorites" exact component={FavoritesPage} />
-    <PrivateRoute path="/user-panel" component={UserPanelPage} />
+    <PrivateRoute path="/user-panel" component={UserPanelPage} name="User Panel" />
     <Route component={NotFound} />
   </Switch>
 );
