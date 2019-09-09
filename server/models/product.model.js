@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 
 const Product = new Schema({
   name: { type: 'String', required: true },
@@ -12,11 +13,52 @@ const Product = new Schema({
   oldprice: { type: Number },
   rates: [
     {
-      userId: { type: Schema.Types.ObjectId, required: true },
-      rate: { type: Number, required: true }
-    }
+      userId: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: 'users',
+      },
+      rate: { type: Number, required: true },
+      text: { type: String, required: true },
+      name: { type: String, required: true },
+      avatar: { type: String },
+      likes: [
+        {
+          userId: {
+            type: Schema.Types.ObjectId,
+            ref: 'users',
+          },
+        },
+      ],
+      comments: [{
+        userId: {
+          type: Schema.Types.ObjectId,
+          required: true,
+          ref: 'users',
+        },
+        text: {
+          type: String,
+          required: true,
+        },
+        name: {
+          type: String,
+          required: true,
+        },
+        avatar: {
+          type: String,
+        },
+        date: {
+          type: Date,
+          default: Date.now,
+        },
+      }],
+      date: {
+        type: Date,
+        default: Date.now,
+      },
+    },
   ],
-  avaibleDiscounts: [ '2019' ]
+  avaibleDiscounts: ['newuser'],
 });
 
 module.exports = mongoose.model('Product', Product);

@@ -1,4 +1,8 @@
+/* eslint-disable no-underscore-dangle */
+const { check, validationResult } = require('express-validator');
+
 const Product = require('../models/product.model');
+const User = require('../models/user.model');
 
 // Get all products
 exports.getPosts = async (req, res) => {
@@ -72,4 +76,100 @@ exports.getCodes = (req, res) => {
       discountPercent: 20,
     },
   ]);
+};
+
+// path      /api/products/:id/rates
+// method    POST
+// access    PRIVATE
+exports.addOpinion = [[
+  check('rate', 'Rate must be number between 0 to 5').isInt({ min: 0, max: 5 }),
+  check('name', 'Name is required').not().isEmpty(),
+  check('text', 'Opinion text is required').isLength({ min: 5 }),
+], async (req, res) => {
+  const errors = validationResult(req);
+  // validation of body
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  const { name, rate, text } = req.body;
+  const { id } = req.params;
+
+  try {
+    const user = await User.findById(req.user.id);
+    const product = await Product.findById(id);
+
+    const newOpinion = {
+      userId: user._id,
+      name,
+      rate,
+      text,
+      avatar: user.avatar,
+    };
+
+    product.rates = [...product.rates, newOpinion];
+    await product.save();
+
+    return res.json(product);
+  } catch (error) {
+    return res.status(500).send('Server error');
+  }
+}];
+
+// path      /api/products/:id/rates/:opinionId/like
+// method    PUT
+// access    PRIVATE
+exports.likeOpinion = async (req, res) => {
+  const { id, opinionId } = req.params;
+
+  try {
+    const user = await User.findById(req.user.id);
+    const product = await Product.findById(id);
+    const { rates } = product;
+    const opinionIndex = rates.findIndex((e) => String(e._id) === String(opinionId));
+
+    if (opinionIndex === -1) return res.status(400).json({ msg: 'Opinion not found' });
+
+    // check if wasn't already liked
+    if (rates[opinionIndex].likes.some((e) => String(e.userId) === String(user._id))) {
+      return res.status(400).json({ msg: 'Product is already liked' });
+    }
+
+    rates[opinionIndex].likes = [...rates[opinionIndex].likes, { userId: req.user.id }];
+
+    await product.save();
+
+    return res.json(product);
+  } catch (error) {
+    return res.status(500).send('Server error');
+  }
+};
+
+// path      /api/products/:id/rates/:opinionId/unlike
+// method    PUT
+// access    PRIVATE
+exports.unLikeOpinion = async (req, res) => {
+  const { id, opinionId } = req.params;
+
+  try {
+    const user = await User.findById(req.user.id);
+    const product = await Product.findById(id);
+    const { rates } = product;
+    const opinionIndex = rates.findIndex((e) => String(e._id) === String(opinionId));
+
+    if (opinionIndex === -1) return res.status(400).json({ msg: 'Opinion not found' });
+
+    // check if wasn't already liked
+    if (!rates[opinionIndex].likes.some((e) => String(e.userId) === String(user._id))) {
+      return res.status(400).json({ msg: 'Product is was not liked' });
+    }
+
+    rates[opinionIndex].likes = rates[opinionIndex].likes
+      .filter((e) => String(e.userId) !== String(req.user.id));
+
+    await product.save();
+
+    return res.json(product);
+  } catch (error) {
+    return res.status(500).send('Server error');
+  }
 };

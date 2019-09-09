@@ -1,4 +1,6 @@
 const express = require('express');
+const auth = require('../middlewars/auth');
+
 const router = express.Router();
 
 const ProductController = require('../controllers/product.controller');
@@ -15,5 +17,13 @@ router.route('/products/range/sort').get(ProductController.getProductsByRange);
 // get single product by id
 router.route('/products/:id').get(ProductController.getPost);
 
+// add opinion to product
+router.route('/products/:id/rates').post(auth, ProductController.addOpinion);
+
+// like product opinion
+router.route('/products/:id/rates/:opinionId/like').put(auth, ProductController.likeOpinion);
+
+// like product opinion
+router.route('/products/:id/rates/:opinionId/unlike').put(auth, ProductController.unLikeOpinion);
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express();
 
 const auth = require('../middlewars/auth');
@@ -46,7 +47,5 @@ router.post('/settings/email/change', auth, userController.changeEmail);
 
 // Change user name
 router.post('/settings/name/change', auth, userController.changeName);
-
-
 
 module.exports = router;
