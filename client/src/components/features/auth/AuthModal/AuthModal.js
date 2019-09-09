@@ -12,19 +12,21 @@ const AuthModal = ({
 
   const { name, email, password } = formData;
 
+  // useEffect(() => { clearErrors = () => {}; });
+
   const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
   const submitForm = async (e) => {
     e.preventDefault();
-
     if (type === 'register' && name.length < 4) await setErrors((p) => [...p, 'Name cannott be shorter than 4']);
     if (!email.includes('@')) await setErrors((p) => [...p, 'Input valid email adress']);
     if (password.length < 5) await setErrors((p) => [...p, 'Password must contains at least 5 characters']);
-    setTimeout(() => setErrors([]), 2000);
     if (type === 'register' && name.length > 4 && email.includes('@') && password.length >= 5) {
-      sendFormData(formData);
-    } else if (type === 'login' && email.includes('@') && password.length >= 5) {
-      sendFormData(formData);
+      return sendFormData(formData);
+    } if (type === 'login' && email.includes('@') && password.length >= 5) {
+      return sendFormData(formData);
     }
+
+    return setTimeout(() => setErrors([]), 2000);
   };
 
   return (
@@ -61,7 +63,7 @@ const AuthModal = ({
             </FormGroup>
             <FormGroup>
               <Col style={{ marginTop: 15 }}>
-                {errors.length ? errors.map((e) => <Alert color="danger">{e}</Alert>) : ''}
+                {errors.length ? errors.map((e) => <Alert key={e} color="danger">{e}</Alert>) : ''}
               </Col>
             </FormGroup>
           </Form>

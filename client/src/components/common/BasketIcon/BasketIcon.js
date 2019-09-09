@@ -24,7 +24,7 @@ const BasketIcon = ({ auth, products }) => (
 BasketIcon.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   auth: PropTypes.object.isRequired,
-  products: PropTypes.number.isRequired,
+  products: PropTypes.array.isRequired,
 };
 
 export default BasketIcon;

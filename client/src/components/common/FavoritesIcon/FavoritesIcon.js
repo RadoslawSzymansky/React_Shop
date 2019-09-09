@@ -5,7 +5,7 @@ import { FaRegHeart } from 'react-icons/fa';
 
 import './FavoritesIcon.scss';
 
-const BasketIcon = ({ auth, favorites }) => (
+const FavoritesIcon = ({ auth, favorites }) => (
   <NavLink exact to="/favorites" className="favorites-icon" style={{ position: 'relative' }}>
     <FaRegHeart
       style={{ fontSize: 32 }}
@@ -21,9 +21,9 @@ const BasketIcon = ({ auth, favorites }) => (
   </NavLink>
 );
 
-BasketIcon.propTypes = {
+FavoritesIcon.propTypes = {
   auth: PropTypes.object.isRequired,
-  favorites: PropTypes.number.isRequired,
+  favorites: PropTypes.array.isRequired,
 };
 
-export default BasketIcon;
+export default FavoritesIcon;

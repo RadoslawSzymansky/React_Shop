@@ -24,7 +24,7 @@ const NavLinks = ({ auth: { isAuthenticated }, authLinks }) => (
           !isAuthenticated ? (
             <div className="auth-links">
               <LoginModal type="login" />
-              <RegisterModal type="register=" />
+              <RegisterModal type="register" />
             </div>
           ) : (
             <div className="auth-links">

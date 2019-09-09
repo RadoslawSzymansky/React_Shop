@@ -73,7 +73,6 @@ BasketSummary.propTypes = {
   // eslint-disable-next-line react/require-default-props
   code: PropTypes.oneOfType([
     PropTypes.object,
-    null,
   ]),
   totalPrice: PropTypes.number.isRequired,
   getPrice: PropTypes.func.isRequired,
