@@ -2,6 +2,8 @@
 import axios from 'axios';
 import { BASE_URL } from '../config/config';
 import isEmpty from '../utils/isEmpty';
+import setAuthToken from '../utils/setAuthToken';
+import { setAlert } from './alertsRedux';
 
 const reducerName = 'products';
 
@@ -223,5 +225,125 @@ export const fetchSingleToFavoritesRequest = (id) => async (dispatch) => {
     dispatch(endProductRequest());
   } catch (error) {
     dispatch(loadSingleProductError(error));
+  }
+};
+
+export const addOpinion = (productId, formData) => async (dispatch) => {
+  dispatch(startSingleProductRequest());
+
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+  }
+
+  try {
+    const res = await axios.post(`${BASE_URL}/api/products/${productId}/rates`, formData);
+    dispatch(loadSingleProduct(res.data));
+  } catch (error) {
+    setAlert(error.response.data.msg, 'danger');
+    dispatch(loadSingleProductError(error));
+  }
+};
+
+export const likeOpinion = (productId, opinionId) => async (dispatch) => {
+  dispatch(startSingleProductRequest());
+
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+  }
+
+  try {
+    const res = await axios.put(`${BASE_URL}/api/products/${productId}/rates/${opinionId}/like`);
+    dispatch(loadSingleProduct(res.data));
+  } catch (error) {
+    setAlert(error.response.data.msg, 'danger');
+    dispatch(loadSingleProductError(error));
+  }
+};
+
+export const unLikeOpinion = (productId, opinionId) => async (dispatch) => {
+  dispatch(startSingleProductRequest());
+
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+  }
+
+  try {
+    const res = await axios.put(`${BASE_URL}/api/products/${productId}/rates/${opinionId}/unlike`);
+    dispatch(loadSingleProduct(res.data));
+  } catch (error) {
+    dispatch(loadSingleProductError(error));
+    setAlert(error.response.data.msg, 'danger');
+  }
+};
+
+export const commentOpinion = (productId, opinionId, formData) => async (dispatch) => {
+  dispatch(startSingleProductRequest());
+
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+  }
+
+  try {
+    const res = await axios
+      .post(`${BASE_URL}/api/products/${productId}/rates/${opinionId}/comments`, formData);
+
+    dispatch(loadSingleProduct(res.data));
+  } catch (error) {
+    setAlert(error.response.data.msg, 'danger');
+    dispatch(loadSingleProductError(error));
+  }
+};
+
+export const deleteCommentOpinion = (productId, opinionId, commentId) => async (dispatch) => {
+  dispatch(startSingleProductRequest());
+
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+  }
+
+  try {
+    const res = await axios
+      .delete(`${BASE_URL}/api/products/${productId}/rates/${opinionId}/comments/${commentId}`);
+
+    dispatch(loadSingleProduct(res.data));
+  } catch (error) {
+    dispatch(loadSingleProductError(error));
+    setAlert(error.response.data.msg, 'danger');
+  }
+};
+
+export const likeCommentOpinion = (productId, opinionId, commentId) => async (dispatch) => {
+  dispatch(startSingleProductRequest());
+
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+  }
+
+  try {
+    const res = await axios
+      .put(`${BASE_URL}/api/products/${productId}/rates/${opinionId}/comments/${commentId}/like`);
+
+    dispatch(loadSingleProduct(res.data));
+  } catch (error) {
+    dispatch(loadSingleProductError(error));
+    setAlert(error.response.data.msg, 'danger');
+  }
+};
+
+export const unLikeCommentOpinion = (productId, opinionId, commentId) => async (dispatch) => {
+  dispatch(startSingleProductRequest());
+
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+  }
+
+  try {
+    const res = await axios
+      .put(`${BASE_URL}/api/products/${productId}/rates/${opinionId}/comments/${commentId}/unlike`);
+
+    dispatch(loadSingleProduct(res.data));
+  } catch (error) {
+    dispatch(loadSingleProductError(error));
+    setAlert(error.response.data.msg, 'danger');
   }
 };

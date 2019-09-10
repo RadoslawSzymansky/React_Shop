@@ -29,7 +29,7 @@ router.route('/products/:id/rates/:opinionId/unlike').put(auth, ProductControlle
 // comment product opinion
 router.route('/products/:id/rates/:opinionId/comments').post(auth, ProductController.commentOpinion);
 
-// comment product opinion
+// delete comment product opinion
 router.route('/products/:id/rates/:opinionId/comments/:commentId').delete(auth, ProductController.deleteCommentOpinion);
 
 // like product opinion
