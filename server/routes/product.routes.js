@@ -1,51 +1,41 @@
 const express = require('express');
-
-const router = express();
-
 const auth = require('../middlewars/auth');
 
-const userController = require('../controllers/user.controller');
+const router = express.Router();
 
-// Register User - PUBLIC
-router.post('/', userController.registerUser);
+const ProductController = require('../controllers/product.controller');
 
-// Delete User Account
-router.delete('/', auth, userController.deleteUser);
+// get all products
+router.route('/products').get(ProductController.getPosts);
 
-// Concat user basket with local basket
-router.put('/basket/concat', auth, userController.concatLocalBasket);
+// get single product by id
+router.route('/products/codes').get(ProductController.getCodes);
 
-// Concat user basket with local basket
-router.put('/favorites/concat', auth, userController.concatLocalFavorites);
+// get products by range
+router.route('/products/range/sort').get(ProductController.getProductsByRange);
 
-// Concat user favorites with local favorites
-router.put('/basket/concat', auth, userController.concatLocalFavorites);
+// get single product by id
+router.route('/products/:id').get(ProductController.getPost);
 
-// Add product do basket
-router.put('/basket', auth, userController.addToBasket);
+// add opinion to product
+router.route('/products/:id/rates').post(auth, ProductController.addOpinion);
 
-// Delete product from basket
-router.delete('/basket/:id', auth, userController.deleteFromBasket);
+// like product opinion
+router.route('/products/:id/rates/:opinionId/like').put(auth, ProductController.likeOpinion);
 
-// Add product to favorites
-router.put('/favorites/:id', auth, userController.addToFavorites);
+// like product opinion
+router.route('/products/:id/rates/:opinionId/unlike').put(auth, ProductController.unLikeOpinion);
 
-// Delete product from favorites
-router.delete('/favorites/:id', auth, userController.deleteFromFavorites);
+// comment product opinion
+router.route('/products/:id/rates/:opinionId/comments').post(auth, ProductController.commentOpinion);
 
-// Buy products
-router.patch('/basket/buy', auth, userController.buyProducts);
+// comment product opinion
+router.route('/products/:id/rates/:opinionId/comments/:commentId').delete(auth, ProductController.deleteCommentOpinion);
 
-// Get all products from history
-router.get('/history/all', auth, userController.getHistoryProducts);
+// like product opinion
+router.route('/products/:id/rates/:opinionId/comments/:commentId/like').put(auth, ProductController.likeCommentOpinion);
 
-// Change user password
-router.post('/settings/password/change', auth, userController.changePassword);
-
-// Change user email
-router.post('/settings/email/change', auth, userController.changeEmail);
-
-// Change user name
-router.post('/settings/name/change', auth, userController.changeName);
+// unlike product opinion
+router.route('/products/:id/rates/:opinionId/comments/:commentId/unlike').put(auth, ProductController.unLikeCommentOpinion);
 
 module.exports = router;
