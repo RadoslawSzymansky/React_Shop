@@ -1,0 +1,101 @@
+.opinion {
+  max-width: 850px;
+  margin: 20px auto;
+  border-bottom: 1px solid rgb(218, 231, 252);
+  padding-bottom: 5px;
+  .o-header {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    .rates {
+      margin-left: 10px;
+      margin-right: auto;
+      position: relative;
+      top: -2px;
+    }
+    .name {
+      display: flex;
+      align-items: center;
+      color: rgb(52, 106, 187);
+      font-size: 14px;
+    }
+  }
+  .opinion-text {
+    font-size: 12px;
+    font-family: 'Chilanka', cursive;
+  }
+  .img-user {
+    max-height: 100px;
+  }
+  .date {
+    font-size: 14px;
+  }
+  .rate{
+    color: rgb(88, 88, 88);
+    font-size: 14px;
+    margin-left: 5px;
+  }
+  .actions {
+    padding: 0;
+    margin: 0;
+  }
+  .likes {
+    font-size: 14px;
+  }
+  .like {
+    padding: 5px;
+    color: rgb(32, 67, 141);
+    font-weight: bold;
+  }
+  .like-action {
+    cursor: pointer;
+    color: rgb(138, 138, 138);;
+    &:hover {
+      color: #000
+    }
+  }
+  .add-comment {
+    width: 100%;
+    text-align: end;
+    button {
+      color: rgb(141, 140, 140);
+      background-color: #fff;
+      border: none;
+      margin-left: auto;
+      display: inline-block;
+      padding-right: 10px;
+      margin-left: 15px;
+
+      &:hover {
+        color: #000;
+      }
+    }
+  }
+}
+@media (max-width: 568px) {
+  .opinion {
+  .o-header {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    .rates {
+      font-size: 12px;
+      margin-left: 10px;
+      margin-right: auto;
+    }
+    .name {
+      display: flex;
+      align-items: center;
+      color: rgb(52, 106, 187);
+      font-size: 14px;
+    }
+  }
+  .opinion-text {
+    font-size: 12px;
+  }
+  .img-wrap {
+    padding: 0;
+    padding-left: 10px; 
+  }
+}
+}

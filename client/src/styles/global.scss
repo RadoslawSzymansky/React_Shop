@@ -3,6 +3,7 @@
 
 @import url('https://fonts.googleapis.com/css?family=Indie+Flower&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+@import url('https://fonts.googleapis.com/css?family=Chilanka&display=swap');
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -27,3 +28,7 @@ a, a:hover, a:visited {
   text-decoration: none;
 }
 
+ul, li {
+  margin: 0;
+  padding: 0;
+}

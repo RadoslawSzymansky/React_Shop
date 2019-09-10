@@ -1,0 +1,46 @@
+.product-rates {
+  .actions {
+    display: flex;
+    margin: 20px 0;
+    justify-content: center;
+    button {
+      font-size: 15px;
+      border: none;
+      background-color: #fff;
+      margin: 0 3px;
+      color: rgb(88, 88, 88);
+      &:hover {
+      color: rgb(34, 34, 34);
+      }
+    }
+  }
+  #username {
+    max-width: 150px;
+  }
+  .rate-form {
+    padding: 20px 10px;
+    border-top: 1px solid rgb(157, 199, 255);
+    border-bottom: 1px solid rgb(147, 186, 245);
+  }
+  .rate-stars {
+    .star {
+      color: rgb(136, 136, 136);
+      cursor: pointer;
+      &.active {
+        color: goldenrod;
+      }
+    }
+    &.hovered {
+      .star {
+        color: rgb(136, 136, 136);
+      cursor: pointer;
+      &.active {
+        color: rgb(136, 136, 136);
+      }
+      &:hover {
+        color: goldenrod
+      }
+    }
+    }
+  }
+}
