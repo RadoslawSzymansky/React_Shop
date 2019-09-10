@@ -173,3 +173,165 @@ exports.unLikeOpinion = async (req, res) => {
     return res.status(500).send('Server error');
   }
 };
+
+// path      /api/products/:id/rates/:opinionId/comments  
+// method    POST
+// access    PRIVATE
+exports.commentOpinion = [[
+  check('name', 'Name is required').not().isEmpty(),
+  check('text', 'Opinion text is required').isLength({ min: 5 }),
+], async (req, res) => {
+  const errors = validationResult(req);
+  // validation of body
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const { id, opinionId } = req.params;
+  const { text, name } = req.body;
+
+  try {
+    const user = await User.findById(req.user.id);
+    const product = await Product.findById(id);
+    const { rates } = product;
+    const opinionIndex = rates.findIndex((e) => String(e._id) === String(opinionId));
+
+    const newComment = {
+      userId: user._id,
+      name,
+      text,
+      avatar: user.avatar,
+    };
+
+    if (opinionIndex === -1) return res.status(400).json({ msg: 'Opinion not found' });
+
+    rates[opinionIndex].comments = [...rates[opinionIndex].comments, newComment]; 
+
+    await product.save();
+
+    return res.json(product);
+  } catch (error) {
+    return res.status(500).send('Server error');
+  }
+}];
+
+// path      /api/products/:id/rates/:opinionId/comments/:commentId
+// method    DELETE
+// access    PRIVATE
+exports.deleteCommentOpinion = async (req, res) => {
+  const { id, opinionId, commentId } = req.params;
+
+  try {
+    const product = await Product.findById(id);
+    const { rates } = product;
+
+    const opinionIndex = rates.findIndex((e) => String(e._id) === String(opinionId));
+    const { comments } = rates[opinionIndex]
+
+    if (opinionIndex === -1) return res.status(400).json({ msg: 'Opinion not found' });
+
+    const commentIndex = comments.findIndex((e) => String(e._id) === String(commentId));
+    const comment = comments[commentIndex]
+
+    if (commentIndex === -1) return res.status(400).json({ msg: 'Comment not found' });
+
+    // check if user is owner
+    if (String(comment.userId) !== req.user.id) {
+      return res.status(400).json({ msg: 'User is not owner of the comment' });
+    }
+
+    rates[opinionIndex].comments = rates[opinionIndex].comments
+      .filter((e) => String(e._id) !== String(commentId));
+
+    await product.save();
+
+    return res.json(product);
+  } catch (error) {
+    return res.status(500).send('Server error');
+  }
+};
+
+// path      /api/products/:id/rates/:opinionId/comments/:commentId/like
+// method    PUT
+// access    PRIVATE
+exports.likeCommentOpinion = async (req, res) => {
+  const { id, opinionId, commentId } = req.params;
+
+  try {
+    const product = await Product.findById(id);
+    const { rates } = product;
+
+    const opinionIndex = rates.findIndex((e) => String(e._id) === String(opinionId));
+    const { comments } = rates[opinionIndex]
+
+    if (opinionIndex === -1) return res.status(400).json({ msg: 'Opinion not found' });
+
+    const commentIndex = comments.findIndex((e) => String(e._id) === String(commentId));
+    const comment = comments[commentIndex]
+
+    if (commentIndex === -1) return res.status(400).json({ msg: 'Comment not found' });
+
+    // check if user is owner
+    if (String(comment.userId) === req.user.id) {
+      return res.status(400).json({ msg: 'User cannot like his own comment' });
+    }
+
+    // check if wasn't already liked
+    if (comment.likes.some((e) => String(e.userId) === String(req.user.id))) {
+      return res.status(400).json({ msg: 'Product is already liked' });
+    }
+
+    rates[opinionIndex].comments[commentIndex].likes = [
+      ...rates[opinionIndex].comments[commentIndex].likes, { userId: req.user.id }
+    ];
+
+    await product.save();
+
+    return res.json(product);
+  } catch (error) {
+    return res.status(500).send('Server error');
+  }
+};
+
+// path      /api/products/:id/rates/:opinionId/comments/:commentId/unlike
+// method    PUT
+// access    PRIVATE
+exports.unLikeCommentOpinion = async (req, res) => {
+  const { id, opinionId, commentId } = req.params;
+
+  try {
+    const product = await Product.findById(id);
+    const { rates } = product;
+
+    const opinionIndex = rates.findIndex((e) => String(e._id) === String(opinionId));
+    const { comments } = rates[opinionIndex]
+
+    if (opinionIndex === -1) return res.status(400).json({ msg: 'Opinion not found' });
+
+    const commentIndex = comments.findIndex((e) => String(e._id) === String(commentId));
+    const comment = comments[commentIndex]
+
+    if (commentIndex === -1) return res.status(400).json({ msg: 'Comment not found' });
+
+    // check if user is owner
+    if (String(comment.userId) === req.user.id) {
+      return res.status(400).json({ msg: 'User cannot like his own comment' });
+    }
+
+    // check if wasn't already unliked
+    if (comment.likes.some((e) => String(e.userId) === String(req.user.id))) {
+      return res.status(400).json({ msg: 'Product was not liked yet' });
+    }
+
+    rates[opinionIndex].comments[commentIndex].likes = 
+      rates[opinionIndex].comments[commentIndex].likes
+        .filter((e) => String(e.userId !== req.user.id));
+    
+
+    await product.save();
+
+    return res.json(product);
+  } catch (error) {
+    return res.status(500).send('Server error');
+  }
+};
