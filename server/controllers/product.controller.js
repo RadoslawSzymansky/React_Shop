@@ -174,7 +174,7 @@ exports.unLikeOpinion = async (req, res) => {
   }
 };
 
-// path      /api/products/:id/rates/:opinionId/comments  
+// path      /api/products/:id/rates/:opinionId/comments
 // method    POST
 // access    PRIVATE
 exports.commentOpinion = [[
@@ -205,7 +205,7 @@ exports.commentOpinion = [[
 
     if (opinionIndex === -1) return res.status(400).json({ msg: 'Opinion not found' });
 
-    rates[opinionIndex].comments = [...rates[opinionIndex].comments, newComment]; 
+    rates[opinionIndex].comments = [...rates[opinionIndex].comments, newComment];
 
     await product.save();
 
@@ -226,12 +226,12 @@ exports.deleteCommentOpinion = async (req, res) => {
     const { rates } = product;
 
     const opinionIndex = rates.findIndex((e) => String(e._id) === String(opinionId));
-    const { comments } = rates[opinionIndex]
+    const { comments } = rates[opinionIndex];
 
     if (opinionIndex === -1) return res.status(400).json({ msg: 'Opinion not found' });
 
     const commentIndex = comments.findIndex((e) => String(e._id) === String(commentId));
-    const comment = comments[commentIndex]
+    const comment = comments[commentIndex];
 
     if (commentIndex === -1) return res.status(400).json({ msg: 'Comment not found' });
 
@@ -262,12 +262,12 @@ exports.likeCommentOpinion = async (req, res) => {
     const { rates } = product;
 
     const opinionIndex = rates.findIndex((e) => String(e._id) === String(opinionId));
-    const { comments } = rates[opinionIndex]
+    const { comments } = rates[opinionIndex];
 
     if (opinionIndex === -1) return res.status(400).json({ msg: 'Opinion not found' });
 
     const commentIndex = comments.findIndex((e) => String(e._id) === String(commentId));
-    const comment = comments[commentIndex]
+    const comment = comments[commentIndex];
 
     if (commentIndex === -1) return res.status(400).json({ msg: 'Comment not found' });
 
@@ -282,7 +282,7 @@ exports.likeCommentOpinion = async (req, res) => {
     }
 
     rates[opinionIndex].comments[commentIndex].likes = [
-      ...rates[opinionIndex].comments[commentIndex].likes, { userId: req.user.id }
+      ...rates[opinionIndex].comments[commentIndex].likes, { userId: req.user.id },
     ];
 
     await product.save();
@@ -304,12 +304,12 @@ exports.unLikeCommentOpinion = async (req, res) => {
     const { rates } = product;
 
     const opinionIndex = rates.findIndex((e) => String(e._id) === String(opinionId));
-    const { comments } = rates[opinionIndex]
+    const { comments } = rates[opinionIndex];
 
     if (opinionIndex === -1) return res.status(400).json({ msg: 'Opinion not found' });
 
     const commentIndex = comments.findIndex((e) => String(e._id) === String(commentId));
-    const comment = comments[commentIndex]
+    const comment = comments[commentIndex];
 
     if (commentIndex === -1) return res.status(400).json({ msg: 'Comment not found' });
 
@@ -319,14 +319,13 @@ exports.unLikeCommentOpinion = async (req, res) => {
     }
 
     // check if wasn't already unliked
-    if (comment.likes.some((e) => String(e.userId) === String(req.user.id))) {
+    if (!comment.likes.some((e) => String(e.userId) === String(req.user.id))) {
       return res.status(400).json({ msg: 'Product was not liked yet' });
     }
 
-    rates[opinionIndex].comments[commentIndex].likes = 
-      rates[opinionIndex].comments[commentIndex].likes
-        .filter((e) => String(e.userId !== req.user.id));
-    
+    rates[opinionIndex].comments[commentIndex].likes = rates[opinionIndex]
+      .comments[commentIndex].likes
+      .filter((e) => String(e.userId) !== req.user.id);
 
     await product.save();
 

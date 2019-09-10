@@ -47,6 +47,14 @@ const Product = new Schema({
         avatar: {
           type: String,
         },
+        likes: [
+          {
+            userId: {
+              type: Schema.Types.ObjectId,
+              ref: 'users',
+            },
+          },
+        ],
         date: {
           type: Date,
           default: Date.now,
