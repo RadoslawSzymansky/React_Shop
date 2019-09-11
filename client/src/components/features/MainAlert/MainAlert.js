@@ -7,7 +7,7 @@ const MainAlert = ({ alerts }) => alerts !== null && alerts.length > 0 && alerts
     <Alert
       style={
         {
-          zIndex: 99999, position: 'absolute', top: 0, left: 0, right: 0, textAlign: 'center',
+          zIndex: 99999, position: 'fixed', top: 0, left: 0, right: 0, textAlign: 'center',
         }
       }
       key={alert.id}

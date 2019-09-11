@@ -54,7 +54,11 @@
       color: #000
     }
   }
+  .text {
+    margin: 0;
+  }
   .add-comment {
+    position: relative;
     width: 100%;
     text-align: end;
     button {
@@ -70,6 +74,72 @@
         color: #000;
       }
     }
+    .show-comments {
+      align-self: start;
+      position: absolute;
+      left: 0px;
+      top: 3px;
+    }
+  }
+  .comment-form {
+    width: 100%;
+    max-width: 500px;
+    padding-left: 20px;
+    font-size: 12px;
+    padding-bottom: 10px;
+    #text-area {
+      width: 100%
+    }
+  }
+  .comments-list {
+    margin: 20px 0;
+  }
+  ul {
+    list-style: none;
+  }
+  .comment {
+    &::before {
+      display: block;
+      position: relative;
+      top: -10px;
+      left: -15px;
+      content: "";
+      width: 200px;
+      background-color: rgb(146, 146, 146);
+      height: 1px;
+    }
+     &::after {
+      display: block;
+      position: relative;
+      top: -45px;
+      left: -40px;
+      transform: rotate(90deg);
+      content: "";
+      width: 50px;
+      background-color: rgb(146, 146, 146);
+      height: 1px;
+    }
+    margin-bottom: 15px;
+    font-size: 12px;
+    padding-left: 20px;
+    .name {
+      color: blue;
+      margin: 0;
+      width: calc(100% - 50px);
+    }
+    .img-comment {
+      max-height: 35px;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+  }
+  .name-wrap {
+    padding-right: 10px;
+  }
+  .btn-delete {
+    color: red;
+    border: none;
+    background-color: #fff;
   }
 }
 @media (max-width: 568px) {

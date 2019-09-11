@@ -273,7 +273,7 @@ export const addOpinion = (formData, productId) => async (dispatch) => {
     dispatch(endOpinionRequest());
     dispatch(setAlert('Opinion added! Thank you! :)', 'success'));
   } catch (error) {
-    setAlert(error.response.data.msg, 'danger');
+    dispatch(setAlert(error.response.data.msg, 'danger'));
     dispatch(endOpinionRequest);
   }
 };
@@ -290,7 +290,7 @@ export const likeOpinion = (productId, opinionId) => async (dispatch) => {
     dispatch(loadOpinionProduct(res.data));
     dispatch(endOpinionRequest());
   } catch (error) {
-    setAlert(error.response.data.msg, 'danger');
+    dispatch(setAlert(error.response.data.msg, 'danger'));
     dispatch(endOpinionRequest());
   }
 };
@@ -308,7 +308,7 @@ export const unLikeOpinion = (productId, opinionId) => async (dispatch) => {
     dispatch(endOpinionRequest());
   } catch (error) {
     dispatch(endOpinionRequest());
-    setAlert(error.response.data.msg, 'danger');
+    dispatch(setAlert(error.response.data.msg, 'danger'));
   }
 };
 
@@ -325,8 +325,9 @@ export const commentOpinion = (formData, productId, opinionId) => async (dispatc
 
     dispatch(loadOpinionProduct(res.data));
     dispatch(endOpinionRequest());
+    dispatch(setAlert('Comment added', 'success'));
   } catch (error) {
-    setAlert(error.response.data.msg, 'danger');
+    dispatch(setAlert(error.response.data.msg, 'danger'));
     dispatch(endOpinionRequest());
   }
 };
@@ -346,7 +347,7 @@ export const deleteCommentOpinion = (productId, opinionId, commentId) => async (
     dispatch(endOpinionRequest());
   } catch (error) {
     dispatch(endOpinionRequest());
-    setAlert(error.response.data.msg, 'danger');
+    dispatch(setAlert(error.response.data.msg, 'danger'));
   }
 };
 
@@ -365,7 +366,7 @@ export const likeCommentOpinion = (productId, opinionId, commentId) => async (di
     dispatch(endOpinionRequest());
   } catch (error) {
     dispatch(endOpinionRequest());
-    setAlert(error.response.data.msg, 'danger');
+    dispatch(setAlert(error.response.data.msg, 'danger'));
   }
 };
 
@@ -384,6 +385,6 @@ export const unLikeCommentOpinion = (productId, opinionId, commentId) => async (
     dispatch(endOpinionRequest());
   } catch (error) {
     dispatch(endOpinionRequest());
-    setAlert(error.response.data.msg, 'danger');
+    dispatch(setAlert(error.response.data.msg, 'danger'));
   }
 };

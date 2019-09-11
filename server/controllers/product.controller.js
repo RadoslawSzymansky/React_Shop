@@ -129,6 +129,11 @@ exports.likeOpinion = async (req, res) => {
 
     if (opinionIndex === -1) return res.status(400).json({ msg: 'Opinion not found' });
 
+    // check if user is owner
+    if (String(rates[opinionIndex].userId) === req.user.id) {
+      return res.status(400).json({ msg: 'You cannot like your own opinion' });
+    }
+
     // check if wasn't already liked
     if (rates[opinionIndex].likes.some((e) => String(e.userId) === String(user._id))) {
       return res.status(400).json({ msg: 'Product is already liked' });
@@ -160,7 +165,7 @@ exports.unLikeOpinion = async (req, res) => {
 
     // check if wasn't already liked
     if (!rates[opinionIndex].likes.some((e) => String(e.userId) === String(user._id))) {
-      return res.status(400).json({ msg: 'Product is was not liked' });
+      return res.status(400).json({ msg: 'Product has not been liked yet' });
     }
 
     rates[opinionIndex].likes = rates[opinionIndex].likes
@@ -179,7 +184,7 @@ exports.unLikeOpinion = async (req, res) => {
 // access    PRIVATE
 exports.commentOpinion = [[
   check('name', 'Name is required').not().isEmpty(),
-  check('text', 'Opinion text is required').isLength({ min: 5 }),
+  check('text', 'Opinion text is required').not().isEmpty(),
 ], async (req, res) => {
   const errors = validationResult(req);
   // validation of body
@@ -273,7 +278,7 @@ exports.likeCommentOpinion = async (req, res) => {
 
     // check if user is owner
     if (String(comment.userId) === req.user.id) {
-      return res.status(400).json({ msg: 'User cannot like his own comment' });
+      return res.status(400).json({ msg: 'User cannot rate his own comment' });
     }
 
     // check if wasn't already liked
@@ -315,7 +320,7 @@ exports.unLikeCommentOpinion = async (req, res) => {
 
     // check if user is owner
     if (String(comment.userId) === req.user.id) {
-      return res.status(400).json({ msg: 'User cannot like his own comment' });
+      return res.status(400).json({ msg: 'User cannot rate his own comment' });
     }
 
     // check if wasn't already unliked

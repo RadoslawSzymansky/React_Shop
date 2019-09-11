@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { likeOpinion, unLikeOpinion } from '../../../redux/productsRedux';
+import { likeOpinion, unLikeOpinion, commentOpinion } from '../../../redux/productsRedux';
 import { setAlert } from '../../../redux/alertsRedux';
 import { toggleLoginModal } from '../../../redux/authRedux';
 
@@ -10,6 +10,7 @@ const mapDispatchToProps = (dispatch) => ({
   unLike: (productId, opinionId) => dispatch(unLikeOpinion(productId, opinionId)),
   login: () => dispatch(toggleLoginModal()),
   setAlert: (msg, type) => dispatch(setAlert(msg, type)),
+  comment: (formData, productId, opinionId) => dispatch(commentOpinion(formData, productId, opinionId)),
 });
 
 const mapStateToProps = (state) => ({
