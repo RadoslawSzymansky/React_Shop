@@ -18,7 +18,7 @@ exports.getProductsByRange = async (req, res) => {
   try {
     let {
       // eslint-disable-next-line prefer-const
-      limit, name, price, startAt,
+      limit, name, price, startAt, rate,
     } = req.query;
     limit = parseInt(limit, 10);
     startAt = parseInt(startAt, 10);
@@ -36,6 +36,22 @@ exports.getProductsByRange = async (req, res) => {
     if (!name && price) {
       if (price === 'lowest') productFilters.unshift({ $sort: { price: 1 } });
       if (price === 'highest') productFilters.unshift({ $sort: { price: -1 } });
+    }
+
+    if (rate) {
+      productFilters.unshift({ $replaceRoot: { newRoot: '$doc' } });
+
+      productFilters.unshift({ $sort: { avgRate: -1 } });
+
+      productFilters.unshift(
+        { $group: { _id: '$_id', avgRate: { $avg: '$rates.rate' }, doc: { $first: '$$ROOT' } } },
+      );
+      productFilters.unshift({
+        $unwind: {
+          path: '$rates',
+          preserveNullAndEmptyArrays: true,
+        },
+      });
     }
 
     const products = await Product.aggregate(productFilters);
