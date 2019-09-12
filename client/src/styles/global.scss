@@ -32,3 +32,26 @@ ul, li {
   margin: 0;
   padding: 0;
 }
+
+.rating {
+    font-size: 13px;
+    .rate {
+      display: inline-block;
+      color: #111;
+      margin: 0 7px;
+      position: relative;
+      top: 2px;
+    }
+}
+.searchBar {
+    text-align: center;
+    margin: 15px 0;
+    font-family: $font-text;
+    input {
+      padding-left: 10px;
+      font-family: $font-text;
+      color: rgb(59, 59, 59);
+      max-width: 300px;
+      margin: 0 auto;
+    }
+}

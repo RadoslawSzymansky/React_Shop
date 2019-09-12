@@ -24,7 +24,7 @@ const Products = ({
         </div>
       );
 
-    case !pending && success:
+    case !pending && success && products.length > 0:
       return (
         <>
           <ProductsList products={products} />
@@ -38,7 +38,7 @@ const Products = ({
       return <Alert color="danger">{error}</Alert>;
 
     case !pending && success && products.length === 0:
-      return <Alert color="info">No posts...</Alert>;
+      return <Alert color="warning">No results</Alert>;
 
     default:
       return null;

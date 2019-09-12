@@ -26,6 +26,7 @@ const SortWidget = ({ sortProducts }) => {
             <li onClick={() => sortProducts({ name: 'z-a' })}>Name Z-A</li>
             <li onClick={() => sortProducts({ price: 'lowest' })}>Lowest price</li>
             <li onClick={() => sortProducts({ price: 'highest' })}>Highest price</li>
+            <li onClick={() => sortProducts({ rate: 'true' })}>Highest rate</li>
           </ul>
         </>
       ) : null}

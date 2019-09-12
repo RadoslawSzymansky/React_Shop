@@ -18,11 +18,10 @@ exports.getProductsByRange = async (req, res) => {
   try {
     let {
       // eslint-disable-next-line prefer-const
-      limit, name, price, startAt, rate,
+      limit, name, price, startAt, rate, search,
     } = req.query;
     limit = parseInt(limit, 10);
     startAt = parseInt(startAt, 10);
-
     const productFilters = [
       { $skip: startAt },
       { $limit: limit },
@@ -39,13 +38,20 @@ exports.getProductsByRange = async (req, res) => {
     }
 
     if (rate) {
-      productFilters.unshift({ $replaceRoot: { newRoot: '$doc' } });
+      productFilters.unshift({
+        $replaceRoot: { newRoot: { $mergeObjects: ['$doc', { _id: '$_id', rates: '$aha', last: '' }] } },
+      });
 
       productFilters.unshift({ $sort: { avgRate: -1 } });
 
       productFilters.unshift(
-        { $group: { _id: '$_id', avgRate: { $avg: '$rates.rate' }, doc: { $first: '$$ROOT' } } },
+        {
+          $group: {
+            _id: '$_id', avgRate: { $avg: '$rates.rate' }, doc: { $first: '$$ROOT' }, aha: { $push: '$rates' },
+          },
+        },
       );
+
       productFilters.unshift({
         $unwind: {
           path: '$rates',
@@ -54,9 +60,13 @@ exports.getProductsByRange = async (req, res) => {
       });
     }
 
+    if (search) {
+      productFilters.unshift({ $match: { name: { $regex: `.*${search}.*`, $options: 'i' } } });
+    }
+
     const products = await Product.aggregate(productFilters);
 
-    const amount = await Product.countDocuments();
+    const amount = search ? products.length : await Product.countDocuments();
 
     res.status(200).json({
       products,

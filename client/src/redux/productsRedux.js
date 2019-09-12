@@ -169,12 +169,18 @@ export const fetchProductsByPage = (page, productsPerPage, sort) => async (dispa
 
     let name;
     let price;
+    let rate;
+    let search;
+
     if (!isEmpty(sort)) {
       name = sort.name;
       price = sort.price;
+      rate = sort.rate;
+      search = sort.search;
     } else {
       name = getState().products.sort.name;
       price = getState().products.sort.price;
+      rate = getState().products.sort.rate;
     }
 
     dispatch(startProductsRequest());
@@ -182,7 +188,8 @@ export const fetchProductsByPage = (page, productsPerPage, sort) => async (dispa
     const res = await axios
       .get(`
       ${BASE_URL}/api/products/range/sort/?limit=${limit}&startAt=${startAt}
-      ${name ? `&name=${name}` : ''}${price ? `&price=${price}` : ''}   
+      ${name ? `&name=${name}` : ''}${price ? `&price=${price}` : ''}${rate ? '&rate=true' : ''}
+      ${search ? `&search=${search}` : ''}       
       `);
     // eslint-disable-next-line require-atomic-updates
     // eslint-disable-next-line no-param-reassign

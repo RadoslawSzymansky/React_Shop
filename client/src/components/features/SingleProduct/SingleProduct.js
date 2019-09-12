@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button, Spinner, Alert } from 'reactstrap';
+import StarRatings from 'react-star-ratings';
 
 import './SingleProduct.scss';
 
@@ -18,7 +19,6 @@ const SingleProduct = ({
   const [count, setCount] = useState(1);
 
   const { pending, error, success } = request;
-
   const sendProduct = () => {
     if (count <= 0) return setAlert('Count must be positive!', 'danger');
     return addToBasket({
@@ -39,9 +39,41 @@ const SingleProduct = ({
       </div>
     );
 
-  case !pending && success:
+  case success:
     return (
       <div className="single-product row">
+        <div className="col-12 rating">
+          {product.rates.length > 0 ? (
+            <>
+              <StarRatings
+                starRatedColor="goldenrod"
+                rating={
+                  product.rates.map((e) => e.rate).reduce((a, b) => a + b) / product.rates.length
+                }
+                starDimension="20px"
+                starSpacing="2px"
+              />
+              <span className="rate">
+                {(product.rates.map((e) => e.rate).reduce((a, b) => a + b) / product.rates.length)
+                  .toFixed(1)}
+                {' '}
+                (
+                {product.rates.length}
+                {' '}
+              rates)
+              </span>
+            </>
+          ) : (
+            <>
+              <StarRatings
+                rating={0}
+                starDimension="20px"
+                starSpacing="2px"
+              />
+              <span className="rate"> No rates..</span>
+            </>
+          )}
+        </div>
         <div className="col-sm-6">
           <div className="image-wrapper">
             <img className="product-image" src={product.img} alt="Product" />
