@@ -1,0 +1,10 @@
+{
+  "greeting": [
+    "Hello",
+    "Czesc"
+  ],
+  "farewell": [
+    "Goodbye",
+    "Au revoir"
+  ]
+}

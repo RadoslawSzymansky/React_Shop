@@ -3,6 +3,8 @@ import {
   createStore, combineReducers, applyMiddleware, compose,
 } from 'redux';
 import thunk from 'redux-thunk';
+import { localizeReducer as locale } from 'react-localize-redux';
+
 
 // import reducers
 import products from './productsRedux';
@@ -16,6 +18,7 @@ const rootReducer = combineReducers({
   auth,
   alerts,
   user,
+  locale,
 });
 
 const store = createStore(

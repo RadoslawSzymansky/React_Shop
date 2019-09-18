@@ -54,7 +54,7 @@ const Opinion = (
         <div className="o-header">
           <div className="name">{name}</div>
           <div className="rates">
-            {rates.map(() => <FaStar color="goldenrod" />)}
+            {rates.map((e, i) => <FaStar key={i} color="goldenrod" />)}
             <span className="rate">
               {rate}
               /5

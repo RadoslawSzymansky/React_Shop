@@ -41,7 +41,7 @@ const UserShoppingHistory = ({ user: { isLoading, purchasedHistory }, getProduct
           Your last shooping was on
           <span className="text-primary">{dateTime}</span>
         </h6>
-        {list.map((product) => <HistoryToast key={product._id} product={product} />)}
+        {list.map((product, i) => <HistoryToast key={i} product={product} />)}
       </>
     );
   default:

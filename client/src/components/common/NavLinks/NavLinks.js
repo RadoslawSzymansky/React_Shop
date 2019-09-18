@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
+import { Translate } from 'react-localize-redux';
+
 
 import LoginModal from '../../features/auth/AuthModal/LoginModalContainer';
 import RegisterModal from '../../features/auth/AuthModal/RegisterModalContainer';
@@ -13,7 +15,9 @@ import './NavLinks.scss';
 
 const NavLinks = ({ auth: { isAuthenticated }, authLinks }) => (
   <div className="nav-links">
-    <NavLink exact to="/">Home</NavLink>
+    <NavLink exact to="/">
+      <Translate id="greeting" />
+    </NavLink>
     <NavLink exact to="/contact">Contact</NavLink>
     <NavLink exact to="/faq">FAQ</NavLink>
     <BasketIcon />

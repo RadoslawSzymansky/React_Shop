@@ -81,9 +81,13 @@ const RateForm = ({
   );
 };
 
+RateForm.defaultProps = {
+  type: 'opinion',
+};
+
 RateForm.propTypes = {
   sendForm: PropTypes.func.isRequired,
-  type: PropTypes.string.isRequired,
+  type: PropTypes.string,
   productId: PropTypes.string.isRequired,
   // eslint-disable-next-line react/require-default-props
   opinionId: PropTypes.string,

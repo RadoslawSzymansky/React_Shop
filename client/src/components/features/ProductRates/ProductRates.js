@@ -66,7 +66,7 @@ const ProductRates = ({
 
 ProductRates.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
-  product: PropTypes.object.isRequired,
+  product: PropTypes.object,
   fetchProduct: PropTypes.func.isRequired,
   setAlert: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired,

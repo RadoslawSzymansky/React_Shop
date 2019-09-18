@@ -1,8 +1,9 @@
 /* eslint-disable import/no-unresolved */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { LocalizeProvider } from 'react-localize-redux';
 import store from './redux/store';
 import history from './utils/history';
 
@@ -15,8 +16,10 @@ import './styles/global.scss';
 ReactDOM.render(
   <Router history={history}>
     <Provider store={store}>
-      <App />
+      <LocalizeProvider>
+        <App />
+      </LocalizeProvider>
     </Provider>
   </Router>,
-  document.getElementById('app')
+  document.getElementById('app'),
 );

@@ -5,7 +5,7 @@ import Opinion from '../Opinion/OpinionContainer';
 
 const OpinionList = ({ opinions }) => (
   <ul className="opinions-list">
-    {opinions.map((e) => <Opinion opinion={e} key={e._id} />)}
+    {opinions.map((e, i) => <Opinion opinion={e} key={i} />)}
   </ul>
 );
 

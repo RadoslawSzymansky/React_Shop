@@ -26,7 +26,7 @@ const Favorites = ({
 
 Favorites.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
-  favoriteProducts: PropTypes.array.isRequired,
+  favoriteProducts: PropTypes.object.isRequired,
   favorites: PropTypes.array.isRequired,
   fetchProduct: PropTypes.func.isRequired,
   userLoading: PropTypes.bool.isRequired,
