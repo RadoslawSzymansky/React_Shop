@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Toast, ToastBody, ToastHeader } from 'reactstrap';
+import { Translate } from 'react-localize-redux';
 
 import Spinner from '../../../common/Spinner/Spinner';
 import ProductHistoryElement from '../../../common/ProductHistoryElement/ProductHistory';
@@ -65,33 +66,31 @@ const UserStoryRandom = ({
         <ToastBody>
           <h5>
             Email:
+            {' '}
             <span className="text-info">{user.email}</span>
           </h5>
           <br />
           <h5>
-            You have liked
+            <Translate id="likedProducts" />
             <span className="text-info">
               {' '}
               {user.favorites.length}
               {' '}
             </span>
-            products
           </h5>
           <h5>
-            You have
+            <Translate id="productsInBasket" />
             {' '}
             <span className="text-info">{user.basket.length}</span>
             {' '}
-            products in basket
           </h5>
           <h5>
-            You have bought
+            <Translate id="boughtProducts" />
             <span className="text-info">
               {' '}
               {user.purchasedHistory.length}
               {' '}
             </span>
-            products
           </h5>
         </ToastBody>
       </Toast>
@@ -111,7 +110,7 @@ const UserStoryRandom = ({
       <>
         {userInfo}
         <br />
-        <h4 className="text-center">You have recently bought:</h4>
+        <h4 className="text-center"><Translate id="historyInfo" /></h4>
         <ProductHistoryElement product={randomList[currentIndex]} />
       </>
     );

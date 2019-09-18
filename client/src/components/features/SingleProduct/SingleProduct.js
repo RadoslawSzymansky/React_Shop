@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button, Spinner, Alert } from 'reactstrap';
 import StarRatings from 'react-star-ratings';
+import { Translate } from 'react-localize-redux';
 
 import './SingleProduct.scss';
 
@@ -60,7 +61,8 @@ const SingleProduct = ({
                 (
                 {product.rates.length}
                 {' '}
-              rates)
+                <Translate id="rates" />
+                )
               </span>
             </>
           ) : (
@@ -86,22 +88,22 @@ const SingleProduct = ({
             {product.price}
           </h6>
           <p className="description">{product.description}</p>
-          {product.instore === 0 ? <Alert color="danger">Product is not avaible</Alert> : (
+          {product.instore === 0 ? <Alert color="danger"><Translate id="noProduct" /></Alert> : (
             <>
               <p className="text-secondary">
-                In store:
+                <Translate id="inStore" />
                 <span className="text-dark">
                   {' '}
                   {product.instore}
                 </span>
               </p>
-              <p className="info">{isInBasket() ? 'Product is already in basket' : ''}</p>
+              <p className="info">{isInBasket() ? <span><Translate id="inBasket" /></span> : ''}</p>
               <div className="count">
-                <label htmlFor="count">Count: </label>
+                <label htmlFor="count"><span><Translate id="count" /></span></label>
                 <input value={count} id="count" onChange={(e) => setCount(e.target.value)} type="number" />
               </div>
               <Button onClick={sendProduct} color="primary" disabled={!product.instore}>
-                {isInBasket() ? 'Change count' : 'Add To Basket'}
+                {isInBasket() ? <Translate id="changeCount" /> : <Translate id="addToBasket" />}
               </Button>
             </>
           )}

@@ -1,10 +1,174 @@
 {
-  "greeting": [
-    "Hello",
-    "Czesc"
+  "home": [
+    "Home",
+    "Strona główna"
   ],
-  "farewell": [
-    "Goodbye",
-    "Au revoir"
+  "contact": [
+    "Contact",
+    "Kontakt"
+  ],
+  "login": [
+    "Login",
+    "Zaloguj"
+  ],
+  "change": [
+    "Change ",
+    "Zmień "
+  ],
+  "logout": [
+    "Logout",
+    "Wyloguj"
+  ],
+  "userPanel": [
+    "User Panel",
+    "Moje Konto"
+  ],
+  "name": [
+    "Name",
+    "Imie"
+  ],
+  "create": [
+    "Create",
+    "Stwórz"
+  ],
+  "register": [
+    "Register",
+    "Załóż konto"
+  ],
+  "password": [
+    "Password",
+    "Hasło"
+  ],
+  "loginInfo": [
+    "Login to your account",
+    "Zaloguj się na swoje konto"
+  ],
+  "registerInfo": [
+    "Create a new account",
+    "Stwórz nowe konto"
+  ],
+  "sort": [
+    "Sort",
+    "Filtruj"
+  ],
+  "highest": [
+    "Highest",
+    "Najwyższa"
+  ],
+  "price": [
+    "price",
+    "cena"
+  ],
+  "lowest": [
+    "Lowest",
+    "Najniższa"
+  ],
+  "rate": [
+    "rate",
+    "ocena"
+  ],
+  "delete": [
+    "Delete ",
+    "Usuń "
+  ],
+  "account": [
+    "account",
+    "konto"
+  ],
+  "rates": [
+    "rates",
+    "ocen"
+  ],
+  "changeName": [
+    "Change name",
+    "Zmień imie"
+  ],
+  "changePass": [
+    "Change password",
+    "Zmień hasło"
+  ],
+  "changeEmail": [
+    "Change email",
+    "Zmień adres email"
+  ],
+  "noProduct": [
+    "Product is not avaible",
+    "Produkt niedostępny"
+  ],
+  "inBasket": [
+    "Product is in basket",
+    "Produkt w koszyku"
+  ],
+  "count": [
+    "Count ",
+    "Ilość "
+  ],
+  "changeCount": [
+    "Change count ",
+    "Zmień ilość "
+  ],
+  "inStore": [
+    "In store ",
+    "Dostępnych "
+  ],
+  "addToBasket": [
+    "Add to basket ",
+    "Dodaj do koszyka "
+  ],
+  "addOpinion": [
+    "Add opinion ",
+    "Dodaj opinie "
+  ],
+  "showOpinions": [
+    "Shop opinions ",
+    "Pokaż opinie "
+  ],
+  "history": [
+    "Purchased",
+    "Kupione"
+  ],
+  "yourBasket": [
+    "Your Basket",
+    "Twój Koszyk"
+  ],
+  "settings": [
+    "Settings",
+    "Ustawienia"
+  ],
+  "favorites": [
+    "Favorites",
+    "Ulubione"
+  ],
+  "likedProducts": [
+    "Liked products: ",
+    "Polubiłes produktów: "
+  ],
+  "productsInBasket": [
+    "Products in basket: ",
+    "Produktów w koszyku: "
+  ],
+  "boughtProducts": [
+    "Purchased products: ",
+    "Kupiłeś produktów: "
+  ],
+  "historyInfo": [
+    "You have recently bought:",
+    "Niedawno kupiłeś:"
+  ],
+  "lastShopping": [
+    "Your last shopping was: ",
+    "Ostatnio zakupy zrobiłeś: "
+  ],
+  "youBought": [
+    "You bought: ",
+    "Kupiłeś: "
+  ],
+  "pieces": [
+    " pcs",
+    " sztuk"
+  ],
+  "on": [
+    "On ",
+    "Dnia "
   ]
 }

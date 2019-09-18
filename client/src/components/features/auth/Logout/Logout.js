@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
+import { Translate } from 'react-localize-redux';
 
 const Logout = ({ logout }) => (
   <Button onClick={() => logout()} outline color="danger">
-    Logout
+    <Translate id="logout" />
   </Button>
 );
 

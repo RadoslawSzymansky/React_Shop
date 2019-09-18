@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Col, Alert,
 } from 'reactstrap';
+import { Translate } from 'react-localize-redux';
 
 const AuthModal = ({
   sendFormData, type, toggleModal, isOpen,
@@ -31,14 +32,19 @@ const AuthModal = ({
 
   return (
     <>
-      <Button outline color="info" onClick={() => toggleModal()}>{type === 'login' ? 'Login' : 'Register'}</Button>
+      <Button outline color="info" onClick={() => toggleModal()}>
+        {type === 'login'
+          ? <span><Translate id="login" /></span> : <span><Translate id="register" /></span>}
+      </Button>
       <Modal isOpen={isOpen} toggle={() => toggleModal()} style={{ marginTop: 250 }}>
-        <ModalHeader toggle={() => toggleModal()}>{type === 'login' ? 'Login to your account' : 'Create a new account'}</ModalHeader>
+        <ModalHeader toggle={() => toggleModal()}>
+          {type === 'login' ? <span><Translate id="loginInfo" /></span> : <span><Translate id="registerInfo" /></span>}
+        </ModalHeader>
         <ModalBody>
           <Form onSubmit={(e) => submitForm(e)}>
             { type === 'login' ? '' : (
               <FormGroup row>
-                <Label for="userName" sm={2}>Name</Label>
+                <Label for="userName" sm={2}><span><Translate id="name" /></span></Label>
                 <Col sm={10}>
                   <Input value={name} onChange={(e) => onChange(e)} type="text" name="name" id="userName" placeholder="Add your name" />
                 </Col>
@@ -51,14 +57,17 @@ const AuthModal = ({
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="examplePassword" sm={2}>Password</Label>
+              <Label for="examplePassword" sm={2}><span><Translate id="password" /></span></Label>
               <Col sm={10}>
                 <Input value={password} onChange={(e) => onChange(e)} type="password" name="password" id="examplePassword" placeholder="password" />
               </Col>
             </FormGroup>
             <FormGroup check row>
               <Col sm={{ size: 10, offset: 2 }}>
-                <Button>{type === 'login' ? 'Login' : 'Create'}</Button>
+                <Button>
+                  {type === 'login'
+                    ? <span><Translate id="login" /></span> : <span><Translate id="create" /></span>}
+                </Button>
               </Col>
             </FormGroup>
             <FormGroup>

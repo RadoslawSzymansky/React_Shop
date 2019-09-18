@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Alert } from 'reactstrap';
+import { Translate } from 'react-localize-redux';
 import Spinner from '../../../common/Spinner/Spinner';
 import HistoryToast from '../../../common/HistoryToast/HistoryToast';
 
@@ -38,7 +39,7 @@ const UserShoppingHistory = ({ user: { isLoading, purchasedHistory }, getProduct
     return (
       <>
         <h6>
-          Your last shooping was on
+          <Translate id="lastShopping" />
           <span className="text-primary">{dateTime}</span>
         </h6>
         {list.map((product, i) => <HistoryToast key={i} product={product} />)}

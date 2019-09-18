@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import ReactResizeDetector from 'react-resize-detector';
+import { Translate } from 'react-localize-redux';
 
 import './SortWidget.scss';
 
@@ -18,15 +19,37 @@ const SortWidget = ({ sortProducts }) => {
   return (
     <div className="sort-widget">
       <ReactResizeDetector handleWidth onResize={onResize} />
-      <div className="title" onClick={() => setIsOpen(!isOpen)}>Sort</div>
+      <div className="title" onClick={() => setIsOpen(!isOpen)}>
+        <Translate id="sort" />
+      </div>
       {isOpen ? (
         <>
           <ul className="sort-widget__list">
-            <li onClick={() => sortProducts({ name: 'a-z' })}>Name A-Z</li>
-            <li onClick={() => sortProducts({ name: 'z-a' })}>Name Z-A</li>
-            <li onClick={() => sortProducts({ price: 'lowest' })}>Lowest price</li>
-            <li onClick={() => sortProducts({ price: 'highest' })}>Highest price</li>
-            <li onClick={() => sortProducts({ rate: 'true' })}>Highest rate</li>
+            <li onClick={() => sortProducts({ name: 'a-z' })}>
+              <Translate id="name" />
+              {' '}
+              A-Z
+            </li>
+            <li onClick={() => sortProducts({ name: 'z-a' })}>
+              <Translate id="name" />
+              {' '}
+              Z-A
+            </li>
+            <li onClick={() => sortProducts({ price: 'lowest' })}>
+              <Translate id="lowest" />
+              {' '}
+              <Translate id="price" />
+            </li>
+            <li onClick={() => sortProducts({ price: 'highest' })}>
+              <Translate id="highest" />
+              {' '}
+              <Translate id="price" />
+            </li>
+            <li onClick={() => sortProducts({ rate: 'true' })}>
+              <Translate id="highest" />
+              {' '}
+              <Translate id="rate" />
+            </li>
           </ul>
         </>
       ) : null}

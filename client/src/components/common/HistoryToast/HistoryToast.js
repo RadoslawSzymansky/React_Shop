@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Translate } from 'react-localize-redux';
 import { Toast, ToastBody, ToastHeader } from 'reactstrap';
 
 
@@ -19,11 +20,11 @@ const HistoryToast = ({
         </div>
         <div className="col-7">
           <p>
-            You bought
+            <Translate id="youBought" />
             <span className="text-info">{purchasedCount}</span>
-            pcs
+            <Translate id="pieces" />
             <br />
-            On
+            <Translate id="on" />
             <span className="text-info">{date.slice(0, 10)}</span>
           </p>
         </div>

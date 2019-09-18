@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
+import { Translate } from 'react-localize-redux';
 
 import PageTitle from '../../../common/PageTitle/PageTitle';
 import UserSettingsForm from '../UserSettingsForm/UserSettingsFormContainer';
@@ -9,14 +10,20 @@ const UserSettings = ({ deleteUser }) => (
   <div style={{ padding: 10 }}>
     <PageTitle>Settings</PageTitle>
     <br />
-    <UserSettingsForm buttonLabel="Change name" type="name" />
+    <UserSettingsForm
+      buttonLabel={<Translate id="changeName" />}
+      type="name"
+    />
     <br />
-    <UserSettingsForm buttonLabel="Change email" type="email" />
+    <UserSettingsForm buttonLabel={<Translate id="changeEmail" />} type="email" />
     <br />
-    <UserSettingsForm buttonLabel="Change password" type="password" />
+    <UserSettingsForm buttonLabel={<Translate id="changePass" />} type="password" />
     <br />
     <a href="https://gravatar.com/">
-      <Button outline>Change avatar</Button>
+      <Button outline>
+        <Translate id="change" />
+        avatar
+      </Button>
     </a>
     <br />
     <br />
@@ -31,7 +38,8 @@ const UserSettings = ({ deleteUser }) => (
         }
       }}
     >
-      Delete account
+      <Translate id="delete" />
+      <Translate id="account" />
     </Button>
   </div>
 );

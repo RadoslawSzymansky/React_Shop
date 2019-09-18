@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FaArrowDown, FaArrowUp } from 'react-icons/all';
+import { Translate } from 'react-localize-redux';
 import { withRouter } from 'react-router-dom';
 import RateForm from '../../common/RateForm/RateForm';
 import OpinionsList from '../OpinionsList/OpinionList';
@@ -35,10 +36,11 @@ const ProductRates = ({
               <button onClick={openForm} type="button" className="action">
                 {isOpinionForm ? <FaArrowUp /> : <FaArrowDown />}
                 {' '}
-                Add opinion
+                <Translate id="addOpinion" />
               </button>
               <button type="button" className="action" onClick={() => setOpinionsOpen(!isOpinionsOpen)}>
-                Show opinions (
+                <Translate id="showOpinions" />
+                (
                 {product.rates.length}
                 )
                 {' '}
