@@ -9,6 +9,7 @@ const mapStateToProps = (state) => ({
   product: getSingleProduct(state),
   request: getSingleProductRequest(state),
   basket: state.user.basket,
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
 const mapDispatchToProps = (dispatch) => ({

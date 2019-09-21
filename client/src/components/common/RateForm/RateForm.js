@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Button, Form, FormGroup, Label, Input, Alert, Col,
 } from 'reactstrap';
+import StarRatings from 'react-star-ratings';
 import RateStars from '../RateStars/RateStars';
 
 const RateForm = ({
@@ -15,6 +16,8 @@ const RateForm = ({
   });
 
   const { rate, name, text } = formData;
+
+  const changeRate = (rate) => setFormData({ ...formData, rate });
 
   const [error, setError] = useState('');
 
@@ -53,11 +56,13 @@ const RateForm = ({
           <FormGroup row>
             <Label sm={2}>Rate</Label>
             <Col sm={10}>
-              <RateStars
-                rate={rate}
-                setRate={(rate) => {
-                  setFormData({ ...formData, rate });
-                }}
+              <StarRatings
+                rating={rate}
+                changeRating={changeRate}
+                numberOfStars={6}
+                name="rating"
+                starRatedColor="goldenrod"
+                starDimension="20px"
               />
             </Col>
           </FormGroup>

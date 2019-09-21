@@ -189,7 +189,7 @@ export const addToBasketRequest = (productToBasket) => async (dispatch, getState
 
 
     if (!getState().user.basket.some((e) => e.productId === productToBasket.productId)) {
-      dispatch(setAlert('Product removed from', 'success', 1000));
+      dispatch(setAlert('Product count updated', 'success', 1000));
     }
 
     dispatch(getBasketValue());

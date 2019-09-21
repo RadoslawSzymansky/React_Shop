@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import ReactResizeDetector from 'react-resize-detector';
 import { Translate } from 'react-localize-redux';
+import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 
 import './SortWidget.scss';
 
@@ -23,7 +24,13 @@ const SortWidget = ({ sortProducts }) => {
         <Translate id="sort" />
       </div>
       {isOpen ? (
-        <>
+        <CSSTransitionGroup
+          transitionName="list"
+          transitionEnterTimeout={200}
+          transitionLeaveTimeout={200}
+          transitionAppear={true}
+          transitionAppearTimeout={200}
+        >
           <ul className="sort-widget__list">
             <li onClick={() => sortProducts({ name: 'a-z' })}>
               <Translate id="name" />
@@ -51,7 +58,7 @@ const SortWidget = ({ sortProducts }) => {
               <Translate id="rate" />
             </li>
           </ul>
-        </>
+        </CSSTransitionGroup>
       ) : null}
     </div>
   );

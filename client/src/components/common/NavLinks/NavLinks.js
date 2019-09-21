@@ -21,8 +21,10 @@ const NavLinks = ({ auth: { isAuthenticated }, authLinks }) => (
       <Translate id="contact" />
     </NavLink>
     <NavLink exact to="/faq">FAQ</NavLink>
-    <BasketIcon />
-    <FavoritesIcon />
+    <span className="shop-links">
+      <BasketIcon />
+      <FavoritesIcon />
+    </span>
     { !authLinks ? null : (
       <>
         {

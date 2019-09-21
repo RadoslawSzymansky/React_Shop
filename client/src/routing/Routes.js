@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-
 import PrivateRoute from './PrivateRoute';
 
 import HomePage from '../components/pages/Home/HomePage';
@@ -13,7 +12,12 @@ import FavoritesPage from '../components/pages/FavoritesPage/FavoritesPage';
 import UserPanelPage from '../components/pages/UserPanel/UserPanelContainer';
 
 const Routes = () => (
-  <Switch>
+  <Switch
+    atEnter={{ opacity: 0 }}
+    atLeave={{ opacity: 0 }}
+    atActive={{ opacity: 1 }}
+    wrapperComponent={false}
+  >
     <Route path="/" exact component={HomePage} />
     <Route path="/products/:id" exact component={ProductPage} />
     <Route path="/basket" exact component={BasketPage} />
