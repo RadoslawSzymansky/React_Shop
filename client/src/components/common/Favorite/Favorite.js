@@ -1,5 +1,5 @@
 /* eslint-disable comma-dangle */
-import React from 'react';
+import React, { useState } from 'react';
 import { FaHeart } from 'react-icons/all';
 import PropTypes from 'prop-types';
 
@@ -8,6 +8,7 @@ import './Favorite.scss';
 const Favorite = ({
   productId, favorites, isAuthenticated, addFavorite, removeFavorite,
 }) => {
+  const [bigger, setBigger] = useState(false);
   let favArr;
   let callBack;
   let heartClass;
@@ -29,8 +30,15 @@ const Favorite = ({
   const onClick = (e) => {
     e.preventDefault();
     callBack(productId);
+    setBigger(true);
   };
-  return <FaHeart onClick={(e) => onClick(e)} className={heartClass} />;
+  return (
+    <FaHeart
+      onClick={(e) => onClick(e)}
+      onAnimationEnd={() => setBigger(false)}
+      className={bigger ? `${heartClass} bigger` : heartClass}
+    />
+  );
 };
 
 Favorite.propTypes = {

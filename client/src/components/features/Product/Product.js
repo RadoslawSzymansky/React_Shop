@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Favorite from '../../common/Favorite/FavoriteContainer';
 import StarRatings from 'react-star-ratings';
+import Favorite from '../../common/Favorite/FavoriteContainer';
 
 import './Product.scss';
 

@@ -34,7 +34,7 @@ module.exports = (env) => {
         mode: environment,
         entry: './src/index.js',
         output: {
-            path: path.resolve(__dirname, 'build'),
+            path: path.resolve(__dirname, 'build/public'),
             filename: 'app.bundle.js'
         },
         module: {

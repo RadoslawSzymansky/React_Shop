@@ -42,3 +42,7 @@
   transition: opacity 500ms ease;
 }
 
+@keyframes heart {
+  from {transform: scale(1);}
+  to {transform: scale(1.2);}
+}

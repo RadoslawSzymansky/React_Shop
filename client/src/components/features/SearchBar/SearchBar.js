@@ -9,12 +9,13 @@ const SearchBar = ({ sortProducts }) => {
   const onChange = (e) => {
     clearTimeout(timeOut);
     setSearch(e.target.value);
-    changeTimeOut(setTimeout(() => sortProducts({ search }), 700));
+    const current = e.target.value;
+    changeTimeOut(setTimeout(() => sortProducts({ search: current }), 700));
   };
 
   return (
     <div className="searchBar">
-      <Input onChange={onChange} type="text" placeholder="Search product" />
+      <Input value={search} onChange={onChange} type="text" placeholder="Search product" />
     </div>
   );
 };

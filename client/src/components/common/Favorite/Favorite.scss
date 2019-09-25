@@ -2,6 +2,7 @@
   cursor: pointer;
   z-index: 900;
   transition: 0.2s;
+
   &.active {
     color: rgb(247, 58, 58);
     &:hover {
@@ -13,5 +14,8 @@
     &:hover {
     color: rgb(247, 58, 58);
     }
+  }
+  &.bigger {
+    animation: heart 1s ease;
   }
 }
