@@ -9,7 +9,7 @@ import CommentsList from './CommentsList';
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
-  userId: state.auth.user._id,
+  userId: state.auth.isAuthenticated ? state.auth.user._id : 0,
 });
 
 const mapDispatchToProps = (dispatch) => ({ 

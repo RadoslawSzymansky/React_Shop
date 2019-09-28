@@ -7,7 +7,7 @@ import {
 } from 'react-icons/all';
 
 const CommentsList = ({
-  comments, isAuthenticated, setAlert, login, like, unLike, match, opinionId, userId, deleteC,
+  comments, isAuthenticated, setAlert, login, like, unLike, match, opinionId, userId, deleteC, _id
 }) => (
   <ul className="comments-list">
     {comments.map((comment) => (
