@@ -66,6 +66,5 @@
     "build": "webpack --env production"
   },
   "author": "ok",
-  "license": "ISC",
-  "proxy": "http://localhost:5000/"
+  "license": "ISC"
 }
