@@ -9,7 +9,8 @@
     "start:client": "cd client && npm run  start",
     "install:client": "cd client && npm install",
     "install:server": "cd server && npm install",
-    "postinstall": "run-p install:*"
+    "postinstall": "run-p install:*",
+    "heroku-prebuild": "npm install --dev"
   },
   "repository": {
     "type": "git",
