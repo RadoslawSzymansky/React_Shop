@@ -29,9 +29,7 @@ app.use('/api/users', userRoutes);
 
 
 // Serve static files from the React app if production env
-if (process.env === 'production') {
-  app.use(express.static(path.join(__dirname, '/../client/build/public/')));
-}
+app.use(express.static(path.join(__dirname, '/../client/build/public/')));
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '/../client/build/public/index.html'));
