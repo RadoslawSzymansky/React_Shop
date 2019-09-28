@@ -1,0 +1,17 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = git@github.com:RadoslawSzymansky/React_Shop.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+[branch "express_routes"]
+	remote = origin
+	merge = refs/heads/express_routes
+[remote "heroku"]
+	url = https://git.heroku.com/autoplastproduct.git
+	fetch = +refs/heads/*:refs/remotes/heroku/*
