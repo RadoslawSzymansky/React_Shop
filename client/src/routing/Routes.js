@@ -10,6 +10,7 @@ import ContactPage from '../components/pages/Contact/ContactPage';
 import PrivatePage from '../components/pages/PrivatePage/PrivatePage';
 import FavoritesPage from '../components/pages/FavoritesPage/FavoritesPage';
 import UserPanelPage from '../components/pages/UserPanel/UserPanelContainer';
+import FaqPage from '../components/pages/Faq/Faq';
 
 const Routes = () => (
   <Switch
@@ -24,6 +25,7 @@ const Routes = () => (
     <Route path="/contact" exact component={ContactPage} />
     <Route path="/private" exact component={PrivatePage} />
     <Route path="/favorites" exact component={FavoritesPage} />
+    <Route path="/faq" exact component={FaqPage} />
     <PrivateRoute path="/user-panel" component={UserPanelPage} name="User Panel" />
     <Route component={NotFound} />
   </Switch>

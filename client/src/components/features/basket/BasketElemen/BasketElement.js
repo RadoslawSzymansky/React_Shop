@@ -51,7 +51,7 @@ const BasketElement = ({
                               return (
                                 <span className="price">
                                   $
-                                  {price * count}
+                                  {(price * count).toFixed(2)}
                                 </span>
                               );
                             }
@@ -61,10 +61,10 @@ const BasketElement = ({
                                   <span className="price">
                                     <span className="old-price">
                                       $
-                                      {price * count}
+                                      {(price * count).toFixed(2)}
                                     </span>
                                     $
-                                    {count * (price - (price * (usCode.discountPercent / 100)))}
+                                    {(count * (price - (price * (usCode.discountPercent / 100)))).toFixed(2)}
                                   </span>
                                 </>
                               );
@@ -73,7 +73,7 @@ const BasketElement = ({
                               return (
                                 <span className="price">
                                   $
-                                  {price * count}
+                                  {(price * count).toFixed(2)}
                                 </span>
                               );
                             }
@@ -82,7 +82,7 @@ const BasketElement = ({
                         {avaibleDiscounts.length <= 0 ? (
                           <span className="price">
                             $
-                            {price * count}
+                            {(price * count).toFixed(2)}
                           </span>
                         ) : null}
                       </div>
