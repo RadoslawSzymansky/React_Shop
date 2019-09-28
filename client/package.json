@@ -62,7 +62,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --hot --env development",
+    "start": "webpack-dev-server",
     "build": "webpack --env production"
   },
   "author": "ok",
